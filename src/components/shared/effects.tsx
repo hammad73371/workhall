@@ -116,10 +116,58 @@ export function Waves({ lineColor = 'black', backgroundColor = 'transparent', wa
 export function ClickSpark({ sparkColor = '#6d4b2f', sparkSize = 12, sparkRadius = 18, sparkCount = 8, duration = 420, easing = 'ease-out', extraScale = 1, children }: ClickSparkProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const sparksRef = useRef<Spark[]>([])
+  const frameRef = useRef<number | null>(null)
+  const contextRef = useRef<CanvasRenderingContext2D | null>(null)
   useEffect(() => { const canvas = canvasRef.current; const parent = canvas?.parentElement; if (!canvas || !parent) return; let resizeTimeout = 0; const resizeCanvas = () => { const { width, height } = parent.getBoundingClientRect(); const pixelRatio = window.devicePixelRatio || 1; const nextWidth = Math.max(1, Math.floor(width * pixelRatio)); const nextHeight = Math.max(1, Math.floor(height * pixelRatio)); if (canvas.width !== nextWidth || canvas.height !== nextHeight) { canvas.width = nextWidth; canvas.height = nextHeight; canvas.style.width = `${width}px`; canvas.style.height = `${height}px` } }; const handleResize = () => { window.clearTimeout(resizeTimeout); resizeTimeout = window.setTimeout(resizeCanvas, 100) }; const observer = new ResizeObserver(handleResize); observer.observe(parent); resizeCanvas(); return () => { observer.disconnect(); window.clearTimeout(resizeTimeout) } }, [])
   const easeFunc = useCallback((progress: number) => { switch (easing) { case 'linear': return progress; case 'ease-in': return progress * progress; case 'ease-in-out': return progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress; case 'ease-out': default: return progress * (2 - progress) } }, [easing])
-  useEffect(() => { const canvas = canvasRef.current; const context = canvas?.getContext('2d'); if (!canvas || !context) return; let animationFrame = 0; const draw = (timestamp: number) => { const pixelRatio = window.devicePixelRatio || 1; context.clearRect(0, 0, canvas.width, canvas.height); sparksRef.current = sparksRef.current.filter((spark) => { const elapsed = timestamp - spark.startTime; if (elapsed >= duration) return false; const progress = elapsed / duration; const eased = easeFunc(progress); const distance = eased * sparkRadius * extraScale * pixelRatio; const lineLength = sparkSize * (1 - eased) * pixelRatio; const originX = spark.x * pixelRatio; const originY = spark.y * pixelRatio; const x1 = originX + distance * Math.cos(spark.angle); const y1 = originY + distance * Math.sin(spark.angle); const x2 = originX + (distance + lineLength) * Math.cos(spark.angle); const y2 = originY + (distance + lineLength) * Math.sin(spark.angle); context.strokeStyle = sparkColor; context.globalAlpha = Math.max(0, 1 - eased); context.lineWidth = 2 * pixelRatio; context.lineCap = 'round'; context.beginPath(); context.moveTo(x1, y1); context.lineTo(x2, y2); context.stroke(); context.globalAlpha = 1; return true }); animationFrame = window.requestAnimationFrame(draw) }; animationFrame = window.requestAnimationFrame(draw); return () => window.cancelAnimationFrame(animationFrame) }, [duration, easeFunc, extraScale, sparkColor, sparkRadius, sparkSize])
-  const handleClick = (event: ReactMouseEvent<HTMLDivElement>) => { const canvas = canvasRef.current; if (!canvas) return; const rect = canvas.getBoundingClientRect(); const x = event.clientX - rect.left; const y = event.clientY - rect.top; const now = performance.now(); const newSparks = Array.from({ length: sparkCount }, (_, index) => ({ x, y, angle: (2 * Math.PI * index) / sparkCount, startTime: now })); sparksRef.current.push(...newSparks) }
+  useEffect(() => {
+    const canvas = canvasRef.current
+    contextRef.current = canvas?.getContext('2d') ?? null
+    return () => {
+      if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current)
+    }
+  }, [])
+  const draw = useCallback((timestamp: number) => {
+    const canvas = canvasRef.current
+    const context = contextRef.current
+    if (!canvas || !context) {
+      frameRef.current = null
+      return
+    }
+    const pixelRatio = window.devicePixelRatio || 1
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    sparksRef.current = sparksRef.current.filter((spark) => {
+      const elapsed = timestamp - spark.startTime
+      if (elapsed >= duration) return false
+      const progress = elapsed / duration
+      const eased = easeFunc(progress)
+      const distance = eased * sparkRadius * extraScale * pixelRatio
+      const lineLength = sparkSize * (1 - eased) * pixelRatio
+      const originX = spark.x * pixelRatio
+      const originY = spark.y * pixelRatio
+      const x1 = originX + distance * Math.cos(spark.angle)
+      const y1 = originY + distance * Math.sin(spark.angle)
+      const x2 = originX + (distance + lineLength) * Math.cos(spark.angle)
+      const y2 = originY + (distance + lineLength) * Math.sin(spark.angle)
+      context.strokeStyle = sparkColor
+      context.globalAlpha = Math.max(0, 1 - eased)
+      context.lineWidth = 2 * pixelRatio
+      context.lineCap = 'round'
+      context.beginPath()
+      context.moveTo(x1, y1)
+      context.lineTo(x2, y2)
+      context.stroke()
+      context.globalAlpha = 1
+      return true
+    })
+    if (sparksRef.current.length > 0) {
+      frameRef.current = window.requestAnimationFrame(draw)
+      return
+    }
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    frameRef.current = null
+  }, [duration, easeFunc, extraScale, sparkColor, sparkRadius, sparkSize])
+  const handleClick = (event: ReactMouseEvent<HTMLDivElement>) => { const canvas = canvasRef.current; if (!canvas) return; const rect = canvas.getBoundingClientRect(); const x = event.clientX - rect.left; const y = event.clientY - rect.top; const now = performance.now(); const newSparks = Array.from({ length: sparkCount }, (_, index) => ({ x, y, angle: (2 * Math.PI * index) / sparkCount, startTime: now })); sparksRef.current.push(...newSparks); if (frameRef.current === null) frameRef.current = window.requestAnimationFrame(draw) }
   return <div className="click-spark" onClick={handleClick}><canvas ref={canvasRef} className="click-spark__canvas" aria-hidden="true" />{children}</div>
 }
 

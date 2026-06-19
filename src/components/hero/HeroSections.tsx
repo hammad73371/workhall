@@ -96,7 +96,7 @@ export function HeroVisual() {
 export function ClassicHero() {
   return (
     <section id="hero" className="hero-section" aria-labelledby="hero-title">
-      <div className="hero-panel hero-panel--copy"><div className="hero-copy"><HandDrawnTitle /><MetricsStrip /><p className="hero-lede">With Pakistan&apos;s most flexible coworking spaces, open 24/7 across 6 locations. Built for the way you actually work, not the way an office thinks you should.</p><div className="hero-cta-row"><a href="#book-tour" className="primary-cta">Book My Tour<ArrowIcon /></a><a href="#meeting-room" className="secondary-cta">Book Meeting Room</a></div></div></div>
+      <div className="hero-panel hero-panel--copy"><div className="hero-copy"><HandDrawnTitle /><MetricsStrip /><p className="hero-lede">With Pakistan&apos;s most flexible coworking spaces, open 24/7 across 6 locations. Built for the way you actually work, not the way an office thinks you should.</p><div className="hero-cta-row"><a href="#book-tour" className="primary-cta">Book My Tour<ArrowIcon /></a><a href="#locations" className="secondary-cta">Explore Locations</a></div></div></div>
       <div className="hero-panel hero-panel--visual"><HeroVisual /></div>
     </section>
   )
@@ -109,7 +109,7 @@ export function EditorialHero() {
       <motion.div className="editorial-hero__copy" {...getEnterMotionProps(reducedMotion, { x: -28, y: 20, duration: 0.9 })}>
         <motion.div className="section-kicker" {...getEnterMotionProps(reducedMotion, { y: 14, duration: 0.62, delay: 0.06 })}>Karachi coworking spaces</motion.div>
         <motion.h1 id="hero-title" {...getEnterMotionProps(reducedMotion, { y: 22, duration: 0.86, delay: 0.12 })}>Your workday deserves a room for <RotatingText texts={heroWords} mainClassName="editorial-hero__rotating-word" splitLevelClassName="editorial-hero__rotating-group" elementLevelClassName="editorial-hero__rotating-letter" staggerFrom="last" staggerDuration={0.018} rotationInterval={2400} transition={{ type: 'spring', damping: 30, stiffness: 420 }} /></motion.h1>
-        <motion.p {...getEnterMotionProps(reducedMotion, { y: 18, duration: 0.78, delay: 0.18 })}>With Pakistan's most flexible coworking spaces, open 24/7, across 6 locations. All built for the way you actually work, not the way an office thinks you should.</motion.p>
+        <motion.p {...getEnterMotionProps(reducedMotion, { y: 18, duration: 0.78, delay: 0.18 })}>With Pakistan&apos;s most flexible coworking spaces, open 24/7, across 6 locations. All built for the way you actually work, not the way an office thinks you should.</motion.p>
         <motion.div className="editorial-hero__concierge" id="book-tour" aria-label="Workspace concierge" {...getEnterMotionProps(reducedMotion, { y: 22, duration: 0.8, delay: 0.24 })}><BookingConcierge variant="hero" /></motion.div>
       </motion.div>
       <motion.div className="editorial-hero__visual" aria-label="Work Hall interior preview" {...getEnterMotionProps(reducedMotion, { x: 34, y: 24, duration: 0.96, delay: 0.1, scale: 0.97 })}>
@@ -129,9 +129,9 @@ export function HeroAmenitiesBento() {
         <motion.div {...getRevealMotionProps(reducedMotion, { y: 24, duration: 0.82 })}>
           <motion.div className="section-kicker" {...getRevealMotionProps(reducedMotion, { y: 12, duration: 0.62, delay: 0.04 })}>Quiet operational extras</motion.div>
           <motion.h2 id="amenities-title" {...getRevealMotionProps(reducedMotion, { y: 18, duration: 0.82, delay: 0.1 })}>The things you stop noticing because they simply work.</motion.h2>
-          <motion.p className="hero-amenities__lead" {...getRevealMotionProps(reducedMotion, { y: 16, duration: 0.74, delay: 0.16 })}>Parking, access, care, and quiet desk-side help are already built into the day, so the room feels ready before the work starts asking anything from you.</motion.p>
+          <motion.p className="hero-amenities__lead" {...getRevealMotionProps(reducedMotion, { y: 16, duration: 0.74, delay: 0.16 })}>Work Hall removes friction from the day: parking, access, layout, errands, and support are already handled before they turn into noise.</motion.p>
         </motion.div>
-        <motion.aside className="hero-amenities__note" aria-label="Amenities note" {...getRevealMotionProps(reducedMotion, { x: 22, y: 14, duration: 0.76, delay: 0.18 })}><span>Work Hall basics, handled</span><p>These are the soft edges that make a workday feel looked after instead of improvised.</p></motion.aside>
+        <motion.aside className="hero-amenities__note" aria-label="Amenities note" {...getRevealMotionProps(reducedMotion, { x: 22, y: 14, duration: 0.76, delay: 0.18 })}><span>Work Hall basics, handled</span><p>The room, rhythm, access, and quiet operational extras are already in place when you arrive.</p></motion.aside>
       </div>
       <div className="hero-amenities__grid">
         {heroAmenities.map((amenity, index) => (

@@ -1,4 +1,4 @@
-﻿export type BookingPanel = 'location' | 'seats' | 'plan'
+export type BookingPanel = 'location' | 'seats'
 
 export type PricingPlan = {
   id: string
@@ -71,4 +71,3 @@ export type UserCoordinates = {
 export type GeolocationStatus = 'idle' | 'loading' | 'located' | 'blocked' | 'unsupported'
 
 export type HeroVariant = 'editorial' | 'classic'
-

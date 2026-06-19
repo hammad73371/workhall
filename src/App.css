@@ -1,4 +1,1595 @@
-﻿@import './styles/foundation.css';
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400&family=DM+Sans:wght@400;500&family=Inter:wght@400;500&family=Jost:wght@400&display=swap');
 @import './styles/booking-pricing.css';
-@import './styles/story-location.css';
 
+:root {
+  color: #000000;
+  background: #f8f0e3;
+  --ink: #15110d;
+  --muted: #857f78;
+  --bone: #fffaf0;
+  --clay: #d26c46;
+  --aubergine: #321d32;
+  font-family: 'DM Sans', sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  background: #f8f0e3;
+}
+
+button,
+a,
+input {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.click-spark {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.click-spark__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+}
+
+.figma-page-shell {
+  min-height: 100vh;
+  background: #f8f0e3;
+}
+
+.figma-hero--clipped {
+  overflow-x: hidden;
+}
+
+.figma-nav-layer {
+  position: absolute;
+  top: 42px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: inline-block;
+  width: fit-content;
+  pointer-events: none;
+}
+
+.hero-brand-mark {
+  position: absolute;
+  top: 22px;
+  left: 358px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: clamp(88px, 6.4vw, 112px);
+  pointer-events: auto;
+}
+
+.hero-brand-mark img {
+  width: 100%;
+  height: auto;
+}
+
+.figma-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  height: 72px;
+  margin: 0;
+  padding: 0 12px;
+  border-radius: 15px;
+  background: rgba(218, 177, 84, 0.35);
+  pointer-events: auto;
+}
+
+.figma-nav__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  height: 46px;
+  padding: 0 0 0 14px;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #000000;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: auto;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    color 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.figma-nav__item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(135deg, #df835d 0%, #d26c46 62%, #c96743 100%);
+  clip-path: inset(0 0 0 calc(100% - 36px) round 5px);
+  transition: clip-path 440ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.figma-nav__item > span:first-child {
+  position: relative;
+  z-index: 1;
+  padding-right: 10px;
+  transition: color 300ms ease;
+}
+
+.figma-nav__item.is-open {
+  box-shadow: 0 12px 26px rgba(210, 108, 70, 0.18);
+}
+
+.figma-nav__item:hover,
+.figma-nav__item.is-open {
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.figma-nav__item:hover::before,
+.figma-nav__item.is-open::before {
+  clip-path: inset(0 0 0 0 round 5px);
+}
+
+.figma-nav__badge {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 100%;
+  border-radius: 0 5px 5px 0;
+  background: #d26c46;
+  flex-shrink: 0;
+  transition:
+    background 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.figma-nav__badge svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: #ffffff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 260ms ease;
+}
+
+.figma-nav__item:hover .figma-nav__badge,
+.figma-nav__item.is-open .figma-nav__badge {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.16);
+}
+
+.figma-nav__item:hover .figma-nav__badge svg,
+.figma-nav__item.is-open .figma-nav__badge svg {
+  transform: translateY(1px) rotate(180deg) scale(1.04);
+}
+
+.figma-nav__item.is-open .figma-nav__badge svg {
+  transform: translateY(1px) rotate(180deg) scale(1.08);
+}
+
+.figma-nav__tour {
+  position: absolute;
+  top: 15px;
+  right: -208px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 149px;
+  padding: 14px 28px;
+  border-radius: 5px;
+  background: #c97b5a;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  pointer-events: auto;
+  white-space: nowrap;
+}
+
+.figma-nav__dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  z-index: 110;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 14px;
+  width: min(900px, calc(100vw - 80px));
+  padding: 12px;
+  border: 1px solid rgba(151, 80, 43, 0.18);
+  border-radius: 14px;
+  background:
+    radial-gradient(rgba(151, 80, 43, 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 250, 240, 0.98), rgba(239, 225, 199, 0.98));
+  background-size: 13px 13px, auto;
+  box-shadow: 0 26px 76px rgba(94, 50, 28, 0.22);
+  backdrop-filter: blur(22px);
+  transform-origin: top center;
+  pointer-events: auto;
+}
+
+.figma-nav__main-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  min-width: 0;
+}
+
+.figma-nav__small-row {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.figma-nav__rail {
+  display: grid;
+  gap: 10px;
+  padding-left: 14px;
+  border-left: 1px solid rgba(151, 80, 43, 0.16);
+}
+
+.figma-feature-card {
+  --nav-image-position: center;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: 124px;
+  align-content: end;
+  overflow: hidden;
+  padding: 18px;
+  border: 1px solid rgba(151, 80, 43, 0.16);
+  border-radius: 14px;
+  background:
+    linear-gradient(120deg, rgba(255, 250, 240, 0.9), rgba(255, 250, 240, 0.64)),
+    rgba(255, 250, 240, 0.72);
+  color: #15110d;
+  text-decoration: none;
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease,
+    background 220ms ease;
+}
+
+.figma-feature-card::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(120deg, rgba(255, 250, 240, 0.82) 0 36%, rgba(255, 250, 240, 0.18) 58%, rgba(255, 250, 240, 0.72)),
+    radial-gradient(circle at 18% 14%, rgba(220, 116, 70, 0.18), transparent 9rem);
+  content: '';
+}
+
+.figma-feature-card__image {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: url('/cowork.jpg');
+  background-position: var(--nav-image-position);
+  background-size: cover;
+  opacity: 0.18;
+  transform: scale(1.02);
+  transition:
+    opacity 260ms ease,
+    transform 420ms ease,
+    filter 260ms ease;
+}
+
+.figma-feature-card:hover {
+  border-color: rgba(151, 80, 43, 0.24);
+  box-shadow: 0 16px 36px rgba(94, 50, 28, 0.14);
+  transform: translateY(-2px);
+}
+
+.figma-feature-card:hover .figma-feature-card__image {
+  opacity: 0.28;
+  transform: scale(1.05);
+  filter: saturate(1.05);
+}
+
+.figma-feature-card__content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 7px;
+}
+
+.figma-feature-card__top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.figma-feature-card__top .nav-glyph {
+  width: 18px;
+  height: 18px;
+  color: #d96b4a;
+}
+
+.figma-feature-card__top em {
+  color: #d96b4a;
+  font-size: 11px;
+  font-weight: 900;
+  font-style: normal;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.figma-feature-card strong {
+  color: #15110d;
+  font-family: 'Jost', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.06;
+}
+
+.figma-feature-card small {
+  color: rgba(21, 17, 13, 0.68);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.figma-feature-card__arrow {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  color: rgba(21, 17, 13, 0.52);
+  transition: transform 220ms ease;
+}
+
+.figma-feature-card:hover .figma-feature-card__arrow {
+  transform: translateX(2px);
+}
+
+.figma-feature-card--hero,
+.figma-feature-card--large {
+  min-height: 144px;
+}
+
+.figma-feature-card--hero strong,
+.figma-feature-card--large strong {
+  font-size: 24px;
+}
+
+.figma-feature-card--small {
+  min-height: 108px;
+}
+
+.figma-feature-card--small .figma-feature-card__image {
+  opacity: 0.14;
+}
+
+.figma-feature-card--small strong,
+.figma-feature-card--rail strong {
+  font-size: 16px;
+}
+
+.figma-feature-card--small small {
+  font-size: 11px;
+}
+
+.figma-feature-card--rail {
+  min-height: 96px;
+  padding: 16px;
+}
+
+.figma-feature-card--rail .figma-feature-card__image {
+  opacity: 0.12;
+}
+
+.figma-feature-card--rail .figma-feature-card__top {
+  gap: 6px;
+}
+
+.figma-feature-card--rail small {
+  font-size: 11px;
+}
+
+.figma-hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  justify-content: flex-start;
+  width: min(1790px, calc(100vw - 110px));
+  margin-left: 55px;
+  padding-top: clamp(100px, 14vh, 223px);
+  padding-bottom: 3vh;
+}
+
+.figma-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5158fr) minmax(0, 1fr);
+  gap: 9px;
+  align-items: flex-start;
+  height: 100vh;
+}
+
+.figma-hero__left-column {
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.figma-hero__copy-card {
+  width: 100%;
+  height: clamp(500px, 59vh, 746px);
+  border-radius: 48px;
+  background:
+    linear-gradient(145deg, rgba(255, 144, 102, 0.25) 0%, #ECE4D7 55%);
+  padding: 52px 54px 44px 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0;
+}
+
+.figma-hero__headline-block {
+  position: static;
+}
+
+.figma-hero__headline-block h1 {
+  margin: 0;
+  font-family: 'Futura PT', 'Futura-Book', 'Jost', sans-serif;
+  font-size: clamp(54px, 6vw, 100px);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.figma-hero__headline-block h1 span,
+.figma-hero__headline-block h1 em {
+  display: block;
+  font-style: normal;
+}
+
+.figma-hero__headline-block h1 em {
+  margin-top: 0;
+  color: #d26c46;
+}
+
+.figma-hero__headline-block {
+  margin-bottom: 28px;
+}
+
+.figma-hero__lede {
+  position: static;
+  width: 821px;
+  margin: 0 0 auto;
+  color: #857f78;
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(15px, 1.6vw, 28px);
+  font-weight: 400;
+  line-height: 1.4;
+  max-width: 600px;
+}
+
+.figma-search-card {
+  position: static;
+  width: auto;
+  max-width: 100%;
+  min-height: 74px;
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.figma-search-card .booking-console--hero {
+  width: auto;
+  max-width: 100%;
+  min-height: auto;
+  padding: 8px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(140, 132, 100, 0.12);
+  box-shadow: none;
+  backdrop-filter: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.figma-search-card .booking-console--hero .booking-fields {
+  width: auto;
+  flex: 0 1 auto;
+  grid-template-columns: 260px 200px;
+  gap: 10px;
+}
+
+.figma-search-card .booking-console--hero .booking-popover--seats {
+  margin-left: -70px;
+}
+
+.figma-search-card .booking-console--hero .booking-field {
+  min-height: 44px;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid rgba(140, 132, 100, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 249, 240, 0.78);
+  box-shadow: none;
+  transform: none;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  transition:
+    border-color 220ms ease,
+    background 220ms ease;
+}
+
+.figma-search-card .booking-console--hero .booking-field:hover,
+.figma-search-card .booking-console--hero .booking-field[aria-expanded='true'] {
+  border-color: rgba(210, 108, 70, 0.34);
+  background: rgba(255, 247, 237, 0.92);
+  box-shadow: none;
+  transform: none;
+}
+
+.figma-search-card .booking-field strong {
+  color: #3f312d;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.figma-search-card .booking-field.booking-field--seats strong {
+  max-width: 100%;
+}
+
+.figma-search-card .booking-field small {
+  display: none;
+}
+
+.figma-search-card .booking-field .icon {
+  width: 17px;
+  height: 17px;
+  color: #2f221f;
+  flex-shrink: 0;
+  stroke-width: 2.1;
+}
+
+.figma-search-card .seat-stepper {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: rgba(140, 132, 100, 0.14);
+  color: #5d4b41;
+  box-shadow: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.figma-search-card .booking-field span:first-child {
+  min-width: 0;
+}
+
+.figma-search-card .booking-console--hero .booking-action-row {
+  flex-direction: row;
+  gap: 0;
+  margin-top: 0;
+  align-items: center;
+  min-width: 0;
+  flex: 0 0 auto;
+}
+
+.primary-cta,
+.ghost-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 0 22px;
+  border-radius: 5px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.primary-cta {
+  background: #000000;
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.ghost-cta {
+  border: 1px solid rgba(189, 171, 142, 0.55);
+  background: rgba(255, 249, 240, 0.72);
+  color: #2d241f;
+  box-shadow: none;
+}
+
+.primary-cta:hover,
+.ghost-cta:hover {
+  transform: none;
+}
+
+.primary-cta:hover {
+  box-shadow: none;
+}
+
+.ghost-cta:hover {
+  border-color: rgba(140, 132, 100, 0.55);
+}
+
+.figma-search-card .booking-popover__panel {
+  top: auto;
+  bottom: calc(100% + 10px);
+  padding: 12px;
+  border: 1px solid rgba(140, 132, 100, 0.24);
+  border-radius: 16px;
+  background: rgba(248, 241, 229, 0.98);
+  box-shadow: 0 18px 36px rgba(110, 87, 57, 0.12);
+  backdrop-filter: blur(8px);
+  transform-origin: bottom center;
+}
+
+.figma-search-card .booking-popover--plan .booking-popover__panel {
+  width: min(560px, calc(100vw - 48px));
+}
+
+.figma-search-card .booking-required-hint {
+  margin-top: 6px;
+  border: 1px solid rgba(210, 108, 70, 0.2);
+  border-radius: 14px;
+  background: rgba(210, 108, 70, 0.08);
+  color: #5f3c3a;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.figma-search-card .booking-console--hero .primary-cta,
+.figma-search-card .booking-console--hero .ghost-cta {
+  min-height: 44px;
+}
+
+.figma-search-card .booking-console--hero .primary-cta {
+  min-width: 164px;
+  padding: 0 18px;
+  border-radius: 8px;
+  justify-content: space-between;
+  background: #050505;
+  font-size: 15px;
+  font-weight: 500;
+  box-shadow: none;
+}
+
+.figma-search-card .plan-card,
+.figma-search-card .panel-option,
+.figma-search-card .booking-seat-presets button,
+.figma-search-card .seat-control button {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.figma-search-card .booking-popover__eyebrow {
+  margin-bottom: 10px;
+  color: #d26c46;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.figma-search-card .panel-option {
+  min-height: 52px;
+  padding: 12px;
+  border: 1px solid rgba(140, 132, 100, 0.18);
+  border-radius: 10px;
+  background: rgba(255, 249, 240, 0.9);
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: none;
+}
+
+.figma-search-card .panel-option:hover,
+.figma-search-card .panel-option.is-selected {
+  border-color: rgba(210, 108, 70, 0.28);
+  background: rgba(255, 245, 235, 0.98);
+  transform: none;
+}
+
+.figma-search-card .seat-control button {
+  border-radius: 10px;
+  background: #d26c46;
+  color: #fffaf0;
+  box-shadow: none;
+}
+
+.figma-search-card .seat-control strong {
+  color: #3f2d30;
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+}
+
+.figma-search-card .booking-seat-presets button {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid rgba(140, 132, 100, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 249, 240, 0.88);
+  color: #57443d;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.figma-search-card .booking-seat-presets button:hover,
+.figma-search-card .booking-seat-presets button.is-selected {
+  border-color: rgba(210, 108, 70, 0.26);
+  background: rgba(255, 243, 232, 1);
+  color: #43282c;
+}
+
+.figma-search-card .plan-list {
+  gap: 10px;
+}
+
+.figma-search-card .plan-card {
+  min-height: 132px;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid rgba(140, 132, 100, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 249, 240, 0.92);
+  box-shadow: none;
+}
+
+.figma-search-card .plan-card:hover,
+.figma-search-card .plan-card.is-selected {
+  border-color: rgba(210, 108, 70, 0.24);
+  background: rgba(255, 245, 235, 0.98);
+  transform: none;
+}
+
+.figma-search-card .plan-card__top strong {
+  color: #3d2c31;
+  font-family: 'Jost', 'Nunito Sans', sans-serif;
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.figma-search-card .plan-card__top em {
+  color: #c97b5a;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.figma-search-card .plan-card__details {
+  color: #7e7466;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.figma-search-card .booking-console--hero .booking-popover--location {
+  min-width: 0;
+}
+
+.figma-search-card .booking-console--hero .booking-popover--seats .booking-field {
+  justify-content: space-between;
+}
+
+.figma-search-card .booking-console--hero .booking-required-hint {
+  margin-top: 8px;
+}
+
+.figma-search-card .booking-popover--seats .booking-popover__panel {
+  width: min(360px, calc(100vw - 48px));
+  padding: 14px;
+}
+
+.figma-search-card .seat-control--popover {
+  grid-template-columns: 48px minmax(72px, 1fr) 48px;
+  gap: 12px;
+  align-items: center;
+}
+
+.figma-search-card .seat-control--popover button {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  font-size: 24px;
+  font-weight: 500;
+  transition:
+    transform 220ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.figma-search-card .seat-control--popover button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(210, 108, 70, 0.14);
+}
+
+.figma-search-card .seat-control--popover strong {
+  justify-self: center;
+  font-size: 42px;
+  letter-spacing: -0.04em;
+}
+
+.figma-search-card .booking-seat-story {
+  margin: 12px 0 0;
+  color: #6f6257;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+}
+
+.figma-search-card .booking-seat-presets {
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.figma-search-card .booking-seat-actions {
+  display: flex;
+  justify-content: stretch;
+  margin-top: 12px;
+}
+
+.figma-search-card .seat-confirm {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 14px;
+  background: #d26c46;
+  color: #fffaf0;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  transition:
+    background 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease;
+}
+
+.figma-search-card .seat-confirm:hover {
+  background: #c8643f;
+  box-shadow: 0 12px 22px rgba(210, 108, 70, 0.18);
+  transform: translateY(-1px);
+}
+
+.plans-scroll-section {
+  position: relative;
+  width: 100%;
+  background: #fff5e9;
+}
+
+.plans-scroll-section__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #fff5e9;
+}
+
+.plans-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 38vh;
+  padding: 48px 0 0 77px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  pointer-events: none;
+}
+
+.plans-header__kicker {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 32px;
+  color: #000000;
+  font-family: 'Archivo', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.plans-header__square {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  background: #d69aef;
+  border-radius: 3px;
+}
+
+.plans-header__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.plans-header__heading span {
+  color: #000000;
+  font-family: 'Futura PT', 'Jost', sans-serif;
+  font-size: 80px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.plans-header__heading .is-accent {
+  color: #c97b5a;
+  font-size: 86px;
+}
+
+.plans-header p {
+  max-width: 620px;
+  margin: 24px 0 0;
+  color: #857f78;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+.plans-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: max-content;
+  will-change: transform;
+  padding-left: 84px;
+  gap: 0;
+}
+
+.plans-track-zone {
+  position: absolute;
+  top: 42vh;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.plans-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 1136px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.plans-group h3 {
+  margin: 0 0 20px;
+  padding: 0 8px;
+  color: #222013;
+  font-family: 'Futura PT', 'Jost', sans-serif;
+  font-size: 74px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -4.88px;
+  text-transform: uppercase;
+}
+
+.cards-row {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  height: 388px;
+  position: relative;
+}
+
+.card-slot {
+  position: relative;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+}
+
+.card-slot::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(34, 32, 19, 0.2);
+}
+
+.plan-card {
+  position: relative;
+  width: 363px;
+  height: 388px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1.5px solid #c97b5a;
+  cursor: pointer;
+}
+
+.plan-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 0;
+}
+
+.plan-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(15, 28, 26, 0.82) 0%, rgba(15, 28, 26, 0.65) 40%, rgba(15, 28, 26, 0.8) 100%);
+  z-index: 1;
+}
+
+.plan-card-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px 20px 20px 20px;
+}
+
+.card-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.category-path {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.price-pill {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 4px 12px;
+  color: #ffffff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.card-middle {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.card-overline {
+  color: #c97b5a;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.card-middle h4 {
+  margin: 4px 0 8px;
+  color: #ffffff;
+  font-family: 'Futura PT', 'Jost', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.card-middle p {
+  max-width: 280px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.card-bottom-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.attribute-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.attribute-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.attribute-label {
+  width: 72px;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.attribute-track {
+  flex: 1;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.attribute-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #c97b5a, #e8956b);
+}
+
+.card-cta-row {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.card-cta-primary,
+.card-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 9px 18px;
+  color: #ffffff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.card-cta-primary {
+  border: none;
+  background: #321d32;
+}
+
+.card-cta-secondary {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.card-cta-primary svg,
+.card-cta-secondary svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.plans-group__footer {
+  padding: 18px 8px 0;
+}
+
+.plans-group__footer p {
+  max-width: 398px;
+  margin: 0;
+  color: #222013;
+  font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.32;
+}
+
+.plans-group__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 4px;
+  color: #222013;
+  font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.plans-group__link svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.group-divider {
+  width: 1px;
+  background: rgba(34, 32, 19, 0.2);
+  align-self: stretch;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.plans-scroll-section__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: #c97b5a;
+  transition: none;
+}
+
+
+.figma-stats-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: clamp(150px, 18vh, 236px);
+  margin-top: 14px;
+  padding: 20px 60px;
+  border-radius: 36px;
+  background: #ece4d7;
+}
+
+.figma-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.figma-stat strong {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(48px, 3.7vw, 70.78px);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.figma-stat span {
+  font-family: 'Archivo', sans-serif;
+  font-size: clamp(21px, 1.68vw, 32.17px);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.figma-hero__image-card {
+  width: 100%;
+  height: calc(100vh - 18vh);
+  min-height: 600px;
+  overflow: visible;
+  border-radius: 48px;
+  background: transparent;
+  padding: 0;
+  position: relative;
+  z-index: 3;
+}
+
+.figma-hero__image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-stack-shell {
+  width: 100%;
+  height: 100%;
+  border-radius: 48px;
+  overflow: visible;
+  position: relative;
+}
+
+.hero-page {
+  background-color: #e5d9ca;
+}
+
+.headline-block {
+  position: relative;
+}
+
+.headline-block h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.word-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em;
+}
+
+.word-row + .word-row {
+  margin-top: -0.04em;
+}
+
+.word-mask {
+  overflow: hidden;
+  display: inline-block;
+}
+
+.word-rise {
+  display: inline-block;
+  color: #000000;
+  font-family: 'Futura PT', 'Futura-Book', 'Jost', sans-serif;
+  font-size: clamp(54px, 6vw, 100px);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes bgWarm {
+    from { background-color: #e5d9ca; }
+    to { background-color: #f8f0e3; }
+  }
+
+  @keyframes navDrop {
+    from {
+      opacity: 0;
+      transform: translateY(-32px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes imageReveal {
+    from {
+      opacity: 0;
+      transform: translateX(180px) scale(1.02);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+  }
+
+  @keyframes cardLift {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes wordRise {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes colorBleed {
+    from { color: #000000; }
+    to { color: #d26c46; }
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pillPop {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .hero-page,
+  .hero-brand-mark,
+  .navbar,
+  .virtual-tour-btn,
+  .hero-image-card,
+  .hero-left-card,
+  .hero-subheading,
+  .booking-widget,
+  .stats-bar,
+  .word-rise,
+  .nav-pill {
+    animation: none;
+  }
+
+  .hero-page:not(.is-loaded) .navbar,
+  .hero-page:not(.is-loaded) .hero-brand-mark,
+  .hero-page:not(.is-loaded) .virtual-tour-btn,
+  .hero-page:not(.is-loaded) .hero-image-card,
+  .hero-page:not(.is-loaded) .hero-left-card,
+  .hero-page:not(.is-loaded) .hero-subheading,
+  .hero-page:not(.is-loaded) .booking-widget,
+  .hero-page:not(.is-loaded) .stats-bar,
+  .hero-page:not(.is-loaded) .nav-pill,
+  .hero-page:not(.is-loaded) .word-rise {
+    opacity: 0;
+  }
+
+  .hero-page:not(.is-loaded) .word-rise {
+    transform: translateY(100%);
+  }
+
+  .hero-page.is-loaded {
+    animation: bgWarm 260ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-page.is-loaded .navbar {
+    animation: navDrop 480ms cubic-bezier(0.16, 1, 0.3, 1) 70ms both;
+  }
+
+  .hero-page.is-loaded .hero-brand-mark {
+    animation: navDrop 500ms cubic-bezier(0.16, 1, 0.3, 1) 20ms both;
+  }
+
+  .hero-page.is-loaded .virtual-tour-btn {
+    animation: navDrop 480ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
+  }
+
+  .hero-page.is-loaded .nav-pill:nth-child(1) { animation: pillPop 340ms cubic-bezier(0.16, 1, 0.3, 1) 220ms both; }
+  .hero-page.is-loaded .nav-pill:nth-child(2) { animation: pillPop 340ms cubic-bezier(0.16, 1, 0.3, 1) 270ms both; }
+  .hero-page.is-loaded .nav-pill:nth-child(3) { animation: pillPop 340ms cubic-bezier(0.16, 1, 0.3, 1) 320ms both; }
+  .hero-page.is-loaded .nav-pill:nth-child(4) { animation: pillPop 340ms cubic-bezier(0.16, 1, 0.3, 1) 370ms both; }
+  .hero-page.is-loaded .nav-pill:nth-child(5) { animation: pillPop 340ms cubic-bezier(0.16, 1, 0.3, 1) 420ms both; }
+  .hero-page.is-loaded .nav-pill:nth-child(6) { animation: pillPop 340ms cubic-bezier(0.16, 1, 0.3, 1) 470ms both; }
+
+  .hero-page.is-loaded .hero-image-card {
+    animation: imageReveal 760ms cubic-bezier(0.12, 0.9, 0.2, 1) 40ms both;
+  }
+
+  .hero-page.is-loaded .hero-left-card {
+    animation: cardLift 460ms cubic-bezier(0.16, 1, 0.3, 1) 0ms both;
+  }
+
+  .hero-page.is-loaded .word-rise {
+    animation: wordRise 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-page.is-loaded .orange-line .word-rise {
+    animation:
+      wordRise 760ms cubic-bezier(0.16, 1, 0.3, 1) 880ms both,
+      colorBleed 420ms ease-out 1320ms both;
+  }
+
+  .hero-page.is-loaded .hero-subheading {
+    animation: fadeUp 620ms cubic-bezier(0.16, 1, 0.3, 1) 980ms both;
+  }
+
+  .hero-page.is-loaded .booking-widget {
+    animation: fadeUp 560ms cubic-bezier(0.16, 1, 0.3, 1) 1080ms both;
+  }
+
+  .hero-page.is-loaded .stats-bar {
+    animation: fadeUp 560ms cubic-bezier(0.16, 1, 0.3, 1) 280ms both;
+  }
+}

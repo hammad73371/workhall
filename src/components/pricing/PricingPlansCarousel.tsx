@@ -69,14 +69,17 @@ export function PricingPlansCarousel({
   const featuredPlan = audiencePlans.find((plan) => plan.id === activePlanId) ?? audiencePlans[0] ?? pricingPlans[0]
   const activeMeta = pricingAudienceMeta[activeAudience]
 
-  const handleAudienceChange = useCallback((audience: PricingPlan['audience']) => {
-    onAudienceChange(audience)
-    setActivePlanId(getDefaultPricingPlanId(audience))
+  const handleAudienceChange = useCallback(
+    (audience: PricingPlan['audience']) => {
+      onAudienceChange(audience)
+      setActivePlanId(getDefaultPricingPlanId(audience))
 
-    if (typeof window !== 'undefined') {
-      window.history.replaceState(null, '', audience === 'teams' ? '#plans-teams' : '#plans')
-    }
-  }, [onAudienceChange])
+      if (typeof window !== 'undefined') {
+        window.history.replaceState(null, '', audience === 'teams' ? '#plans-teams' : '#plans')
+      }
+    },
+    [onAudienceChange],
+  )
 
   useEffect(() => {
     const syncAudienceToHash = () => {
@@ -185,11 +188,9 @@ export function PricingPlansCarousel({
             >
               Plans and pricing
             </motion.div>
-            <h2 id="pricing-title">Because Weâ€™ve Got A Space 
-              for Every Way You Work.</h2>
+            <h2 id="pricing-title">Choose the amount of room your workday needs.</h2>
             <p>
-              Whether you're a freelancer who needs a desk or an enterprise that
-              needs a floor, we have a plan built around you, not the other way around.
+              No pricing maze, no office jargon. Start with the way you work, then let the plan show how much privacy, rhythm, and support you actually need.
             </p>
           </motion.div>
 
@@ -274,7 +275,7 @@ export function PricingPlansCarousel({
         </div>
 
         <div className="pricing-lab__footer">
-          <span>Pricing here is a starting guide. Branch-specific availability and final fit are confirmed after a tour.</span>
+          <span>Pricing here is a starting guide. Branch-specific adjustments may apply.</span>
           <a href="#book-tour">
             Let Work Hall recommend a setup
             <ArrowIcon />
@@ -300,7 +301,7 @@ export function PricingPlansCarousel({
               aria-label="Close pricing details"
               onClick={() => setExpandedPlan(null)}
             >
-              Ã—
+              x
             </button>
             <span className="pricing-card__eyebrow">{expandedPlan.eyebrow}</span>
             <h3 id="pricing-modal-title">{expandedPlan.name}</h3>
@@ -325,8 +326,3 @@ export function PricingPlansCarousel({
     </section>
   )
 }
-
-
-
-
-

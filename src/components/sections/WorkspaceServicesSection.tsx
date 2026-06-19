@@ -15,12 +15,12 @@ export function WorkspaceServicesSection() {
       <div className="service-section__intro">
         <div>
           <div className="section-kicker">What you can book</div>
-          <h2 id="services-title">and because work isn't always just a desk</h2>
+          <h2 id="services-title">Three clear ways to work from Work Hall.</h2>
           <p className="service-section__lead">Pick the shape of the day first. Work Hall handles the room, rhythm, access, and the little invisible things that make a workday feel lighter.</p>
         </div>
         <aside className="service-section__note" aria-label="Service guide">
           <span>Start with the room shape</span>
-          <p>Shared desks keep the day open, private suites hold focus in place, and meeting rooms let the conversation arrive with more weight.</p>
+          <p>Shared desks keep the day open, private suites hold focus in place, and meeting rooms let the conversation arrive ready.</p>
         </aside>
       </div>
       <div className="service-grid">

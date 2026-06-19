@@ -5,8 +5,8 @@ export function SiteFooter() {
     <footer className="site-footer" id="contact">
       <div className="brand-mark" aria-label="Work Hall footer mark"><span className="brand-monogram">WH</span></div>
       <div>
-        <strong>Re-think the way your team works.</strong>
-        <span>Flexible desks, private offices, and meeting rooms built around community.</span>
+        <strong>Work Hall, Karachi coworking spaces.</strong>
+        <span>Support for enquiries, tour booking, branch questions, partnerships, and the member lounge.</span>
       </div>
       <a href="#book-tour" className="primary-cta">Book a Tour<ArrowIcon /></a>
     </footer>

@@ -1,73 +1,191 @@
-﻿import { useEffect, useRef, useState } from 'react'
-import type { CSSProperties } from 'react'
+import { useEffect, useState } from 'react'
+import AmenitiesMarquee from './components/AmenitiesMarquee'
+import { BookingConcierge } from './components/booking/BookingConcierge'
+import { FigmaFunctionalNav } from './components/layout/FigmaFunctionalNav'
+import PageLoader from './components/PageLoader'
+import { PlansScrollSection } from './components/PlansScrollSection'
+import Stack from './components/Stack'
+import { ClickSpark } from './components/shared/effects'
+import workhallOrange from './assets/workhall-orange.svg'
 import './App.css'
-import { pricingAudienceMeta } from './data/siteContent'
-import { useLenisSmoothScroll } from './hooks/useLenisSmoothScroll'
-import type { HeroVariant, PricingPlan } from './types/site'
-import { EditorialHero, ClassicHero, HeroAmenitiesBento, HeroReviewSwitch } from './components/hero/HeroSections'
-import { getInitialHeroVariant, shouldShowHeroReviewSwitch } from './lib/heroConfig'
-import { WorkHallNav } from './components/layout/WorkHallNav'
-import { SiteFooter } from './components/layout/SiteFooter'
-import { LocationsMapSection } from './components/locations/LocationsMapSection'
-import { PricingPlansCarousel } from './components/pricing/PricingPlansCarousel'
-import { MembershipSection } from './components/sections/MembershipSection'
-import { WorkspaceServicesSection } from './components/sections/WorkspaceServicesSection'
-import { ClickSpark, Waves } from './components/shared/effects'
+const stats = [
+  { value: '06', label: 'Location', color: '#458E71' },
+  { value: '07+', label: 'Years', color: '#D26C46' },
+  { value: '800+', label: 'Seats', color: '#3B59A3' },
+  { value: '40k+', label: 'Sq.ft area', color: '#8C8464' },
+]
 
-function getInitialPricingAudience(): PricingPlan['audience'] {
-  if (typeof window === 'undefined') return 'individuals'
-  return window.location.hash === '#plans-teams' ? 'teams' : 'individuals'
+function useCountUp(target: string, duration: number, delay: number, enabled: boolean) {
+  const [display, setDisplay] = useState(target.replace(/[0-9]/g, '0'))
+
+  useEffect(() => {
+    if (!enabled) {
+      setDisplay(target.replace(/[0-9]/g, '0'))
+      return
+    }
+
+    const timeout = window.setTimeout(() => {
+      const numeric = Number.parseInt(target.replace(/[^0-9]/g, ''), 10)
+      const suffix = target.replace(/[0-9]/g, '')
+      const start = Date.now()
+
+      const tick = () => {
+        const elapsed = Date.now() - start
+        const progress = Math.min(elapsed / duration, 1)
+        const eased = 1 - (1 - progress) * (1 - progress)
+        const current = Math.floor(eased * numeric)
+        setDisplay(`${String(current).padStart(2, '0')}${suffix}`)
+        if (progress < 1) window.requestAnimationFrame(tick)
+      }
+
+      window.requestAnimationFrame(tick)
+    }, delay)
+
+    return () => window.clearTimeout(timeout)
+  }, [delay, duration, enabled, target])
+
+  return display
 }
 
 function App() {
-  const [heroVariant, setHeroVariant] = useState<HeroVariant>(getInitialHeroVariant)
-  const [pricingAudience, setPricingAudience] = useState<PricingPlan['audience']>(getInitialPricingAudience)
-  const [showHeroReviewSwitch] = useState(shouldShowHeroReviewSwitch)
-  const [lowerHalfVisible, setLowerHalfVisible] = useState(false)
-  const lowerHalfRef = useRef<HTMLDivElement>(null)
-  useLenisSmoothScroll()
-  const pricingTheme = pricingAudienceMeta[pricingAudience]
+  const [loaderDone, setLoaderDone] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const heroCards = [
+    {
+      src: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80',
+      alt: 'Modern coworking workspace with desks and meeting zones',
+      position: 'center center',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80',
+      alt: 'Open office interior with natural light',
+      position: 'center center',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1497366412874-3415097a27e7?auto=format&fit=crop&w=1200&q=80',
+      alt: 'Collaborative workspace with shared desks',
+      position: 'center center',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1497366412874-3415097a27e7?auto=format&fit=crop&w=1200&q=80&sat=-10',
+      alt: 'Flexible office workspace layout',
+      position: '62% center',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80',
+      alt: 'Premium office lounge and workstation interior',
+      position: 'center center',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80&sat=8',
+      alt: 'Bright meeting-friendly coworking office',
+      position: '46% center',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80',
+      alt: 'Contemporary office workspace with warm interiors',
+      position: 'center center',
+    },
+    { src: '/cowork.jpg', alt: 'WorkHall workspace lounge', position: 'center center' },
+  ]
+  const statDisplays = [
+    useCountUp('06', 820, 120, isLoaded),
+    useCountUp('07+', 860, 180, isLoaded),
+    useCountUp('800+', 980, 240, isLoaded),
+    useCountUp('40k+', 980, 300, isLoaded),
+  ]
 
   useEffect(() => {
-    const el = lowerHalfRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(([entry]) => setLowerHalfVisible(entry.isIntersecting), { rootMargin: '0px 0px -10% 0px', threshold: 0 })
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
+    if (!loaderDone) return
+    const timeout = window.setTimeout(() => setIsLoaded(true), 0)
+    return () => window.clearTimeout(timeout)
+  }, [loaderDone])
 
-  const updateHeroVariant = (nextVariant: HeroVariant) => {
-    setHeroVariant(nextVariant)
-    window.localStorage.setItem('workhall-hero-variant', nextVariant)
-    const url = new URL(window.location.href)
-    url.searchParams.set('hero', nextVariant)
-    if (showHeroReviewSwitch) url.searchParams.set('heroReview', '1')
-    window.history.replaceState(null, '', url)
+  if (!loaderDone) {
+    return <PageLoader onComplete={() => setLoaderDone(true)} />
   }
 
   return (
-    <ClickSpark sparkColor="#d96b43" sparkSize={7} sparkRadius={10} sparkCount={9} duration={460}>
-      <main id="home" className="site-shell">
-        <Waves className="site-waves" lineColor="rgba(217, 107, 67, 0.38)" backgroundColor="rgba(246, 232, 204, 0.55)" waveSpeedX={0.02} waveSpeedY={0.01} waveAmpX={46} waveAmpY={24} friction={0.9} tension={0.01} maxCursorMove={120} xGap={11} yGap={34} paused={lowerHalfVisible} style={{ position: 'fixed', inset: 0, zIndex: 0 }} />
-        <div className="site-nav-wrap">
-          <WorkHallNav />
-          {showHeroReviewSwitch && <HeroReviewSwitch variant={heroVariant} onChange={updateHeroVariant} />}
-        </div>
-        {heroVariant === 'editorial' ? <EditorialHero /> : <ClassicHero />}
-        <HeroAmenitiesBento />
-        <MembershipSection />
-        <div ref={lowerHalfRef} className="lower-half" data-audience={pricingAudience} style={{ '--pricing-accent': pricingTheme.accent, '--pricing-soft': pricingTheme.soft, '--pricing-bg': pricingTheme.background, '--pricing-on-bg': pricingTheme.onBackground } as CSSProperties}>
-          <Waves className="lower-half-waves" lineColor={pricingAudience === 'teams' ? 'rgba(217, 107, 67, 0.22)' : 'rgba(0, 0, 0, 0.12)'} backgroundColor="transparent" waveSpeedX={0.015} waveSpeedY={0.008} waveAmpX={38} waveAmpY={20} friction={0.9} tension={0.008} maxCursorMove={100} xGap={12} yGap={36} style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }} />
-          <section className="pricing-chapter"><PricingPlansCarousel activeAudience={pricingAudience} onAudienceChange={setPricingAudience} /></section>
-          <WorkspaceServicesSection />
-          <LocationsMapSection />
-          <SiteFooter />
-        </div>
+    <ClickSpark sparkColor="#c97b5a" sparkSize={14} sparkRadius={22} sparkCount={10} duration={480}>
+      <main className={isLoaded ? 'figma-page-shell hero-page is-loaded' : 'figma-page-shell hero-page'}>
+        <a className="hero-brand-mark" href="#top" aria-label="WorkHall home">
+          <img src={workhallOrange} alt="WorkHall" />
+        </a>
+
+        <FigmaFunctionalNav isLoaded={isLoaded} />
+
+        <section className="figma-hero figma-hero--clipped" aria-labelledby="hero-title">
+          <div className="figma-hero__left-column">
+            <article className="figma-hero__copy-card hero-left-card">
+              <div className="figma-hero__headline-block headline-block">
+                <div className="word-row">
+                  {['Re-Think', 'Your'].map((word, index) => (
+                    <div className="word-mask" key={word}>
+                      <span className="word-rise" style={{ animationDelay: `${620 + index * 130}ms` }}>{word}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="word-row orange-line">
+                  <div className="word-mask">
+                    <span className="word-rise" style={{ animationDelay: '880ms' }}>Workspace.</span>
+                  </div>
+                </div>
+                <h1 id="hero-title">
+                  <span>Re-Think Your</span>
+                  <em>Workspace.</em>
+                </h1>
+              </div>
+
+              <p className="figma-hero__lede hero-subheading">
+                With Pakistan&apos;s most flexible coworking spaces, open 24/7, across 6 locations. All built
+                for the way you actually work, not the way an office thinks you should.
+              </p>
+
+              <div className="figma-search-card booking-widget" aria-label="Workspace search">
+                <BookingConcierge variant="hero" />
+              </div>
+            </article>
+
+            <section className="figma-stats-card stats-bar" aria-label="WorkHall stats">
+              {stats.map((stat, index) => (
+                <div key={stat.label} className="figma-stat">
+                  <strong style={{ color: stat.color }}>{statDisplays[index]}</strong>
+                  <span style={{ color: stat.color }}>{stat.label}</span>
+                </div>
+              ))}
+            </section>
+          </div>
+
+          <aside className="figma-hero__image-card hero-image-card" aria-label="Workspace preview image">
+            <div className="hero-stack-shell">
+              <Stack
+                randomRotation={false}
+                sensitivity={280}
+                sendToBackOnClick
+                autoplay
+                autoplayDelay={3600}
+                pauseOnHover
+                mobileClickOnly
+                cards={heroCards.map(card => (
+                  <img
+                    key={`${card.src}-${card.position}`}
+                    src={card.src}
+                    alt={card.alt}
+                    className="stack-card-media"
+                    style={{ objectPosition: card.position }}
+                  />
+                ))}
+              />
+            </div>
+          </aside>
+        </section>
+
+        <AmenitiesMarquee />
+
+        <PlansScrollSection />
       </main>
     </ClickSpark>
   )
 }
 
 export default App
-
-

@@ -9,7 +9,7 @@ export function MembershipSection() {
         <div className="section-kicker">How membership works</div>
         <h2 id="story-title">A workday that leaves room for <RotatingText texts={membershipWords} mainClassName="membership-rotating-word" splitLevelClassName="membership-rotating-word__group" elementLevelClassName="membership-rotating-word__letter" staggerFrom="last" staggerDuration={0.022} rotationInterval={2300} transition={{ type: 'spring', damping: 30, stiffness: 420 }} /></h2>
         <p>No cold front-desk energy. Tell us how your team moves through the day, walk the space, and let the room handle the small frictions before they turn into noise.</p>
-        <div className="membership-note"><span>What your membership includes</span><strong>walk in, choose your spot, take meetings, and work without managing an office.</strong></div>
+        <div className="membership-note"><span>What your membership includes</span><strong>walk in with your laptop, find the right room, and let Work Hall handle the office ops.</strong></div>
       </div>
       <div className="membership-system" aria-label="Work Hall membership steps">
         <div className="membership-orbit" aria-hidden="true"><span /><span /><span /></div>

@@ -1,11 +1,44 @@
 ﻿import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { karachiCenter, routeCasingLayerId, routeLayerId, routeSourceId, workHallLocations } from '../../data/siteContent'
 import { createRouteData, formatDistance, getDistanceKm } from '../../lib/locationUtils'
 import type { GeolocationStatus, UserCoordinates } from '../../types/site'
 import { ArrowIcon, LocateIcon, SearchIcon } from '../shared/icons'
 
+function buildDirectionsUrl(userCoordinates: UserCoordinates | null, destination: [number, number], fallbackUrl: string) {
+  if (!userCoordinates) return fallbackUrl
+
+  const origin = `${userCoordinates.latitude},${userCoordinates.longitude}`
+  const target = `${destination[1]},${destination[0]}`
+  return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${target}&travelmode=driving`
+}
+const baseMapStyle: maplibregl.StyleSpecification = {
+  version: 8,
+  sources: {
+    carto: {
+      type: 'raster',
+      tiles: [
+        'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+        'https://b.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+        'https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+        'https://d.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+      ],
+      tileSize: 256,
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    },
+  },
+  layers: [
+    {
+      id: 'carto-base',
+      type: 'raster',
+      source: 'carto',
+      minzoom: 0,
+      maxzoom: 20,
+    },
+  ],
+}
 export function LocationsMapSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const mapNodeRef = useRef<HTMLDivElement>(null)
@@ -14,7 +47,9 @@ export function LocationsMapSection() {
   const userMarkerRef = useRef<maplibregl.Marker | null>(null)
   const hasAutoRequestedLocationRef = useRef(false)
   const hasManualBranchSelectionRef = useRef(false)
+
   const [isMapReady, setIsMapReady] = useState(false)
+  const [mapError, setMapError] = useState<string | null>(null)
   const [activeLocationId, setActiveLocationId] = useState(workHallLocations[0].id)
   const [isBranchMenuOpen, setIsBranchMenuOpen] = useState(false)
   const [userCoordinates, setUserCoordinates] = useState<UserCoordinates | null>(null)
@@ -33,7 +68,12 @@ export function LocationsMapSection() {
       if (first.distance === null || second.distance === null) return 0
       return first.distance - second.distance
     })
+
   const nearestLocation = userCoordinates ? rankedLocations[0] : null
+  const directionsUrl = useMemo(
+    () => buildDirectionsUrl(userCoordinates, activeLocation.coordinates, activeLocation.mapsUrl),
+    [activeLocation.coordinates, activeLocation.mapsUrl, userCoordinates],
+  )
 
   const requestLocationAccess = useCallback(
     ({
@@ -98,30 +138,53 @@ export function LocationsMapSection() {
   useEffect(() => {
     const node = mapNodeRef.current
     if (!node || mapRef.current) return
-
     const map = new maplibregl.Map({
       container: node,
-      style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+      style: baseMapStyle,
       center: karachiCenter,
       zoom: 10.7,
       pitch: 18,
       bearing: -6,
       attributionControl: false,
     })
-
-    map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-left')
-    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-right')
+    const resizeMap = () => {
+      requestAnimationFrame(() => map.resize())
+      window.setTimeout(() => map.resize(), 120)
+      window.setTimeout(() => map.resize(), 420)
+    }
+    const loadTimeout = window.setTimeout(() => {
+      setMapError('Map tiles are taking longer than expected to load.')
+    }, 5000)
 
     const handleLoad = () => {
+      window.clearTimeout(loadTimeout)
       setIsMapReady(true)
-      map.resize()
+      setMapError(null)
+      resizeMap()
+    }
+
+    const handleStyleData = () => {
+      resizeMap()
+    }
+    const handleError = (event: { error?: Error }) => {
+      const message = event?.error?.message ?? ''
+      if (message) setMapError(message)
     }
 
     map.on('load', handleLoad)
+    map.on('styledata', handleStyleData)
+    map.on('error', handleError)
+    map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-left')
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-right')
     mapRef.current = map
-
+    const handleWindowResize = () => resizeMap()
+    window.addEventListener('resize', handleWindowResize)
     return () => {
+      window.clearTimeout(loadTimeout)
+      window.removeEventListener('resize', handleWindowResize)
       map.off('load', handleLoad)
+      map.off('styledata', handleStyleData)
+      map.off('error', handleError)
       markersRef.current.forEach((marker) => marker.remove())
       markersRef.current = []
       userMarkerRef.current?.remove()
@@ -378,6 +441,8 @@ export function LocationsMapSection() {
 
         <div ref={mapNodeRef} className="workhall-map" aria-label="Interactive Work Hall locations map" />
 
+        {mapError && <div className="location-map-error">Map tiles are having trouble loading right now. Try refreshing the route or the page.</div>}
+
         <div className="branch-drawer" aria-label="Work Hall branch selector">
           <div className="branch-drawer__lead">
             <span>Current pick</span>
@@ -423,7 +488,7 @@ export function LocationsMapSection() {
             )}
           </div>
 
-          <a className="map-directions-link" href={activeLocation.mapsUrl} target="_blank" rel="noreferrer">
+          <a className="map-directions-link" href={directionsUrl} target="_blank" rel="noreferrer">
             Open in Google Maps
             <ArrowIcon />
           </a>

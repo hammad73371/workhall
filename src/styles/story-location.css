@@ -468,6 +468,23 @@
   z-index: 1;
 }
 
+.location-map-error {
+  position: absolute;
+  left: 16px;
+  bottom: 92px;
+  z-index: 5;
+  max-width: min(360px, calc(100% - 32px));
+  padding: 10px 12px;
+  border: 1px solid rgba(212, 101, 67, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 250, 240, 0.86);
+  color: var(--clay);
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 14px 28px rgba(21, 17, 13, 0.12);
+  backdrop-filter: blur(14px);
+}
+
 .location-map-header,
 .branch-drawer {
   position: absolute;
@@ -1291,6 +1308,14 @@
     border-radius: 8px;
   }
 
+  .location-map-error {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    max-width: none;
+    margin-top: -4px;
+  }
+
   .location-actions {
     flex-direction: column;
   }
@@ -1514,6 +1539,10 @@
   }
 
   .workhall-map {
+    min-height: 380px;
+  }
+
+  .workhall-map iframe {
     min-height: 380px;
   }
 }
@@ -3028,4 +3057,6 @@
     animation: none;
   }
 }
+
+
 

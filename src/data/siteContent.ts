@@ -69,12 +69,27 @@ export const workspaceTypes = [
   {
     name: 'Private Office',
     price: 'From Rs 50,000/mo',
-    details: ['Move-in ready suite', 'Access control', 'Meeting room credits'],
+    details: ['Move-in ready suite', 'Access control', 'Managed privacy'],
   },
   {
     name: 'Meeting Room',
     price: 'Hourly booking',
-    details: ['Presentation ready', 'Reception support', 'Tea and coffee add-ons'],
+    details: ['Presentation ready', 'Client-ready room', 'By-the-hour booking'],
+  },
+  {
+    name: 'Virtual Office',
+    price: 'From Rs 10,000/mo',
+    details: ['Business address', 'Remote-friendly setup', 'Room access when needed'],
+  },
+  {
+    name: 'Custom Fit-Outs',
+    price: 'Custom pricing',
+    details: ['Tailored layout', 'Team workflow fit', 'Configured office setup'],
+  },
+  {
+    name: 'Enterprise Suite',
+    price: 'Custom pricing',
+    details: ['Autonomous suite', 'Team-scale planning', 'Controlled access'],
   },
 ]
 
@@ -84,12 +99,12 @@ export const navGroups: NavGroup[] = [
     label: 'Spaces',
     icon: 'grid',
     eyebrow: 'Workspace menu',
-    title: 'Choose the room your workday needs.',
-    description: 'Flexible desks, private offices, meeting rooms, and custom suites without running an office yourself.',
+    title: 'Choose the amount of room your workday needs.',
+    description: 'Coworking desks, private offices, meeting rooms, virtual office setup, and custom suites without the office-management drag.',
     featured: {
       title: 'Start with the workspace guide',
       href: '#plans',
-      detail: 'Compare desks, rooms, suites, and virtual office options in one place.',
+      detail: 'Compare desks, rooms, suites, after-hours access, and virtual office options in one place.',
       meta: 'Plans and fit',
       icon: 'grid',
       imagePosition: 'center 42%',
@@ -109,8 +124,8 @@ export const navGroups: NavGroup[] = [
     label: 'Locations',
     icon: 'map',
     eyebrow: 'Karachi network',
-    title: 'Choose the branch that keeps your workday moving.',
-    description: 'Live locations across Karachi with route guidance, Google Maps handoff, and room to switch branches as your week shifts.',
+    title: 'Find the Work Hall closest to you.',
+    description: 'Live Karachi branches with route guidance, Google Maps handoff, and quick switching as your week shifts.',
     featured: {
       title: 'Find the closest branch',
       href: '#locations',
@@ -151,8 +166,8 @@ export const navGroups: NavGroup[] = [
     label: 'Company',
     icon: 'users',
     eyebrow: 'Work Hall story',
-    title: 'See the side of Work Hall that makes people stay longer.',
-    description: 'Story, rhythm, services, and day-to-day atmosphere all live here instead of crowding the main navigation bar.',
+    title: 'See why the day feels lighter at Work Hall.',
+    description: 'Story, rhythm, services, and the quieter operational support all live here without cluttering the main navigation.',
     featured: {
       title: 'See how membership works',
       href: '#why-work-hall',
@@ -177,7 +192,7 @@ export const navGroups: NavGroup[] = [
     icon: 'phone',
     eyebrow: 'Concierge desk',
     title: 'Reach the team, book the tour, or open the member side of Work Hall.',
-    description: 'A smaller top-level menu should still surface all the practical next steps without cluttering the bar.',
+    description: 'All the practical next steps, without making the navigation feel crowded.',
     featured: {
       title: 'Start an enquiry',
       href: '#contact',
@@ -205,7 +220,7 @@ export const pricingPlans: PricingPlan[] = [
     eyebrow: 'Flexible coworking',
     price: 'From Rs 20,000/mo',
     summary: 'A shared desk plan for people who want a flexible environment without committing to a private room.',
-    fit: 'Best for freelancers, founders, and small teams who need a reliable everyday work base.',
+    fit: 'Best for freelancers, founders, and solo operators who need a reliable everyday Karachi base.',
     details: ['Shared desk', 'Flexible environment', 'Community access'],
     accent: '#2f8d71',
     audience: 'individuals',
@@ -217,7 +232,7 @@ export const pricingPlans: PricingPlan[] = [
     eyebrow: 'Assigned desk',
     price: 'From Rs 30,000/mo',
     summary: 'An assigned desk inside a shared workspace for people who want consistency with the energy of a community.',
-    fit: 'Best for operators and teams who want the same seat, same rhythm, and fewer daily decisions.',
+    fit: 'Best for operators who want the same seat, the same rhythm, and fewer daily decisions.',
     details: ['Assigned desk', 'Shared workspace', 'Monthly plan'],
     accent: '#315aa8',
     audience: 'individuals',
@@ -228,9 +243,9 @@ export const pricingPlans: PricingPlan[] = [
     name: 'Box Plan',
     eyebrow: 'Private office',
     price: 'From Rs 50,000/mo',
-    summary: 'Private offices for small businesses that need their own room while staying inside the Work Hall ecosystem.',
-    fit: 'Best for growing teams, agencies, and companies that need privacy without managing an office alone.',
-    details: ['Private office', 'Small business ready', 'Managed workspace'],
+    summary: 'Private offices for teams that need their own room while staying inside the Work Hall ecosystem.',
+    fit: 'Best for growing teams, agencies, and companies that need privacy without taking on office operations themselves.',
+    details: ['Private office', 'Managed workspace', 'Serious-work calm'],
     accent: '#d96b43',
     audience: 'teams',
     imagePosition: '62% 42%',
@@ -253,7 +268,7 @@ export const pricingPlans: PricingPlan[] = [
     eyebrow: 'Tailored offices',
     price: 'Custom pricing',
     summary: 'Tailored office solutions for creative agencies and teams that need a workspace built around their workflow.',
-    fit: 'Best for teams that want a branded, configured setup instead of a standard office plan.',
+    fit: 'Best for teams that want a tailored, branded setup instead of a standard office plan.',
     details: ['Tailored layout', 'Creative agency fit', 'Custom workspace solution'],
     accent: '#d96b43',
     audience: 'teams',
@@ -287,7 +302,7 @@ export const pricingPlans: PricingPlan[] = [
 
 export const services = [
   {
-    eyebrow: 'Open desk energy',
+    eyebrow: 'Walk in lightly',
     title: 'Flexible Coworking Spaces',
     body: 'Walk in with your laptop and find the right kind of energy: a desk, fast internet, familiar faces, and zero office overhead.',
     promise: 'Best when the day needs motion, not management.',
@@ -309,7 +324,7 @@ export const services = [
     iconName: 'office',
   },
   {
-    eyebrow: 'Meet with presence',
+    eyebrow: 'Ready before the first call',
     title: 'Meeting Rooms',
     body: 'Bring clients, interviews, workshops, reviews, and decisions into a room that feels ready before the first person walks in.',
     promise: 'Best when the meeting needs presence.',
@@ -364,7 +379,7 @@ export const pricingAudienceMeta = {
     eyebrow: 'For flexible workdays',
     title: 'Individuals',
     lead: 'Desks, business addresses, and flexible access for founders, freelancers, consultants, and solo operators who need a reliable Karachi base.',
-    note: 'Start light. Keep optionality. Add structure only when your workday asks for it.',
+    note: 'Start with the way you work, then add structure only when the day asks for it.',
     accent: '#d96b43',
     soft: '#f4d9c8',
     background: '#d96b43',
@@ -382,31 +397,31 @@ export const pricingAudienceMeta = {
   },
 } as const
 
-export const membershipWords = ['belonging.', 'momentum.', 'headspace.', 'deep focus.']
-export const heroWords = ['deep focus.', 'client calls.', 'team flow.', 'quiet wins.']
+export const membershipWords = ['momentum.', 'headspace.', 'deep focus.', 'team rhythm.']
+export const heroWords = ['client calls.', 'focus.', 'momentum.', 'belonging.', 'privacy.', 'deep work.', 'team rhythm.']
 
 export const membershipSteps = [
   {
     title: 'Choose your rhythm',
-    body: 'Tell us where your work naturally happens: close to clients, close to home, or close to the energy your team needs.',
+    body: 'Find the fit. Tell us where your work naturally happens: close to clients, close to home, or close to the energy your team needs.',
     signal: 'Location, team size, access window',
   },
   {
     title: 'Shape the setup',
-    body: 'We match you with a desk, room, suite, or custom office path so your team can arrive without rebuilding the basics.',
+    body: 'Fit the room. We match you with a desk, room, suite, or custom office path so your team can arrive without rebuilding the basics.',
     signal: 'Plan, seats, meeting needs',
   },
   {
     title: 'Move in softly',
-    body: 'Book the tour, meet the team, get your access, and start using the space like it already belongs to your workday.',
+    body: 'Settle in. Book the tour, meet the team, get your access, and start using the space like it already belongs to your workday.',
     signal: 'Tour, onboarding, community',
   },
 ]
 
 export const membershipDayNotes = [
   'Walk in with your laptop.',
-  'Find a desk that fits the mood.',
+  'Find the right room before the first call.',
   'Take the client call.',
-  'Stay for the people.',
+  'Leave the office ops to us.',
 ]
 

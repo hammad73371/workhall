@@ -1,0 +1,91 @@
+.loader-root {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: all;
+  overflow: hidden;
+  background: #bf603d;
+}
+
+.loader-orange {
+  position: absolute;
+  inset: 0;
+  background: #bf603d;
+  z-index: 0;
+}
+
+.loader-black-wipe {
+  position: absolute;
+  inset: -8% -14%;
+  background: #f8f0e3;
+  z-index: 1;
+  transform: translate3d(-118%, 0, 0) skewX(-16deg);
+  transform-origin: left center;
+  transition: none;
+  will-change: transform;
+}
+
+.loader-root.phase-2 .loader-black-wipe {
+  transform: translate3d(-4%, 0, 0) skewX(-16deg);
+  transition: transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.loader-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    opacity 220ms ease-out,
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.loader-root.phase-2 .loader-content {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0) scale(0.985);
+}
+
+.loader-mark {
+  width: clamp(168px, 18vw, 240px);
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+  image-rendering: -webkit-optimize-contrast;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.loader-dots {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+}
+
+.loader-dot {
+  width: 8px;
+  height: 8px;
+  background: #15110d;
+  border-radius: 0;
+  animation: dotPulse 800ms ease-in-out infinite both;
+  will-change: transform, opacity;
+}
+
+@keyframes dotPulse {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
