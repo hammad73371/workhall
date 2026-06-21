@@ -4,6 +4,7 @@ import { BookingConcierge } from './components/booking/BookingConcierge'
 import { FigmaFunctionalNav } from './components/layout/FigmaFunctionalNav'
 import PageLoader from './components/PageLoader'
 import { PlansScrollSection } from './components/PlansScrollSection'
+import PurposeHallsSection from './components/PurposeHallsSection'
 import Stack from './components/Stack'
 import { ClickSpark } from './components/shared/effects'
 import workhallOrange from './assets/workhall-orange.svg'
@@ -183,6 +184,8 @@ function App() {
         <AmenitiesMarquee />
 
         <PlansScrollSection />
+
+        <PurposeHallsSection />
       </main>
     </ClickSpark>
   )

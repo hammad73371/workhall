@@ -1,0 +1,392 @@
+import { useEffect, useMemo, useRef, useState } from 'react'
+import './PurposeHallsSection.css'
+
+const TRANSITION_MS = 1400
+const WHEEL_THRESHOLD = 5
+const SWIPE_THRESHOLD = 44
+const SCROLL_BUDGET = (4 - 1) * TRANSITION_MS
+const INDICATOR_SIZE = 16
+
+const steps = [
+  {
+    title: 'Meeting Rooms',
+    body: 'Bookable by the hour or day. Free for members, available to everyone',
+    image: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=85',
+    imagePosition: 'center center',
+  },
+  {
+    title: 'Studios',
+    body: 'Fully equipped spaces for production, presentations, and recordings',
+    image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85',
+    imagePosition: 'center center',
+  },
+  {
+    title: 'Weekend/Day Pass',
+    body: 'Full access to our shared spaces and all amenities any day of the week.',
+    image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=85',
+    imagePosition: 'center center',
+  },
+  {
+    title: 'Virtual Office',
+    body: 'Real business address, mail handling, meeting room access without a full-time desk',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=85',
+    imagePosition: 'center center',
+  },
+] as const
+
+type Direction = 1 | -1
+
+export default function PurposeHallsSection() {
+  const outerRef = useRef<HTMLElement>(null)
+  const listRef = useRef<HTMLDivElement>(null)
+  const titleRefs = useRef<Array<HTMLHeadingElement | null>>([])
+  const touchStartYRef = useRef<number | null>(null)
+  const animationTimeoutRef = useRef<number | null>(null)
+  const lastScrollYRef = useRef(0)
+  const boundaryReleasedRef = useRef(false)
+
+  const [currentStep, setCurrentStep] = useState(0)
+  const [previousStep, setPreviousStep] = useState(0)
+  const [direction, setDirection] = useState<Direction>(1)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [isEngaged, setIsEngaged] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const [indicatorY, setIndicatorY] = useState(0)
+
+  const currentStepRef = useRef(currentStep)
+  const isAnimatingRef = useRef(isAnimating)
+  const isEngagedRef = useRef(isEngaged)
+  const prefersReducedMotionRef = useRef(prefersReducedMotion)
+
+  useEffect(() => {
+    currentStepRef.current = currentStep
+  }, [currentStep])
+
+  useEffect(() => {
+    isAnimatingRef.current = isAnimating
+  }, [isAnimating])
+
+  useEffect(() => {
+    isEngagedRef.current = isEngaged
+  }, [isEngaged])
+
+  useEffect(() => {
+    prefersReducedMotionRef.current = prefersReducedMotion
+  }, [prefersReducedMotion])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches)
+
+    updatePreference()
+    mediaQuery.addEventListener('change', updatePreference)
+
+    return () => mediaQuery.removeEventListener('change', updatePreference)
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const updateIndicator = () => {
+      const listNode = listRef.current
+      const titleNode = titleRefs.current[currentStep]
+      if (!listNode || !titleNode) return
+
+      const listRect = listNode.getBoundingClientRect()
+      const titleRect = titleNode.getBoundingClientRect()
+      const nextY = titleRect.top - listRect.top + titleRect.height / 2 - INDICATOR_SIZE / 2
+      setIndicatorY(nextY)
+    }
+
+    updateIndicator()
+    window.addEventListener('resize', updateIndicator)
+
+    return () => window.removeEventListener('resize', updateIndicator)
+  }, [currentStep, prefersReducedMotion])
+
+  const clearAnimationTimeout = () => {
+    if (animationTimeoutRef.current !== null) {
+      window.clearTimeout(animationTimeoutRef.current)
+      animationTimeoutRef.current = null
+    }
+  }
+
+  const finishAnimation = (nextStep: number) => {
+    clearAnimationTimeout()
+    animationTimeoutRef.current = window.setTimeout(() => {
+      setIsAnimating(false)
+      setPreviousStep(nextStep)
+      animationTimeoutRef.current = null
+    }, TRANSITION_MS)
+  }
+
+  const releaseEngagement = () => {
+    boundaryReleasedRef.current = true
+    setIsEngaged(false)
+    touchStartYRef.current = null
+  }
+
+  const goToStep = (nextStep: number, nextDirection: Direction) => {
+    setDirection(nextDirection)
+    setPreviousStep(currentStepRef.current)
+    setCurrentStep(nextStep)
+    setIsAnimating(true)
+    finishAnimation(nextStep)
+  }
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      releaseEngagement()
+      clearAnimationTimeout()
+      setIsAnimating(false)
+      setCurrentStep(0)
+      setPreviousStep(0)
+      return
+    }
+
+    if (typeof window !== 'undefined') {
+      lastScrollYRef.current = window.scrollY
+    }
+
+    const handleScroll = () => {
+      const outer = outerRef.current
+      if (!outer || prefersReducedMotionRef.current) return
+
+      const rect = outer.getBoundingClientRect()
+      const isPinned = rect.top <= 0 && rect.bottom >= window.innerHeight
+      const currentScrollY = window.scrollY
+      const enteringFromAbove = currentScrollY >= lastScrollYRef.current
+
+      if (!isPinned) {
+        boundaryReleasedRef.current = false
+      }
+
+      if (isPinned && !isEngagedRef.current && !boundaryReleasedRef.current) {
+        const entryStep = enteringFromAbove ? 0 : steps.length - 1
+        setIsEngaged(true)
+        setCurrentStep(entryStep)
+        setPreviousStep(entryStep)
+        setDirection(enteringFromAbove ? 1 : -1)
+        clearAnimationTimeout()
+        setIsAnimating(false)
+      } else if (!isPinned && isEngagedRef.current && !isAnimatingRef.current) {
+        releaseEngagement()
+      }
+
+      lastScrollYRef.current = currentScrollY
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll)
+    handleScroll()
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
+    }
+  }, [prefersReducedMotion])
+
+  useEffect(() => {
+    if (!isEngaged || prefersReducedMotion) return
+
+    const onWheel = (event: WheelEvent) => {
+      if (!isEngagedRef.current) return
+
+      const delta = event.deltaY
+      const atFirstStep = currentStepRef.current === 0
+      const atLastStep = currentStepRef.current === steps.length - 1
+
+      if (isAnimatingRef.current) {
+        event.preventDefault()
+        return
+      }
+
+      if (delta > WHEEL_THRESHOLD && atLastStep) {
+        releaseEngagement()
+        return
+      }
+
+      if (delta < -WHEEL_THRESHOLD && atFirstStep) {
+        releaseEngagement()
+        return
+      }
+
+      event.preventDefault()
+
+      if (delta > WHEEL_THRESHOLD && !atLastStep) {
+        goToStep(currentStepRef.current + 1, 1)
+        return
+      }
+
+      if (delta < -WHEEL_THRESHOLD && !atFirstStep) {
+        goToStep(currentStepRef.current - 1, -1)
+      }
+    }
+
+    const onTouchStart = (event: TouchEvent) => {
+      touchStartYRef.current = event.touches[0]?.clientY ?? null
+    }
+
+    const onTouchMove = (event: TouchEvent) => {
+      if (!isEngagedRef.current) return
+
+      const startY = touchStartYRef.current
+      const currentY = event.touches[0]?.clientY
+
+      if (startY == null || currentY == null) return
+
+      const delta = startY - currentY
+      const atFirstStep = currentStepRef.current === 0
+      const atLastStep = currentStepRef.current === steps.length - 1
+
+      if (isAnimatingRef.current) {
+        event.preventDefault()
+        return
+      }
+
+      if (delta > SWIPE_THRESHOLD && atLastStep) {
+        touchStartYRef.current = null
+        releaseEngagement()
+        return
+      }
+
+      if (delta < -SWIPE_THRESHOLD && atFirstStep) {
+        touchStartYRef.current = null
+        releaseEngagement()
+        return
+      }
+
+      event.preventDefault()
+
+      if (delta > SWIPE_THRESHOLD && !atLastStep) {
+        touchStartYRef.current = null
+        goToStep(currentStepRef.current + 1, 1)
+        return
+      }
+
+      if (delta < -SWIPE_THRESHOLD && !atFirstStep) {
+        touchStartYRef.current = null
+        goToStep(currentStepRef.current - 1, -1)
+      }
+    }
+
+    const onTouchEnd = () => {
+      touchStartYRef.current = null
+    }
+
+    window.addEventListener('wheel', onWheel, { passive: false })
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchmove', onTouchMove, { passive: false })
+    window.addEventListener('touchend', onTouchEnd)
+
+    return () => {
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchmove', onTouchMove)
+      window.removeEventListener('touchend', onTouchEnd)
+    }
+  }, [isEngaged, prefersReducedMotion])
+
+  useEffect(() => () => clearAnimationTimeout(), [])
+
+  const visualState = useMemo(
+    () =>
+      steps.map((step, index) => ({
+        ...step,
+        isActive: prefersReducedMotion || index === currentStep,
+      })),
+    [currentStep, prefersReducedMotion]
+  )
+
+  const getSlideClassName = (index: number) => {
+    if (prefersReducedMotion) {
+      return 'ph-clean-frame-layer is-active'
+    }
+
+    if (isAnimating && index === previousStep && previousStep !== currentStep) {
+      return direction === 1
+        ? 'ph-clean-frame-layer is-exiting-forward'
+        : 'ph-clean-frame-layer is-exiting-backward'
+    }
+
+    if (index === currentStep) {
+      return isAnimating && previousStep !== currentStep
+        ? direction === 1
+          ? 'ph-clean-frame-layer is-entering-forward'
+          : 'ph-clean-frame-layer is-entering-backward'
+        : 'ph-clean-frame-layer is-active'
+    }
+
+    return index > currentStep ? 'ph-clean-frame-layer is-future' : 'ph-clean-frame-layer is-past'
+  }
+
+  return (
+    <section
+      ref={outerRef}
+      className={prefersReducedMotion ? 'ph-clean-section is-reduced-motion' : 'ph-clean-section'}
+      style={prefersReducedMotion ? undefined : { height: `calc(100vh + ${SCROLL_BUDGET}px)` }}
+      aria-labelledby="purpose-halls-title"
+    >
+      <div className="ph-clean-sticky">
+        <div className="ph-clean-sticky-content">
+          <header className="ph-clean-header">
+            <div className="ph-clean-kicker">
+              <span className="ph-clean-kicker-square" aria-hidden="true" />
+              <span>Purpose Halls</span>
+            </div>
+
+            <div className="ph-clean-heading" id="purpose-halls-title">
+              <span>and because work isn&apos;t</span>
+              <span className="is-accent">always just a desk:</span>
+            </div>
+          </header>
+
+          <div className="ph-clean-body">
+            <div ref={listRef} className="ph-clean-list-rail" aria-label="Purpose halls">
+              <span
+                className="ph-clean-indicator"
+                style={{ transform: `translateY(${indicatorY}px) rotate(${currentStep * 90}deg)` }}
+                aria-hidden="true"
+              />
+
+              <div className="ph-clean-list">
+                {visualState.map((step, index) => (
+                  <article
+                    key={step.title}
+                    className={step.isActive ? 'ph-clean-item is-active' : 'ph-clean-item'}
+                    aria-current={index === currentStep ? 'true' : undefined}
+                  >
+                    <div className="ph-clean-item-copy">
+                      <h3
+                        ref={(node) => {
+                          titleRefs.current[index] = node
+                        }}
+                      >
+                        {step.title}
+                      </h3>
+                      <p>{step.body}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="ph-clean-visual" aria-hidden="true">
+              <div className="ph-clean-frame">
+                {steps.map((step, index) => (
+                  <div key={step.title} className={getSlideClassName(index)}>
+                    <img src={step.image} alt="" style={{ objectPosition: step.imagePosition }} />
+                    <div className="ph-clean-frame-overlay" />
+                    <span>{step.title}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
