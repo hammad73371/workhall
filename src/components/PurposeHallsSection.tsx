@@ -6,6 +6,7 @@ const WHEEL_THRESHOLD = 5
 const SWIPE_THRESHOLD = 44
 const SCROLL_BUDGET = (4 - 1) * TRANSITION_MS
 const INDICATOR_SIZE = 16
+const DESKTOP_MEDIA_QUERY = '(min-width: 1025px)'
 
 const steps = [
   {
@@ -52,6 +53,9 @@ export default function PurposeHallsSection() {
   const [isEngaged, setIsEngaged] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [indicatorY, setIndicatorY] = useState(0)
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window === 'undefined' ? true : window.matchMedia(DESKTOP_MEDIA_QUERY).matches,
+  )
 
   const currentStepRef = useRef(currentStep)
   const isAnimatingRef = useRef(isAnimating)
@@ -84,6 +88,18 @@ export default function PurposeHallsSection() {
     mediaQuery.addEventListener('change', updatePreference)
 
     return () => mediaQuery.removeEventListener('change', updatePreference)
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const mediaQuery = window.matchMedia(DESKTOP_MEDIA_QUERY)
+    const updateDesktop = () => setIsDesktop(mediaQuery.matches)
+
+    updateDesktop()
+    mediaQuery.addEventListener('change', updateDesktop)
+
+    return () => mediaQuery.removeEventListener('change', updateDesktop)
   }, [])
 
   useEffect(() => {
@@ -137,7 +153,7 @@ export default function PurposeHallsSection() {
   }
 
   useEffect(() => {
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || !isDesktop) {
       releaseEngagement()
       clearAnimationTimeout()
       setIsAnimating(false)
@@ -152,7 +168,7 @@ export default function PurposeHallsSection() {
 
     const handleScroll = () => {
       const outer = outerRef.current
-      if (!outer || prefersReducedMotionRef.current) return
+      if (!outer || prefersReducedMotionRef.current || !isDesktop) return
 
       const rect = outer.getBoundingClientRect()
       const isPinned = rect.top <= 0 && rect.bottom >= window.innerHeight
@@ -186,10 +202,10 @@ export default function PurposeHallsSection() {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleScroll)
     }
-  }, [prefersReducedMotion])
+  }, [isDesktop, prefersReducedMotion])
 
   useEffect(() => {
-    if (!isEngaged || prefersReducedMotion) return
+    if (!isEngaged || prefersReducedMotion || !isDesktop) return
 
     const onWheel = (event: WheelEvent) => {
       if (!isEngagedRef.current) return
@@ -287,7 +303,7 @@ export default function PurposeHallsSection() {
       window.removeEventListener('touchmove', onTouchMove)
       window.removeEventListener('touchend', onTouchEnd)
     }
-  }, [isEngaged, prefersReducedMotion])
+  }, [isDesktop, isEngaged, prefersReducedMotion])
 
   useEffect(() => () => clearAnimationTimeout(), [])
 
@@ -295,9 +311,9 @@ export default function PurposeHallsSection() {
     () =>
       steps.map((step, index) => ({
         ...step,
-        isActive: prefersReducedMotion || index === currentStep,
+        isActive: !isDesktop || prefersReducedMotion || index === currentStep,
       })),
-    [currentStep, prefersReducedMotion]
+    [currentStep, isDesktop, prefersReducedMotion]
   )
 
   const getSlideClassName = (index: number) => {
@@ -322,13 +338,23 @@ export default function PurposeHallsSection() {
     return index > currentStep ? 'ph-clean-frame-layer is-future' : 'ph-clean-frame-layer is-past'
   }
 
+  const isStaticLayout = prefersReducedMotion || !isDesktop
+
   return (
     <section
       ref={outerRef}
-      className={prefersReducedMotion ? 'ph-clean-section is-reduced-motion' : 'ph-clean-section'}
-      style={prefersReducedMotion ? undefined : { height: `calc(100vh + ${SCROLL_BUDGET}px)` }}
+      className={isStaticLayout ? 'ph-clean-section is-reduced-motion is-mobile-static' : 'ph-clean-section'}
+      style={isStaticLayout ? undefined : { height: `calc(100vh + ${SCROLL_BUDGET}px)` }}
       aria-labelledby="purpose-halls-title"
     >
+      <svg className="ph-clean-filters" aria-hidden="true" focusable="false">
+        <defs>
+          <filter id="ph-clean-vertical-blur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="0 6" />
+          </filter>
+        </defs>
+      </svg>
+
       <div className="ph-clean-sticky">
         <div className="ph-clean-sticky-content">
           <header className="ph-clean-header">
@@ -345,11 +371,13 @@ export default function PurposeHallsSection() {
 
           <div className="ph-clean-body">
             <div ref={listRef} className="ph-clean-list-rail" aria-label="Purpose halls">
-              <span
-                className="ph-clean-indicator"
-                style={{ transform: `translateY(${indicatorY}px) rotate(${currentStep * 90}deg)` }}
-                aria-hidden="true"
-              />
+              {isDesktop && !prefersReducedMotion && (
+                <span
+                  className="ph-clean-indicator"
+                  style={{ transform: `translateY(${indicatorY}px) rotate(${currentStep * 90}deg)` }}
+                  aria-hidden="true"
+                />
+              )}
 
               <div className="ph-clean-list">
                 {visualState.map((step, index) => (
@@ -357,6 +385,7 @@ export default function PurposeHallsSection() {
                     key={step.title}
                     className={step.isActive ? 'ph-clean-item is-active' : 'ph-clean-item'}
                     aria-current={index === currentStep ? 'true' : undefined}
+                    onClick={isStaticLayout ? () => setCurrentStep(index) : undefined}
                   >
                     <div className="ph-clean-item-copy">
                       <h3
@@ -375,13 +404,21 @@ export default function PurposeHallsSection() {
 
             <div className="ph-clean-visual" aria-hidden="true">
               <div className="ph-clean-frame">
-                {steps.map((step, index) => (
-                  <div key={step.title} className={getSlideClassName(index)}>
-                    <img src={step.image} alt="" style={{ objectPosition: step.imagePosition }} />
+                {isStaticLayout ? (
+                  <div className="ph-clean-frame-layer is-active">
+                    <img src={steps[currentStep].image} alt="" style={{ objectPosition: steps[currentStep].imagePosition }} />
                     <div className="ph-clean-frame-overlay" />
-                    <span>{step.title}</span>
+                    <span>{steps[currentStep].title}</span>
                   </div>
-                ))}
+                ) : (
+                  steps.map((step, index) => (
+                    <div key={step.title} className={getSlideClassName(index)}>
+                      <img src={step.image} alt="" style={{ objectPosition: step.imagePosition }} />
+                      <div className="ph-clean-frame-overlay" />
+                      <span>{step.title}</span>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>

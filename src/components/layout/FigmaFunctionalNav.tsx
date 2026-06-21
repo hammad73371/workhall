@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { navGroups } from '../../data/siteContent'
 import type { NavFeature, NavGroup } from '../../types/site'
 import { ArrowIcon, NavGlyph } from '../shared/icons'
+import workhallOrange from '../../assets/workhall-orange.svg'
 
 type FigmaNavGroup = NavGroup & { visualLabel: string }
 
@@ -85,6 +86,7 @@ function FigmaFeatureCard({ feature, variant, onClick }: { feature: NavFeature; 
 
 export function FigmaFunctionalNav({ isLoaded }: { isLoaded: boolean }) {
   const [openGroupId, setOpenGroupId] = useState<string | null>(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const navRef = useRef<HTMLElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const triggerRefs = useRef<Record<string, HTMLButtonElement | null>>({})
@@ -101,7 +103,10 @@ export function FigmaFunctionalNav({ isLoaded }: { isLoaded: boolean }) {
     }
 
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpenGroupId(null)
+      if (event.key === 'Escape') {
+        setOpenGroupId(null)
+        setIsMobileMenuOpen(false)
+      }
     }
 
     document.addEventListener('pointerdown', handlePointerDown)
@@ -111,6 +116,17 @@ export function FigmaFunctionalNav({ isLoaded }: { isLoaded: boolean }) {
       document.removeEventListener('pointerdown', handlePointerDown)
       window.removeEventListener('keydown', handleEscape)
     }
+  }, [])
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1025) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   useLayoutEffect(() => {
@@ -129,6 +145,23 @@ export function FigmaFunctionalNav({ isLoaded }: { isLoaded: boolean }) {
 
   return (
     <header ref={navRef} className={isLoaded ? 'figma-nav-layer is-loaded' : 'figma-nav-layer'} aria-label="Main navigation">
+      <div className="figma-nav__mobile-bar">
+        <a href="#top" className="figma-nav__mobile-brand" aria-label="WorkHall home">
+          <img src={workhallOrange} alt="WorkHall" />
+        </a>
+        <button
+          type="button"
+          className={isMobileMenuOpen ? 'figma-nav__mobile-toggle is-open' : 'figma-nav__mobile-toggle'}
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="figma-mobile-nav"
+          onClick={() => setIsMobileMenuOpen((current) => !current)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </div>
+
       <nav className="figma-nav navbar" aria-label="Primary">
         {figmaNavGroups.map((group) => (
           <button
@@ -149,6 +182,69 @@ export function FigmaFunctionalNav({ isLoaded }: { isLoaded: boolean }) {
       <a href="#virtual-tour" className="figma-nav__tour virtual-tour-btn">
         Virtual Tour
       </a>
+
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            id="figma-mobile-nav"
+            className="figma-nav__mobile-menu"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+          >
+            <div className="figma-nav__mobile-list">
+              {figmaNavGroups.map((group) => (
+                <div key={group.id} className="figma-nav__mobile-group">
+                  <button
+                    type="button"
+                    className={openGroupId === group.id ? 'figma-nav__mobile-item is-open' : 'figma-nav__mobile-item'}
+                    aria-expanded={openGroupId === group.id}
+                    onClick={() => setOpenGroupId((current) => (current === group.id ? null : group.id))}
+                  >
+                    <span>{group.visualLabel}</span>
+                    <DownArrowBadge />
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {openGroupId === group.id && (
+                      <motion.div
+                        className="figma-nav__mobile-submenu"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
+                      >
+                        {[group.featured, ...group.items].slice(0, 6).map((item) => (
+                          <a
+                            key={`${group.id}-${item.title}`}
+                            href={item.href}
+                            className="figma-nav__mobile-link"
+                            onClick={() => {
+                              setIsMobileMenuOpen(false)
+                              setOpenGroupId(null)
+                            }}
+                          >
+                            <strong>{item.title}</strong>
+                            <small>{item.detail}</small>
+                          </a>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
+            </div>
+
+            <a
+              href="#virtual-tour"
+              className="figma-nav__mobile-tour"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Virtual Tour
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {activeGroup && (

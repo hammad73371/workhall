@@ -71,9 +71,25 @@ const cardGradients = [
   ].join(', '),
 ];
 
-const AmenityCard: React.FC<AmenityCardProps> = ({ name, kicker, heading, body, index }) => {
+const AmenityCard: React.FC<AmenityCardProps & {
+  isTouchMode: boolean;
+  isFlipped: boolean;
+  onToggle: () => void;
+}> = ({ name, kicker, heading, body, index, isTouchMode, isFlipped, onToggle }) => {
   return (
-    <div className="amenity-flip-wrapper">
+    <div
+      className={isFlipped ? 'amenity-flip-wrapper is-flipped' : 'amenity-flip-wrapper'}
+      onClick={isTouchMode ? onToggle : undefined}
+      role={isTouchMode ? 'button' : undefined}
+      aria-pressed={isTouchMode ? isFlipped : undefined}
+      tabIndex={isTouchMode ? 0 : -1}
+      onKeyDown={isTouchMode ? (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onToggle();
+        }
+      } : undefined}
+    >
       <div className="amenity-flip-inner">
         <div
           className="amenity-card-front"
@@ -93,18 +109,11 @@ const AmenityCard: React.FC<AmenityCardProps> = ({ name, kicker, heading, body, 
   );
 };
 
-const row1 = amenities.map((a, i) => <AmenityCard key={`r1-${i}`} index={i} {...a} />);
-const row2 = [...amenities].reverse().map((a, i) => (
-  <AmenityCard
-    key={`r2-${i}`}
-    index={amenities.length - 1 - i}
-    {...a}
-  />
-));
-
 const AmenitiesMarquee: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [isInView, setIsInView] = useState(true);
+  const [isTouchMode, setIsTouchMode] = useState(false);
+  const [flippedCardId, setFlippedCardId] = useState<string | null>(null);
 
   useEffect(() => {
     const node = sectionRef.current;
@@ -118,6 +127,57 @@ const AmenitiesMarquee: React.FC = () => {
     observer.observe(node);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const mediaQuery = window.matchMedia('(hover: none), (pointer: coarse)');
+    const updateTouchMode = () => {
+      setIsTouchMode(mediaQuery.matches);
+      if (!mediaQuery.matches) {
+        setFlippedCardId(null);
+      }
+    };
+
+    updateTouchMode();
+    mediaQuery.addEventListener('change', updateTouchMode);
+
+    return () => mediaQuery.removeEventListener('change', updateTouchMode);
+  }, []);
+
+  useEffect(() => {
+    if (!isTouchMode) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (!target?.closest('.amenity-flip-wrapper')) {
+        setFlippedCardId(null);
+      }
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    return () => document.removeEventListener('pointerdown', handlePointerDown);
+  }, [isTouchMode]);
+
+  const renderCard = (card: typeof amenities[number], index: number, rowKey: string) => {
+    const cardId = `${rowKey}-${index}-${card.heading}`;
+
+    return (
+      <AmenityCard
+        key={cardId}
+        index={index}
+        isTouchMode={isTouchMode}
+        isFlipped={flippedCardId === cardId}
+        onToggle={() => setFlippedCardId((current) => (current === cardId ? null : cardId))}
+        {...card}
+      />
+    );
+  };
+
+  const row1 = amenities.map((amenity, index) => renderCard(amenity, index, 'r1'));
+  const row2 = [...amenities].reverse().map((amenity, index) =>
+    renderCard(amenity, amenities.length - 1 - index, 'r2')
+  );
 
   return (
     <section ref={sectionRef} className="amenities-marquee-section">

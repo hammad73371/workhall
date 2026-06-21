@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
 const SCROLL_BUDGET = 1400
+const DESKTOP_MEDIA_QUERY = '(min-width: 1025px)'
+const MIN_SCROLL_BUDGET = 920
+const MAX_SCROLL_BUDGET = 1600
 
 interface PlanCardProps {
   categoryPath: string
@@ -174,18 +177,20 @@ function PlansGroup({
   title,
   cards,
   description,
+  mobile = false,
 }: {
   title: string
   cards: ReadonlyArray<PlanCardProps>
   description: string
+  mobile?: boolean
 }) {
   return (
-    <section className="plans-group">
+    <section className={mobile ? 'plans-group plans-group--mobile' : 'plans-group'}>
       <h3>{title}</h3>
 
-      <div className="cards-row">
+      <div className={mobile ? 'cards-row cards-row--mobile' : 'cards-row'}>
         {cards.map((card) => (
-          <div key={card.planName} className="card-slot">
+          <div key={card.planName} className={mobile ? 'card-slot card-slot--mobile' : 'card-slot'}>
             <PlanCard {...card} />
           </div>
         ))}
@@ -206,40 +211,133 @@ export function PlansScrollSection() {
   const outerRef = useRef<HTMLElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
   const [progress, setProgress] = useState(0)
+  const [scrollBudget, setScrollBudget] = useState(SCROLL_BUDGET)
+  const scrollBudgetRef = useRef(SCROLL_BUDGET)
+  const maxTranslateRef = useRef(0)
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window === 'undefined' ? true : window.matchMedia(DESKTOP_MEDIA_QUERY).matches,
+  )
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const mediaQuery = window.matchMedia(DESKTOP_MEDIA_QUERY)
+    const updateDesktop = () => setIsDesktop(mediaQuery.matches)
+
+    updateDesktop()
+    mediaQuery.addEventListener('change', updateDesktop)
+
+    return () => mediaQuery.removeEventListener('change', updateDesktop)
+  }, [])
+
+  useEffect(() => {
+    if (!isDesktop) {
+      setProgress(0)
+      setScrollBudget(SCROLL_BUDGET)
+      scrollBudgetRef.current = SCROLL_BUDGET
+      maxTranslateRef.current = 0
+      if (trackRef.current) {
+        trackRef.current.style.transform = 'translateX(0)'
+      }
+      return
+    }
+
+    const calculateTrackMetrics = () => {
+      const track = trackRef.current
+      if (!track) return
+
+      const viewportWidth = window.innerWidth
+      const leadingInset = 84
+      const trailingInset = Math.min(120, Math.max(56, viewportWidth * 0.05))
+      const nextMaxTranslate = Math.max(0, track.scrollWidth - viewportWidth + trailingInset - leadingInset)
+      maxTranslateRef.current = nextMaxTranslate
+
+      const nextBudget = nextMaxTranslate > 0
+        ? Math.min(MAX_SCROLL_BUDGET, Math.max(MIN_SCROLL_BUDGET, Math.round(nextMaxTranslate * 1.08)))
+        : 0
+
+      if (scrollBudgetRef.current !== nextBudget) {
+        scrollBudgetRef.current = nextBudget
+        setScrollBudget(nextBudget)
+      }
+    }
+
     const handleScroll = () => {
       const outer = outerRef.current
       const track = trackRef.current
       if (!outer || !track) return
 
+      if (scrollBudgetRef.current <= 0) {
+        track.style.transform = 'translateX(0)'
+        setProgress(0)
+        return
+      }
+
       const outerRect = outer.getBoundingClientRect()
       const scrolledIntoSection = -outerRect.top
-      const clampedScroll = Math.max(0, Math.min(SCROLL_BUDGET, scrolledIntoSection))
-      const nextProgress = clampedScroll / SCROLL_BUDGET
-      const trackWidth = track.scrollWidth
-      const viewportWidth = window.innerWidth
-      const maxTranslate = Math.max(0, trackWidth - viewportWidth + 160)
+      const clampedScroll = Math.max(0, Math.min(scrollBudgetRef.current, scrolledIntoSection))
+      const nextProgress = clampedScroll / scrollBudgetRef.current
 
-      track.style.transform = `translateX(-${nextProgress * maxTranslate}px)`
+      track.style.transform = `translateX(-${nextProgress * maxTranslateRef.current}px)`
       setProgress(nextProgress)
     }
 
+    calculateTrackMetrics()
     window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', calculateTrackMetrics)
     window.addEventListener('resize', handleScroll)
     handleScroll()
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', calculateTrackMetrics)
       window.removeEventListener('resize', handleScroll)
     }
-  }, [])
+  }, [isDesktop])
+
+  if (!isDesktop) {
+    return (
+      <section className="plans-scroll-section plans-scroll-section--mobile" aria-labelledby="plans-title">
+        <div className="plans-header plans-header--mobile">
+          <div className="plans-header__kicker">
+            <span className="plans-header__square" aria-hidden="true" />
+            <span>Plans</span>
+          </div>
+
+          <div className="plans-header__heading" id="plans-title">
+            <span>Because We&apos;ve Got A Space</span>
+            <span className="is-accent">Every Way You Work</span>
+          </div>
+
+          <p>
+            Whether you&apos;re a freelancer who needs a desk or an enterprise that needs the whole floor
+            - there&apos;s a plan that fits exactly how you build.
+          </p>
+        </div>
+
+        <div className="plans-mobile-groups">
+          <PlansGroup
+            title="FOR INDIVIDUALS"
+            cards={individualCards}
+            description="Flexible coworking, assigned desks, and virtual setup for people who need a reliable everyday base without committing to more room than the day needs."
+            mobile
+          />
+          <PlansGroup
+            title="FOR TEAM"
+            cards={teamCards}
+            description="Private offices, enterprise setups, and tailored room to grow for teams that need more privacy, more structure, and a base that can scale with them."
+            mobile
+          />
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section
       ref={outerRef}
       className="plans-scroll-section"
-      style={{ height: `calc(100vh + ${SCROLL_BUDGET}px)` }}
+      style={{ height: `calc(100vh + ${scrollBudget}px)` }}
       aria-labelledby="plans-title"
     >
       <div className="plans-scroll-section__sticky">

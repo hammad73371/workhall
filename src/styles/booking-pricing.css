@@ -1314,4 +1314,93 @@
   white-space: pre;
 }
 
+@media (max-width: 1024px) {
+  .booking-console {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .booking-action-row {
+    min-width: 0;
+    width: 100%;
+    flex-direction: row;
+  }
+
+  .booking-action-row .primary-cta,
+  .booking-action-row .ghost-cta {
+    flex: 1 1 0;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .booking-console,
+  .booking-console--hero {
+    padding: 14px;
+  }
+
+  .booking-fields,
+  .booking-console--hero .booking-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-field,
+  .booking-console--hero .booking-field {
+    min-height: 64px;
+  }
+
+  .booking-action-row,
+  .booking-console--hero .booking-action-row {
+    flex-direction: column;
+  }
+
+  .booking-action-row .primary-cta,
+  .booking-action-row .ghost-cta,
+  .booking-console--hero .primary-cta,
+  .booking-console--hero .ghost-cta {
+    width: 100%;
+  }
+
+  .booking-popover__panel,
+  .booking-popover--seats .booking-popover__panel,
+  .booking-popover--plan .booking-popover__panel {
+    width: min(calc(100vw - 24px), 560px);
+  }
+
+  .panel-grid,
+  .plan-list,
+  .plan-list--popover,
+  .enquiry-form,
+  .pricing-modal__details {
+    grid-template-columns: 1fr;
+  }
+
+  .seat-control {
+    grid-template-columns: 48px minmax(72px, 1fr) 48px;
+  }
+}
+
+@media (max-width: 640px) {
+  .enquiry-modal {
+    padding: 12px;
+  }
+
+  .enquiry-modal__card {
+    border-radius: 20px;
+  }
+
+  .enquiry-form__actions {
+    flex-direction: column;
+  }
+
+  .enquiry-form__actions .primary-cta,
+  .enquiry-form__actions .ghost-cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 
