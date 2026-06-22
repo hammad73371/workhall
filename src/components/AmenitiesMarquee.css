@@ -49,8 +49,11 @@
 /* -- Flip card wrapper -- */
 .amenity-flip-wrapper {
   flex-shrink: 0;
-  width: clamp(240px, 32vw, 520px);
-  height: clamp(170px, 17vw, 270px);
+  /* width: clamp(240px, 32vw, 520px);
+  height: clamp(170px, 17vw, 270px); */
+
+  width: clamp(240px, 32vw, 420px);
+  height: clamp(170px, 17vw, 170px);
   perspective: 2200px;
   cursor: pointer;
 }
@@ -94,10 +97,10 @@
 
 /* -- FRONT face - bento card style -- */
 .amenity-card-front {
-  --amenity-accent: #c97b5a;
+  /* --amenity-accent: #c97b5a;
   --amenity-glow-a: rgba(217, 107, 67, 0.24);
   --amenity-glow-b: rgba(214, 170, 58, 0.18);
-  --amenity-glow-c: rgba(255, 250, 240, 0.76);
+  --amenity-glow-c: rgba(255, 250, 240, 0.76); */
   position: relative;
   isolation: isolate;
   display: flex;
@@ -105,9 +108,10 @@
   justify-content: center;
   align-items: center;
   padding: 24px 28px;
-  border: 1px solid color-mix(in srgb, var(--amenity-accent) 34%, rgba(84, 55, 29, 0.16));
+  /* border: 1px solid
+    color-mix(in srgb, var(--amenity-accent) 34%, rgba(84, 55, 29, 0.16)); */
   background-clip: padding-box;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  /* box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78); */
   backdrop-filter: blur(12px);
   transform: rotateY(0deg) translateZ(0.01px);
 }
@@ -116,7 +120,7 @@
 .amenity-card-front::after {
   position: absolute;
   border-radius: 999px;
-  content: '';
+  content: "";
   pointer-events: none;
   filter: blur(34px);
   opacity: 0.85;
@@ -145,7 +149,7 @@
 
 /* Gradient bloom - coral/pink top-left corner */
 .amenity-card-name {
-  font-family: 'Futura PT', 'Jost', sans-serif;
+  font-family: "Futura PT", "Jost", sans-serif;
   font-size: clamp(28px, 3.8vw, 60px);
   font-weight: 900;
   line-height: 1;
@@ -162,44 +166,65 @@
 /* -- BACK face - orange brand color -- */
 .amenity-card-back {
   transform: rotateY(180deg) translateZ(0.01px);
-  background:
-    radial-gradient(ellipse at 20% 30%, rgba(255, 180, 120, 0.5) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 80%, rgba(180, 80, 40, 0.3) 0%, transparent 50%),
-    #c97b5a;
-  border: 1px solid rgba(255, 236, 225, 0.26);
-  box-shadow: inset 0 1px 0 rgba(255, 232, 214, 0.34);
+  /* background:
+    radial-gradient(
+      ellipse at 20% 30%,
+      rgba(255, 180, 120, 0.5) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 80% 80%,
+      rgba(180, 80, 40, 0.3) 0%,
+      transparent 50%
+    ),
+    #c97b5a; */
+  /* background: green; */
+  /* border: 1px solid rgba(255, 236, 225, 0.26); */
+  /* box-shadow: inset 0 1px 0 rgba(255, 232, 214, 0.34); */
   backdrop-filter: blur(12px);
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
+  flex-direction: row;
+  align-items: center;
+  /* gap: 20px; */
+  gap: clamp(10px, 1vw, 20px);
+
   justify-content: space-between;
   padding: 24px 28px;
-  gap: 0;
+  /* padding: 20px 20px; */
+
+  /* gap: 0; */
 }
 
 .amenity-card-back::before,
 .amenity-card-back::after {
   position: absolute;
   border-radius: 999px;
-  content: '';
+  content: "";
   pointer-events: none;
   filter: blur(38px);
   opacity: 0.82;
 }
 
 .amenity-card-back::before {
-  top: -12%;
+  /* top: -12%;
   left: -4%;
   width: 220px;
   height: 220px;
-  background: radial-gradient(circle, rgba(255, 193, 133, 0.42), transparent 68%);
+
+  background: radial-gradient(
+    circle,
+    rgba(255, 193, 133, 0.42),
+    transparent 68%
+  ); */
 }
 
 .amenity-card-back::after {
-  right: -10%;
+  /* right: -10%;
   bottom: -24%;
   width: 240px;
   height: 240px;
-  background: radial-gradient(circle, rgba(159, 67, 34, 0.28), transparent 66%);
+  background: radial-gradient(circle, rgba(159, 67, 34, 0.28), transparent 66%); */
 }
 
 .amenity-card-back__logo {
@@ -208,7 +233,7 @@
   pointer-events: none;
   z-index: 0;
   opacity: 0.08;
-  background-image: url('../assets/workhall-black.svg');
+  background-image: url("../assets/workhall-black.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 92% auto;
@@ -216,7 +241,7 @@
 }
 
 .amenity-back-kicker {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -227,12 +252,13 @@
 }
 
 .amenity-back-heading {
-  font-family: 'Futura PT', 'Jost', sans-serif;
+  font-family: "Futura PT", "Jost", sans-serif;
   font-size: clamp(18px, 2vw, 28px);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  /* color: #ffffff; */
+  color: #000000;
   white-space: pre-line;
   flex: 1;
   display: flex;
@@ -242,7 +268,7 @@
 }
 
 .amenity-back-body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: clamp(12px, 1vw, 14px);
   font-weight: 400;
   line-height: 1.6;
@@ -250,6 +276,17 @@
   position: relative;
   z-index: 1;
   white-space: normal;
+}
+
+.amenity-empty-box {
+  background: #393737;
+  /* width: 85px;
+  height: 85px; */
+  width: clamp(40px, 6vw, 75px);
+  height: clamp(40px, 6vw, 75px);
+  /* border-radius: 15px;
+   */
+  border-radius: clamp(8px, 1vw, 15px);
 }
 
 @media (hover: none), (pointer: coarse) {
