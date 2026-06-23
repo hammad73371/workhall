@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import './PurposeHallsSection.css'
 
-const TRANSITION_MS = 1400
+const TRANSITION_MS = 700
 const WHEEL_THRESHOLD = 5
 const SWIPE_THRESHOLD = 44
 const SCROLL_BUDGET = (4 - 1) * TRANSITION_MS

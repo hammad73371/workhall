@@ -10,7 +10,7 @@
   position: relative;
   width: 100%;
   background: #f8f0e3;
-  --ph-motion-duration: 1400ms;
+  --ph-motion-duration: 700ms;
   --ph-motion-ease: cubic-bezier(0.65, 0, 0.35, 1);
   --ph-shell-width: min(1680px, calc(100vw - clamp(96px, 8vw, 160px)));
   --ph-shell-gap: clamp(56px, 5vw, 112px);
