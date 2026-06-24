@@ -129,8 +129,6 @@
 
 .community-grid-wrap {
   position: relative;
-  /* new */
-  height: 200vh;
   margin-top: clamp(64px, 5vw, 84px);
   padding-bottom: clamp(128px, 10vw, 190px);
 }
@@ -152,10 +150,7 @@
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: clamp(12px, 0.9vw, 20px);
   /* new */
-  position: sticky;
-  top: 5rem;
-  height: 100vh;
-  z-index: 1;
+  position: relative;
 }
 
 .community-tile {
@@ -291,6 +286,12 @@
   pointer-events: none;
 }
 
+@media (hover: none) {
+  .community-cta-row {
+    top: 78.8%;
+  }
+}
+
 .community-cta {
   pointer-events: auto;
   display: inline-flex;
@@ -337,6 +338,20 @@
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .community-grid {
+    position: sticky;
+    top: 5rem;
+    height: 100vh;
+    z-index: 1;
+  }
+
+  .community-grid-wrap {
+    /* new */
+    height: 200vh;
+  }
 }
 
 @media (max-width: 1024px) {

@@ -11,8 +11,6 @@
   overflow: hidden;
   border-radius: 24px 24px 0 0;
   z-index: 1;
-  /* new */
-  margin-top: -100vh;
 }
 
 .wh-bg {
@@ -74,6 +72,13 @@
 
 .wh-title span {
   display: block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wh-card {
+    /* new */
+    margin-top: -100vh;
+  }
 }
 
 @media (max-width: 1024px) {
