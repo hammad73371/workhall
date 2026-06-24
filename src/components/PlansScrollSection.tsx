@@ -1,21 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import Card from "./Card/Card";
+import type { CarouselImage } from "../types";
 
-const SCROLL_BUDGET = 1400;
+const SCROLL_BUDGET = 2400;
 const DESKTOP_MEDIA_QUERY = "(min-width: 1025px)";
 const MIN_SCROLL_BUDGET = 920;
-const MAX_SCROLL_BUDGET = 1600;
 
 interface PlanCardProps {
-  categoryPath: string;
-  price: string;
-  overline: string;
   planName: string;
-  tagline: string;
-  attributes: { label: string; fill: number }[];
-  primaryCTA: string;
-  secondaryCTA: string;
-  locked?: boolean;
+  title: string;
+  description: string;
+  tags: string[];
+  learnMoreUrl: string;
+  images: CarouselImage[];
 }
 
 // const individualCards: PlanCardProps[] = [
@@ -268,15 +265,6 @@ const teamCards: PlanCardProps[] = [
   },
 ];
 
-function ArrowLaunchIcon() {
-  return (
-    <svg viewBox="0 0 12 12" aria-hidden="true">
-      <path d="M2 10 10 2" />
-      <path d="M4 2h6v6" />
-    </svg>
-  );
-}
-
 // function PlanCard({
 //   categoryPath,
 //   price,
@@ -339,17 +327,20 @@ function ArrowLaunchIcon() {
 function PlansGroup({
   title,
   cards,
-  description,
+  description: _description,
   mobile = false,
+  opacity,
 }: {
   title: string;
   cards: ReadonlyArray<PlanCardProps>;
   description: string;
   mobile?: boolean;
+  opacity?: number;
 }) {
   return (
     <section
       className={mobile ? "plans-group plans-group--mobile" : "plans-group"}
+      style={opacity !== undefined ? { opacity, transition: "opacity 0.3s ease" } : undefined}
     >
       <h3>{title}</h3>
 
@@ -418,20 +409,15 @@ export function PlansScrollSection() {
       if (!track) return;
 
       const viewportWidth = window.innerWidth;
-      const leadingInset = 84;
-      const trailingInset = Math.min(120, Math.max(56, viewportWidth * 0.05));
       const nextMaxTranslate = Math.max(
         0,
-        track.scrollWidth - viewportWidth + trailingInset - leadingInset,
+        track.scrollWidth - viewportWidth + 300,
       );
       maxTranslateRef.current = nextMaxTranslate;
 
       const nextBudget =
         nextMaxTranslate > 0
-          ? Math.min(
-              MAX_SCROLL_BUDGET,
-              Math.max(MIN_SCROLL_BUDGET, Math.round(nextMaxTranslate * 1.08)),
-            )
+          ? Math.max(MIN_SCROLL_BUDGET, Math.round(nextMaxTranslate * 1.15))
           : 0;
 
       if (scrollBudgetRef.current !== nextBudget) {
@@ -550,6 +536,7 @@ export function PlansScrollSection() {
               title="FOR INDIVIDUALS"
               cards={individualCards}
               description="Flexible coworking, assigned desks, and virtual setup for people who need a reliable everyday base without committing to more room than the day needs."
+              opacity={1 - 0.7 * progress}
             />
 
             <div className="group-divider" aria-hidden="true" />
@@ -558,6 +545,7 @@ export function PlansScrollSection() {
               title="FOR TEAM"
               cards={teamCards}
               description="Private offices, enterprise setups, and tailored room to grow for teams that need more privacy, more structure, and a base that can scale with them."
+              opacity={0.3 + 0.7 * progress}
             />
           </div>
         </div>

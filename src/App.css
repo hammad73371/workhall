@@ -1329,7 +1329,7 @@ img {
   width: 1px;
   background: rgba(34, 32, 19, 0.2);
   align-self: stretch;
-  margin: 0;
+  margin: 0 80px;
   flex-shrink: 0;
 }
 
@@ -1378,8 +1378,8 @@ img {
 }
 
 .figma-hero__image-card {
-  width: 100%;
   height: calc(100vh - 18vh);
+  aspect-ratio: 3 / 4;
   min-height: 600px;
   overflow: visible;
   border-radius: 48px;
@@ -1387,6 +1387,7 @@ img {
   padding: 0;
   position: relative;
   z-index: 3;
+  margin-left: 50px;
 }
 
 .figma-hero__image-card img {
@@ -1746,6 +1747,7 @@ img {
   }
 
   .figma-hero__image-card {
+    aspect-ratio: 3 / 4;
     height: calc(100vh - 19vh);
     min-height: 480px;
     border-radius: 36px;
@@ -1963,6 +1965,7 @@ img {
     order: 2;
     width: 100%;
     height: clamp(420px, 56vw, 620px);
+    aspect-ratio: auto;
     min-height: 0;
     border-radius: 32px;
     overflow: hidden;
@@ -2195,6 +2198,7 @@ img {
     order: 2;
     height: clamp(420px, 62vw, 680px);
     min-height: clamp(420px, 62vw, 680px);
+    aspect-ratio: auto;
     border-radius: 32px;
   }
 

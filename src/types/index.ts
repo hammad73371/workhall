@@ -5,18 +5,12 @@ export interface CarouselImage {
 
 export type PanelTheme = "stone" | "cream";
 
-// export interface MembershipCard {
-//   id: string;
-
-//   title: string;
-
-//   description: string;
-
-//   tags: string[];
-
-//   images: CarouselImage[];
-
-//   learnMoreUrl: string;
-
-//   panelTheme: PanelTheme;
-// }
+export interface MembershipCard {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  images: CarouselImage[];
+  learnMoreUrl: string;
+  panelTheme: PanelTheme;
+}

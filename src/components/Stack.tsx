@@ -128,8 +128,8 @@ export default function Stack({
       {stack.map((card, index) => {
         const randomRotate = randomRotation ? Math.random() * 6 - 3 : 0
         const depth = stack.length - index - 1
-        const xOffset = -depth * 10
-        const yOffset = depth * 8
+        const xOffset = -depth * 14
+        const yOffset = depth * 12
 
         return (
           <CardRotate
@@ -144,7 +144,7 @@ export default function Stack({
               animate={{
                 x: xOffset,
                 y: yOffset,
-                rotateZ: (stack.length - index - 1) * 4 + randomRotate,
+                rotateZ: (stack.length - index - 1) * 5 + randomRotate,
                 scale: 1 + index * 0.06 - stack.length * 0.06,
                 transformOrigin: '50% 55%',
               }}

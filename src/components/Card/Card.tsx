@@ -1,4 +1,5 @@
 import Carousel from "../Carousel/Carousel";
+import type { CarouselImage } from "../../types";
 import "./Card.css";
 
 interface CardProps {

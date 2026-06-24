@@ -13,7 +13,11 @@ interface AmenityCardProps {
   index: number;
   name: string;
   kicker: string;
+  heading1: string;
   heading: string;
+  bg: string;
+  iconBg: string;
+  icon: React.ReactNode;
   body: string;
 }
 
@@ -136,34 +140,6 @@ const amenities = [
   },
 ];
 
-const cardGradients = [
-  [
-    "radial-gradient(ellipse at 15% 20%, rgba(210, 108, 70, 0.42) 0%, transparent 60%)",
-    "radial-gradient(ellipse at 82% 18%, rgba(236, 198, 108, 0.22) 0%, transparent 54%)",
-    "linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(244, 234, 220, 0.82))",
-  ].join(", "),
-  [
-    "radial-gradient(ellipse at 84% 16%, rgba(196, 152, 60, 0.38) 0%, transparent 56%)",
-    "radial-gradient(ellipse at 18% 76%, rgba(219, 143, 96, 0.18) 0%, transparent 60%)",
-    "linear-gradient(145deg, rgba(248, 241, 229, 0.96), rgba(235, 225, 212, 0.84))",
-  ].join(", "),
-  [
-    "radial-gradient(ellipse at 12% 80%, rgba(195, 130, 120, 0.34) 0%, transparent 58%)",
-    "radial-gradient(ellipse at 76% 20%, rgba(245, 210, 170, 0.16) 0%, transparent 58%)",
-    "linear-gradient(135deg, rgba(247, 238, 228, 0.95), rgba(239, 230, 220, 0.86))",
-  ].join(", "),
-  [
-    "radial-gradient(ellipse at 78% 58%, rgba(120, 155, 110, 0.26) 0%, transparent 60%)",
-    "radial-gradient(ellipse at 14% 18%, rgba(232, 167, 124, 0.22) 0%, transparent 56%)",
-    "linear-gradient(145deg, rgba(245, 237, 227, 0.96), rgba(232, 226, 214, 0.86))",
-  ].join(", "),
-  [
-    "radial-gradient(ellipse at 50% 10%, rgba(185, 100, 75, 0.40) 0%, transparent 54%)",
-    "radial-gradient(ellipse at 82% 78%, rgba(214, 170, 58, 0.18) 0%, transparent 56%)",
-    "linear-gradient(135deg, rgba(246, 238, 229, 0.95), rgba(236, 228, 217, 0.86))",
-  ].join(", "),
-];
-
 // const backgrounds: Record<string, string> = {
 //   "#D26C46": "#B85A38",
 //   "#E0A5CF": "#C984B5",
@@ -187,7 +163,6 @@ const AmenityCard: React.FC<
     onToggle: () => void;
   }
 > = ({
-  name,
   kicker,
   heading1,
   heading,
@@ -195,7 +170,6 @@ const AmenityCard: React.FC<
   iconBg,
   body,
   icon,
-  index,
   isTouchMode,
   isFlipped,
   onToggle,
