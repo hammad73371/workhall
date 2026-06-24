@@ -361,8 +361,7 @@ const AmenitiesMarquee: React.FC = () => {
       <ScrollVelocity
         texts={[row1, row2]}
         velocity={80}
-        // paused={!isInView}
-        paused={true}
+        paused={!isInView}
         className="amenity-row"
         numCopies={12}
         parallaxClassName="amenity-parallax"
