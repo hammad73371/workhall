@@ -1,8 +1,13 @@
-import './WhyWorkHallSection.css'
-
-export default function WhyWorkHallSection() {
+import "./WhyWorkHallSection.css";
+import { forwardRef } from "react";
+// export default function WhyWorkHallSection() {
+const WhyWorkHallSection = forwardRef<HTMLElement>((props, ref) => {
   return (
-    <section className="wh-outer" aria-labelledby="why-workhall-title">
+    <section
+      ref={ref}
+      className="wh-outer"
+      aria-labelledby="why-workhall-title"
+    >
       <div className="wh-card">
         <img className="wh-bg" src="/whyworkhall.png" alt="" />
 
@@ -20,5 +25,7 @@ export default function WhyWorkHallSection() {
         </div>
       </div>
     </section>
-  )
-}
+  );
+});
+
+export default WhyWorkHallSection;

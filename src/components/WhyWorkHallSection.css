@@ -11,6 +11,8 @@
   overflow: hidden;
   border-radius: 24px 24px 0 0;
   z-index: 1;
+  /* new */
+  margin-top: -100vh;
 }
 
 .wh-bg {
@@ -44,7 +46,7 @@
   gap: 7px;
   margin-bottom: 22px;
   color: #ffffff;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 1;
@@ -62,7 +64,7 @@
   gap: 6px;
   margin: 0;
   color: #ffffff;
-  font-family: 'Futura PT', 'Futura-Book', 'Jost', sans-serif;
+  font-family: "Futura PT", "Futura-Book", "Jost", sans-serif;
   font-size: clamp(36px, 4vw, 56px);
   font-weight: 400;
   line-height: 1.15;
