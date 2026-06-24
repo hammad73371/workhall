@@ -315,10 +315,11 @@ export default function CommunitySection({ targetRef }: CommunityProps) {
             {tiles.map((tile, index) => {
               const order = revealOrder[index];
 
-              const tileDelay = (order / (total - 1)) * 0.22;
+              const tileDelay = (order / (total - 1)) * 0.6;
+              const fadeDistance = 0.08;
 
               const opacity = useTransform(scrollYProgress, (latest) => {
-                const progress = (latest - tileDelay) / 0.25;
+                const progress = (latest - tileDelay) / fadeDistance;
 
                 return 1 - Math.min(Math.max(progress, 0), 1);
               });
