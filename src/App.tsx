@@ -12,6 +12,7 @@ import { ClickSpark } from "./components/shared/effects";
 import workhallOrange from "./assets/workhall-orange.svg";
 import "./App.css";
 import { useRef } from "react";
+import { PageTransition } from "./components/PageTransition";
 const stats = [
   { value: "06", label: "Location", color: "#458E71" },
   { value: "07+", label: "Years", color: "#D26C46" },
@@ -117,132 +118,141 @@ function App() {
   }, [loaderDone]);
 
   if (!loaderDone) {
-    return <PageLoader onComplete={() => setLoaderDone(true)} />;
+    // return <PageLoader onComplete={() => setLoaderDone(true)} />;
+    // return setLoaderDone(true);
   }
 
   return (
-    <ClickSpark
-      sparkColor="#c97b5a"
-      sparkSize={14}
-      sparkRadius={22}
-      sparkCount={10}
-      duration={480}
-    >
-      <main
-        className={
-          isLoaded
-            ? "figma-page-shell hero-page is-loaded"
-            : "figma-page-shell hero-page"
-        }
+    <>
+      <ClickSpark
+        sparkColor="#c97b5a"
+        sparkSize={14}
+        sparkRadius={22}
+        sparkCount={10}
+        duration={480}
       >
-        <a className="hero-brand-mark" href="#top" aria-label="WorkHall home">
-          <img src={workhallOrange} alt="WorkHall" />
-        </a>
+        <PageTransition onComplete={() => setLoaderDone(true)}>
+          <main
+            className={
+              isLoaded
+                ? "figma-page-shell hero-page is-loaded"
+                : "figma-page-shell hero-page"
+            }
+          >
+            <a
+              className="hero-brand-mark"
+              href="#top"
+              aria-label="WorkHall home"
+            >
+              <img src={workhallOrange} alt="WorkHall" />
+            </a>
 
-        <FigmaFunctionalNav isLoaded={isLoaded} />
-
-        <section
-          className="figma-hero figma-hero--clipped"
-          aria-labelledby="hero-title"
-        >
-          <div className="figma-hero__left-column">
-            <article className="figma-hero__copy-card hero-left-card">
-              <div className="figma-hero__headline-block headline-block">
-                <div className="word-row">
-                  {["Re-Think", "Your"].map((word, index) => (
-                    <div className="word-mask" key={word}>
-                      <span
-                        className="word-rise"
-                        style={{ animationDelay: `${620 + index * 130}ms` }}
-                      >
-                        {word}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <div className="word-row orange-line">
-                  <div className="word-mask">
-                    <span
-                      className="word-rise"
-                      style={{ animationDelay: "880ms" }}
-                    >
-                      Workspace.
-                    </span>
-                  </div>
-                </div>
-                <h1 id="hero-title">
-                  <span>Re-Think Your</span>
-                  <em>Workspace.</em>
-                </h1>
-              </div>
-
-              <p className="figma-hero__lede hero-subheading">
-                With Pakistan&apos;s most flexible coworking spaces, open 24/7,
-                across 6 locations. All built for the way you actually work, not
-                the way an office thinks you should.
-              </p>
-
-              <div
-                className="figma-search-card booking-widget"
-                aria-label="Workspace search"
-              >
-                <BookingConcierge variant="hero" />
-              </div>
-            </article>
+            <FigmaFunctionalNav isLoaded={isLoaded} />
 
             <section
-              className="figma-stats-card stats-bar"
-              aria-label="WorkHall stats"
+              className="figma-hero figma-hero--clipped"
+              aria-labelledby="hero-title"
             >
-              {stats.map((stat, index) => (
-                <div key={stat.label} className="figma-stat">
-                  <strong style={{ color: stat.color }}>
-                    {statDisplays[index]}
-                  </strong>
-                  <span style={{ color: stat.color }}>{stat.label}</span>
-                </div>
-              ))}
-            </section>
-          </div>
+              <div className="figma-hero__left-column">
+                <article className="figma-hero__copy-card hero-left-card">
+                  <div className="figma-hero__headline-block headline-block">
+                    <div className="word-row">
+                      {["Re-Think", "Your"].map((word, index) => (
+                        <div className="word-mask" key={word}>
+                          <span
+                            className="word-rise"
+                            style={{ animationDelay: `${620 + index * 130}ms` }}
+                          >
+                            {word}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="word-row orange-line">
+                      <div className="word-mask">
+                        <span
+                          className="word-rise"
+                          style={{ animationDelay: "880ms" }}
+                        >
+                          Workspace.
+                        </span>
+                      </div>
+                    </div>
+                    <h1 id="hero-title">
+                      <span>Re-Think Your</span>
+                      <em>Workspace.</em>
+                    </h1>
+                  </div>
 
-          <aside
-            className="figma-hero__image-card hero-image-card"
-            aria-label="Workspace preview image"
-          >
-            <div className="hero-stack-shell">
-              <Stack
-                randomRotation={false}
-                sensitivity={280}
-                sendToBackOnClick
-                autoplay
-                autoplayDelay={3600}
-                pauseOnHover
-                mobileClickOnly
-                cards={heroCards.map((card) => (
-                  <img
-                    key={`${card.src}-${card.position}`}
-                    src={card.src}
-                    alt={card.alt}
-                    className="stack-card-media"
-                    style={{ objectPosition: card.position }}
+                  <p className="figma-hero__lede hero-subheading">
+                    With Pakistan&apos;s most flexible coworking spaces, open
+                    24/7, across 6 locations. All built for the way you actually
+                    work, not the way an office thinks you should.
+                  </p>
+
+                  <div
+                    className="figma-search-card booking-widget"
+                    aria-label="Workspace search"
+                  >
+                    <BookingConcierge variant="hero" />
+                  </div>
+                </article>
+
+                <section
+                  className="figma-stats-card stats-bar"
+                  aria-label="WorkHall stats"
+                >
+                  {stats.map((stat, index) => (
+                    <div key={stat.label} className="figma-stat">
+                      <strong style={{ color: stat.color }}>
+                        {statDisplays[index]}
+                      </strong>
+                      <span style={{ color: stat.color }}>{stat.label}</span>
+                    </div>
+                  ))}
+                </section>
+              </div>
+
+              <aside
+                className="figma-hero__image-card hero-image-card"
+                aria-label="Workspace preview image"
+              >
+                <div className="hero-stack-shell">
+                  <Stack
+                    randomRotation={false}
+                    sensitivity={280}
+                    sendToBackOnClick
+                    autoplay
+                    autoplayDelay={3600}
+                    pauseOnHover
+                    mobileClickOnly
+                    cards={heroCards.map((card) => (
+                      <img
+                        key={`${card.src}-${card.position}`}
+                        src={card.src}
+                        alt={card.alt}
+                        className="stack-card-media"
+                        style={{ objectPosition: card.position }}
+                      />
+                    ))}
                   />
-                ))}
-              />
-            </div>
-          </aside>
-        </section>
+                </div>
+              </aside>
+            </section>
 
-        <AmenitiesMarquee />
+            <AmenitiesMarquee />
 
-        <PlansScrollSection />
+            <PlansScrollSection />
 
-        <PurposeHallsSection />
+            <PurposeHallsSection />
 
-        <CommunitySection targetRef={whyWorkHallRef} />
+            <CommunitySection targetRef={whyWorkHallRef} />
 
-        <WhyWorkHallSection ref={whyWorkHallRef} />
-      </main>
-    </ClickSpark>
+            <WhyWorkHallSection ref={whyWorkHallRef} />
+          </main>
+        </PageTransition>
+      </ClickSpark>
+    </>
   );
 }
 
