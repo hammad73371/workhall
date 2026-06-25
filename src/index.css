@@ -14,7 +14,8 @@
   width: 100vw;
   position: absolute;
   z-index: 999999;
-  background: #f8f0e3;
+  /* background: #f8f0e3; */
+  background: #000;
 }
 
 @media (min-width: 375px) and (max-width: 1023px) {
@@ -100,7 +101,8 @@
 
 .frame-blackout {
   position: fixed;
-  background: #000;
+  /* background: #000; */
+  background: #f8f0e3;
   opacity: 0;
   pointer-events: none;
   z-index: 2;
