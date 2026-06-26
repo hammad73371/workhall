@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import adobeLogo from "../assets/community/adobe.svg";
 import anthropicLogo from "../assets/community/anthropic.svg";
 import dropboxLogo from "../assets/community/dropbox.svg";
@@ -15,10 +15,8 @@ import "./RotatingText.css";
 import "./CommunitySection.css";
 import {
   motion,
-  useInView,
   useScroll,
   useTransform,
-  useMotionValueEvent,
 } from "framer-motion";
 
 type CommunityTile =
@@ -272,7 +270,7 @@ export default function CommunitySection({ targetRef }: CommunityProps) {
   });
 
   const revealOrder = [
-    3, 8, 1, 10, 5, 0, 11, 7, 2, 9, 4, 6, 12, 17, 13, 15, 14, 16,
+    18, 15, 17, 16, 13, 12, 7, 13, 1, 10, 16, 4, 2, 11, 8, 14, 17, 5,
   ];
 
   const total = revealOrder.length;
@@ -315,9 +313,9 @@ export default function CommunitySection({ targetRef }: CommunityProps) {
             {tiles.map((tile, index) => {
               const order = revealOrder[index];
 
-              const tileDelay = (order / (total - 1)) * 0.6;
-              const fadeDistance = 0.08;
-
+              const tileDelay = (order / (total - 1)) * 0.5;
+              const fadeDistance = 0.1;
+              
               const opacity = useTransform(scrollYProgress, (latest) => {
                 const progress = (latest - tileDelay) / fadeDistance;
 

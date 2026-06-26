@@ -9,6 +9,7 @@ export function PageTransition({
   onComplete,
 }: {
   children: React.ReactNode;
+  onComplete: () => void;
 }) {
   const location = useLocation();
   const [revealed, setRevealed] = useState(false);
