@@ -33,10 +33,10 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   className = '',
   itemDistance = 100,
   itemScale = 0.03,
-  itemStackDistance = 30,
+  itemStackDistance = 420,
   stackPosition = '20%',
   scaleEndPosition = '10%',
-  baseScale = 0.85,
+  baseScale = 1,
   scaleDuration = 0.5,
   rotationAmount = 0,
   blurAmount = 0,
@@ -50,7 +50,6 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   const cardsRef = useRef<HTMLElement[]>([]);
   const lastTransformsRef = useRef(new Map<number, any>());
   const isUpdatingRef = useRef(false);
-  const offsetsRef = useRef<Map<HTMLElement, number>>(new Map());
 
   const calculateProgress = useCallback((scrollTop: number, start: number, end: number) => {
     if (scrollTop < start) return 0;
@@ -85,7 +84,11 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   const getElementOffset = useCallback(
     (element: HTMLElement) => {
       if (useWindowScroll) {
-        return offsetsRef.current.get(element) ?? 0;
+        const prev = element.style.transform;
+        element.style.transform = 'none';
+        const top = element.getBoundingClientRect().top + window.scrollY;
+        element.style.transform = prev;
+        return top;
       } else {
         return element.offsetTop;
       }
@@ -237,7 +240,6 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       animationFrameRef.current = requestAnimationFrame(raf);
 
       lenisRef.current = lenis;
-      return lenis;
     }
   }, [handleScroll, useWindowScroll]);
 
@@ -253,7 +255,6 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
 
     cardsRef.current = cards;
     const transformsCache = lastTransformsRef.current;
-    const offsets = new Map<HTMLElement, number>();
 
     cards.forEach((card, i) => {
       if (i < cards.length - 1) {
@@ -266,21 +267,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       card.style.webkitTransform = 'translateZ(0)';
       card.style.perspective = '1000px';
       card.style.webkitPerspective = '1000px';
-
-      if (useWindowScroll) {
-        const rect = card.getBoundingClientRect();
-        offsets.set(card, rect.top + window.scrollY);
-      }
     });
-
-    if (useWindowScroll) {
-      const endEl = scroller.querySelector('.scroll-stack-end') as HTMLElement;
-      if (endEl) {
-        const rect = endEl.getBoundingClientRect();
-        offsets.set(endEl, rect.top + window.scrollY);
-      }
-      offsetsRef.current = offsets;
-    }
 
     setupLenis();
 

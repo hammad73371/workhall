@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import adobeLogo from "../assets/community/adobe.svg";
 import anthropicLogo from "../assets/community/anthropic.svg";
 import dropboxLogo from "../assets/community/dropbox.svg";
@@ -15,8 +15,10 @@ import "./RotatingText.css";
 import "./CommunitySection.css";
 import {
   motion,
+  useInView,
   useScroll,
   useTransform,
+  useMotionValueEvent,
 } from "framer-motion";
 
 type CommunityTile =

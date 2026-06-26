@@ -1,7 +1,7 @@
 import "./WhyWorkHallSection.css";
 import { forwardRef } from "react";
 // export default function WhyWorkHallSection() {
-const WhyWorkHallSection = forwardRef<HTMLElement>((_props, ref) => {
+const WhyWorkHallSection = forwardRef<HTMLElement>((props, ref) => {
   return (
     <section
       ref={ref}

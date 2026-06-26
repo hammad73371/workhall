@@ -9,7 +9,7 @@ export function PageTransition({
   onComplete,
 }: {
   children: React.ReactNode;
-  onComplete: () => void;
+  onComplete?: () => void;
 }) {
   const location = useLocation();
   const [revealed, setRevealed] = useState(false);
@@ -25,7 +25,7 @@ export function PageTransition({
           <FrameAnimation
             key={location.pathname}
             onRevealNext={() => setRevealed(true)}
-            onComplete={() => onComplete()}
+            onComplete={() => onComplete?.()}
           />
         )}
       </AnimatePresence>
