@@ -24,18 +24,31 @@ export function formatDistance(distance: number | null) {
 }
 
 export function buildGuideRoute(from: [number, number], to: [number, number]) {
-  const [fromLng, fromLat] = from
-  const [toLng, toLat] = to
-  const midLng = (fromLng + toLng) / 2
-  const midLat = (fromLat + toLat) / 2
-  const arcLat = midLat + (Math.abs(toLng - fromLng) * 0.18 + 0.03)
-
-  return [
-    from,
-    [midLng - 0.05, arcLat],
-    [midLng + 0.03, arcLat - 0.02],
-    to,
+  const [fromLongitude, fromLatitude] = from
+  const [toLongitude, toLatitude] = to
+  const longitudeDelta = toLongitude - fromLongitude
+  const latitudeDelta = toLatitude - fromLatitude
+  const midpoint: [number, number] = [
+    fromLongitude + longitudeDelta * 0.52 - latitudeDelta * 0.08,
+    fromLatitude + latitudeDelta * 0.52 + longitudeDelta * 0.08,
   ]
+  const route: [number, number][] = []
+
+  for (let index = 0; index <= 36; index += 1) {
+    const progress = index / 36
+    const inverse = 1 - progress
+
+    route.push([
+      inverse * inverse * fromLongitude +
+        2 * inverse * progress * midpoint[0] +
+        progress * progress * toLongitude,
+      inverse * inverse * fromLatitude +
+        2 * inverse * progress * midpoint[1] +
+        progress * progress * toLatitude,
+    ])
+  }
+
+  return route
 }
 
 export function createRouteData(userCoordinates: UserCoordinates, location: WorkHallLocation) {

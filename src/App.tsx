@@ -3,6 +3,7 @@ import AmenitiesMarquee from "./components/AmenitiesMarquee";
 import { BookingConcierge } from "./components/booking/BookingConcierge";
 import CommunitySection from "./components/CommunitySection";
 import { FigmaFunctionalNav } from "./components/layout/FigmaFunctionalNav";
+import { LocationsMapSection } from "./components/locations/LocationsMapSection";
 import PageLoader from "./components/PageLoader";
 import { PlansScrollSection } from "./components/PlansScrollSection";
 import PurposeHallsSection from "./components/PurposeHallsSection";
@@ -387,6 +388,8 @@ function App() {
             </section>
 
             <PromiseSection />
+
+            <LocationsMapSection />
           </main>
         </PageTransition>
       </ClickSpark>

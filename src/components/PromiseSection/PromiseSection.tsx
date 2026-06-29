@@ -7,7 +7,7 @@ const DIM_OPACITY = 0.3;
 const FULL_OPACITY = 1;
 
 function PromiseSection() {
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,

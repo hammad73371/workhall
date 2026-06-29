@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500&family=DM+Sans:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&family=Jost:wght@400&display=swap');
+@import './styles/foundation.css';
 @import './styles/booking-pricing.css';
+@import './styles/story-location.css';
 /* Breakpoints: mobile <= 640px, tablet 641px - 1024px, desktop >= 1025px */
 
 :root {
