@@ -21,6 +21,7 @@ import workhallOrange from "./assets/workhall-orange.svg";
 import "./App.css";
 import { useRef } from "react";
 import { PageTransition } from "./components/PageTransition";
+import PromiseSection from "./components/PromiseSection/PromiseSection";
 const stats = [
   { value: "06", label: "Location", color: "#458E71" },
   { value: "07+", label: "Years", color: "#D26C46" },
@@ -258,15 +259,26 @@ function App() {
 
             <WhyWorkHallSection ref={whyWorkHallRef} />
 
-            <section className="amenities-stack-section" aria-labelledby="amenities-stack-title">
+            <section
+              className="amenities-stack-section"
+              aria-labelledby="amenities-stack-title"
+            >
               <div className="amenities-stack-header">
                 <div className="amenities-stack-kicker">
-                  <span className="amenities-stack-kicker__square" aria-hidden="true" />
+                  <span
+                    className="amenities-stack-kicker__square"
+                    aria-hidden="true"
+                  />
                   <span>Amenities</span>
                 </div>
-                <h2 id="amenities-stack-title" className="amenities-stack-title">
+                <h2
+                  id="amenities-stack-title"
+                  className="amenities-stack-title"
+                >
                   <span>Because we give you</span>
-                  <span className="amenities-stack-title__accent">everything</span>
+                  <span className="amenities-stack-title__accent">
+                    everything
+                  </span>
                   <span>you need</span>
                 </h2>
               </div>
@@ -286,9 +298,17 @@ function App() {
                     <ShieldCheck size={28} color="#FFFFFF" />
                   </div>
                   <div className="ss-card__copy">
-                    <span className="ss-card__kicker">Always open when work spills over</span>
-                    <span className="ss-card__name">Open 24/7, 365 Days With Full Access</span>
-                    <p className="ss-card__body">Early starts, late decks, weekend catch-ups, and off-pattern schedules still land in a room that is already ready.</p>
+                    <span className="ss-card__kicker">
+                      Always open when work spills over
+                    </span>
+                    <span className="ss-card__name">
+                      Open 24/7, 365 Days With Full Access
+                    </span>
+                    <p className="ss-card__body">
+                      Early starts, late decks, weekend catch-ups, and
+                      off-pattern schedules still land in a room that is already
+                      ready.
+                    </p>
                   </div>
                   <span className="ss-card__number">01</span>
                 </ScrollStackItem>
@@ -299,8 +319,13 @@ function App() {
                   </div>
                   <div className="ss-card__copy">
                     <span className="ss-card__kicker">Arrival, handled</span>
-                    <span className="ss-card__name">Free Gated Parking At All Locations</span>
-                    <p className="ss-card__body">No circling the block before the workday starts. Drive in, lock up, and move straight into the room.</p>
+                    <span className="ss-card__name">
+                      Free Gated Parking At All Locations
+                    </span>
+                    <p className="ss-card__body">
+                      No circling the block before the workday starts. Drive in,
+                      lock up, and move straight into the room.
+                    </p>
                   </div>
                   <span className="ss-card__number">02</span>
                 </ScrollStackItem>
@@ -310,9 +335,17 @@ function App() {
                     <LayoutTemplate size={28} color="#FFFFFF" />
                   </div>
                   <div className="ss-card__copy">
-                    <span className="ss-card__kicker">Quiet help, without the interruption</span>
-                    <span className="ss-card__name">Staff Service At Your Desk</span>
-                    <p className="ss-card__body">The small operational asks do not have to break concentration. Support can reach you where you are already working.</p>
+                    <span className="ss-card__kicker">
+                      Quiet help, without the interruption
+                    </span>
+                    <span className="ss-card__name">
+                      Staff Service At Your Desk
+                    </span>
+                    <p className="ss-card__body">
+                      The small operational asks do not have to break
+                      concentration. Support can reach you where you are already
+                      working.
+                    </p>
                   </div>
                   <span className="ss-card__number">03</span>
                 </ScrollStackItem>
@@ -322,9 +355,14 @@ function App() {
                     <HandHelping size={28} color="#FFFFFF" />
                   </div>
                   <div className="ss-card__copy">
-                    <span className="ss-card__kicker">Built around how you work</span>
+                    <span className="ss-card__kicker">
+                      Built around how you work
+                    </span>
                     <span className="ss-card__name">Custom Office Layouts</span>
-                    <p className="ss-card__body">Rooms can be shaped around the team, storage, privacy level, and the tempo of the work itself.</p>
+                    <p className="ss-card__body">
+                      Rooms can be shaped around the team, storage, privacy
+                      level, and the tempo of the work itself.
+                    </p>
                   </div>
                   <span className="ss-card__number">04</span>
                 </ScrollStackItem>
@@ -335,13 +373,20 @@ function App() {
                   </div>
                   <div className="ss-card__copy">
                     <span className="ss-card__kicker">One less errand</span>
-                    <span className="ss-card__name">Car &amp; Bike Cleaning On Site</span>
-                    <p className="ss-card__body">One more errand stays off the to-do list while the workday keeps moving.</p>
+                    <span className="ss-card__name">
+                      Car &amp; Bike Cleaning On Site
+                    </span>
+                    <p className="ss-card__body">
+                      One more errand stays off the to-do list while the workday
+                      keeps moving.
+                    </p>
                   </div>
                   <span className="ss-card__number">05</span>
                 </ScrollStackItem>
               </ScrollStack>
             </section>
+
+            <PromiseSection />
           </main>
         </PageTransition>
       </ClickSpark>
