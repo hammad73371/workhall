@@ -15,6 +15,22 @@ interface PlanCardProps {
   images: CarouselImage[];
 }
 
+const PLANS_MIN_OPACITY = 0.18;
+const PLANS_MAX_OPACITY = 1;
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function getGroupOpacity(progress: number, focusPoint: number) {
+  const distance = Math.abs(progress - focusPoint);
+  const fadeSpan = 0.5;
+  const normalized = clamp(1 - distance / fadeSpan, 0, 1);
+  const eased = normalized * normalized * (3 - 2 * normalized);
+
+  return PLANS_MIN_OPACITY + (PLANS_MAX_OPACITY - PLANS_MIN_OPACITY) * eased;
+}
+
 // const individualCards: PlanCardProps[] = [
 //   {
 //     categoryPath: "INDIVIDUALS PATH",
@@ -265,6 +281,75 @@ const teamCards: PlanCardProps[] = [
   },
 ];
 
+const enterpriseCards: PlanCardProps[] = [
+  {
+    planName: "Core",
+    title: "Core",
+    description:
+      "Placeholder enterprise offer for larger organizations that need a managed private footprint, cleaner access control, and room to scale across teams.",
+    tags: ["Multi-floor Teams", "HQ Ops", "Security Needs", "Admin Support"],
+    learnMoreUrl: "#enterprise-core",
+    images: [
+      {
+        src: "https://picsum.photos/seed/enterprise-core-1/900/700",
+        alt: "Enterprise workspace placeholder one",
+      },
+      {
+        src: "https://picsum.photos/seed/enterprise-core-2/900/700",
+        alt: "Enterprise workspace placeholder two",
+      },
+      {
+        src: "https://picsum.photos/seed/enterprise-core-3/900/700",
+        alt: "Enterprise workspace placeholder three",
+      },
+    ],
+  },
+  {
+    planName: "Campus",
+    title: "Campus",
+    description:
+      "Placeholder enterprise suite designed for distributed departments that need connected rooms, breakout zones, and an operations-first setup.",
+    tags: ["Departments", "Breakout Rooms", "Managed Access", "Custom Fit"],
+    learnMoreUrl: "#enterprise-campus",
+    images: [
+      {
+        src: "https://picsum.photos/seed/enterprise-campus-1/900/700",
+        alt: "Enterprise campus placeholder one",
+      },
+      {
+        src: "https://picsum.photos/seed/enterprise-campus-2/900/700",
+        alt: "Enterprise campus placeholder two",
+      },
+      {
+        src: "https://picsum.photos/seed/enterprise-campus-3/900/700",
+        alt: "Enterprise campus placeholder three",
+      },
+    ],
+  },
+  {
+    planName: "Custom",
+    title: "Custom",
+    description:
+      "Placeholder enterprise build for brands that need tailored layouts, long-term planning, and a fully bespoke workplace environment.",
+    tags: ["Bespoke Layouts", "Branding", "Long-term Scale", "Executive Teams"],
+    learnMoreUrl: "#enterprise-custom",
+    images: [
+      {
+        src: "https://picsum.photos/seed/enterprise-custom-1/900/700",
+        alt: "Enterprise custom placeholder one",
+      },
+      {
+        src: "https://picsum.photos/seed/enterprise-custom-2/900/700",
+        alt: "Enterprise custom placeholder two",
+      },
+      {
+        src: "https://picsum.photos/seed/enterprise-custom-3/900/700",
+        alt: "Enterprise custom placeholder three",
+      },
+    ],
+  },
+];
+
 // function PlanCard({
 //   categoryPath,
 //   price,
@@ -349,7 +434,6 @@ function PlansGroup({
           <div
             key={card.planName}
             className={mobile ? "card-slot card-slot--mobile" : "card-slot"}
-            style={{ overflow: "hidden" }}
           >
             <Card {...card} />
           </div>
@@ -488,21 +572,31 @@ export function PlansScrollSection() {
 
         <div className="plans-mobile-groups">
           <PlansGroup
-            title="FOR INDIVIDUALS"
+            title="Individuals"
             cards={individualCards}
             description="Flexible coworking, assigned desks, and virtual setup for people who need a reliable everyday base without committing to more room than the day needs."
             mobile
           />
           <PlansGroup
-            title="FOR TEAM"
+            title="Teams"
             cards={teamCards}
             description="Private offices, enterprise setups, and tailored room to grow for teams that need more privacy, more structure, and a base that can scale with them."
+            mobile
+          />
+          <PlansGroup
+            title="Enterprises"
+            cards={enterpriseCards}
+            description="Placeholder enterprise offers for larger organizations that need scale, private infrastructure, and bespoke operational setups."
             mobile
           />
         </div>
       </section>
     );
   }
+
+  const individualsOpacity = getGroupOpacity(progress, 0);
+  const teamsOpacity = getGroupOpacity(progress, 0.5);
+  const enterprisesOpacity = getGroupOpacity(progress, 1);
 
   return (
     <section
@@ -533,19 +627,28 @@ export function PlansScrollSection() {
         <div className="plans-track-zone">
           <div ref={trackRef} className="plans-track">
             <PlansGroup
-              title="FOR INDIVIDUALS"
+              title="Individuals"
               cards={individualCards}
               description="Flexible coworking, assigned desks, and virtual setup for people who need a reliable everyday base without committing to more room than the day needs."
-              opacity={1 - 0.7 * progress}
+              opacity={individualsOpacity}
             />
 
             <div className="group-divider" aria-hidden="true" />
 
             <PlansGroup
-              title="FOR TEAM"
+              title="Teams"
               cards={teamCards}
               description="Private offices, enterprise setups, and tailored room to grow for teams that need more privacy, more structure, and a base that can scale with them."
-              opacity={0.3 + 0.7 * progress}
+              opacity={teamsOpacity}
+            />
+
+            <div className="group-divider" aria-hidden="true" />
+
+            <PlansGroup
+              title="Enterprises"
+              cards={enterpriseCards}
+              description="Placeholder enterprise offers for larger organizations that need scale, private infrastructure, and bespoke operational setups."
+              opacity={enterprisesOpacity}
             />
           </div>
         </div>
@@ -559,3 +662,4 @@ export function PlansScrollSection() {
     </section>
   );
 }
+

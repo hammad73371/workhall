@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UserBenchmark — Reports Library V2 · VITALS Design</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root {
+    --canvas: #060810;
+    --s1: #0b0f1c;
+    --s2: #111623;
+    --s3: #181e2e;
+    --border: rgba(255,255,255,0.06);
+    --border-md: rgba(255,255,255,0.11);
+    --t1: #eef0ff;
+    --t2: #8891b8;
+    --t3: #454d6b;
+    --t4: #252d47;
+    --cyan: #00c8f0;
+    --cyan2: #00a8cc;
+    --violet: #7c3aed;
+    --violet2: #a78bfa;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --green: #10b981;
+  }
+
+  html,body{
+    background: var(--canvas);
+    color: var(--t1);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .mono{ font-family: 'JetBrains Mono', monospace; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top:0; z-index:100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 58px;
+    background: rgba(6,8,16,0.80);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-l{ display:flex; align-items:center; gap:12px; }
+  .logomark{
+    width:30px; height:30px;
+    background: linear-gradient(135deg, rgba(0,200,240,0.2), rgba(124,58,237,0.2));
+    border: 1px solid rgba(0,200,240,0.3);
+    border-radius: 9px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .logomark-dot{ width:11px; height:11px; background:var(--cyan); border-radius:3px; }
+  .nav-brand{ font-size:14px; font-weight:800; color:var(--t1); letter-spacing:-0.03em; }
+  .nav-sep{ color:var(--t4); font-size:18px; line-height:1; }
+  .nav-page{ font-size:12px; color:var(--t3); font-weight:500; }
+  .badge-runs{
+    font-size:10px; font-weight:700; letter-spacing:0.06em;
+    font-family:'JetBrains Mono',monospace;
+    background: linear-gradient(135deg, rgba(0,200,240,0.12), rgba(124,58,237,0.1));
+    color:var(--cyan); padding:4px 13px; border-radius:20px;
+    border:1px solid rgba(0,200,240,0.22);
+  }
+  .btn-cta{
+    font-size:13px; font-weight:700;
+    background: linear-gradient(135deg, var(--cyan), var(--cyan2));
+    color:#060810; padding:9px 20px; border-radius:10px;
+    cursor:pointer; border:none; letter-spacing:-0.01em;
+    box-shadow: 0 0 20px rgba(0,200,240,0.2);
+    transition: box-shadow 0.2s, transform 0.1s;
+  }
+  .btn-cta:hover{ box-shadow:0 0 28px rgba(0,200,240,0.3); transform:translateY(-1px); }
+
+  /* ── PAGE ── */
+  .page{ max-width:1240px; margin:0 auto; padding:0 40px 100px; }
+
+  /* ── ZONE DIVIDER ── */
+  .zone{ padding:40px 0; border-bottom:1px solid var(--border); }
+  .zone:last-child{ border-bottom:none; }
+  .zone-label{
+    font-size:9px; font-weight:700; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--t4);
+    font-family:'JetBrains Mono',monospace; margin-bottom:20px;
+  }
+
+  /* ── CARD BASE ── */
+  .card{
+    background: var(--s1); border-radius:16px;
+    border:1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5), 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  /* ── HERO ── */
+  .hero-grid{
+    display:grid; grid-template-columns:1fr 240px 1fr;
+    gap:36px; align-items:center; margin-bottom:28px;
+  }
+
+  /* LEFT */
+  .machine-id-label{
+    font-size:9px; font-weight:700; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--t4);
+    font-family:'JetBrains Mono',monospace; margin-bottom:12px;
+  }
+  .machine-cpu{ font-size:18px; font-weight:700; color:var(--t1); letter-spacing:-0.02em; line-height:1.2; }
+  .machine-gpu{ font-size:13px; color:var(--t3); font-weight:500; margin-top:5px; }
+  .machine-ts{
+    font-size:10px; font-family:'JetBrains Mono',monospace;
+    color:var(--t4); margin-top:16px; letter-spacing:0.03em;
+  }
+  .grade-hist{ display:flex; align-items:center; gap:5px; margin-top:16px; }
+  .gh-pill{
+    font-size:10px; font-weight:800; font-family:'JetBrains Mono',monospace;
+    padding:3px 10px; border-radius:20px;
+    transition: opacity 0.2s;
+  }
+  .gh-label{ font-size:9px; color:var(--t4); margin-left:3px; letter-spacing:0.02em; }
+
+  /* CENTER */
+  .score-col{
+    text-align:center;
+    position:relative;
+  }
+  .score-glow{
+    position:absolute; top:50%; left:50%;
+    transform:translate(-50%,-60%);
+    width:160px; height:160px;
+    background: radial-gradient(ellipse at center, rgba(0,200,240,0.12) 0%, transparent 70%);
+    pointer-events:none;
+    border-radius:50%;
+  }
+  .score-lbl{
+    font-size:9px; font-weight:700; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--t4);
+    font-family:'JetBrains Mono',monospace; margin-bottom:8px;
+  }
+  .score-num{
+    font-size:108px; font-weight:800;
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:-0.07em; line-height:0.87;
+    background: linear-gradient(135deg, #00c8f0 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position:relative; z-index:1;
+  }
+  .grade-seal{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:58px; height:58px; border-radius:50%; margin-top:18px;
+    background: linear-gradient(135deg, rgba(0,200,240,0.15), rgba(124,58,237,0.12));
+    border:2px solid rgba(0,200,240,0.35);
+    box-shadow: 0 0 20px rgba(0,200,240,0.12), inset 0 1px 0 rgba(255,255,255,0.06);
+    position:relative; z-index:1;
+  }
+  .grade-letter{ font-size:24px; font-weight:900; color:var(--cyan); }
+  .traj{
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    margin-top:12px; position:relative; z-index:1;
+  }
+  .traj-txt{ font-size:12px; font-weight:600; color:var(--green); letter-spacing:0.03em; }
+
+  /* RIGHT */
+  .trend-stack{ display:flex; flex-direction:column; gap:7px; }
+  .trend-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:12px 18px; background:var(--s2);
+    border-radius:12px; border:1px solid var(--border);
+    box-shadow:0 2px 8px rgba(0,0,0,0.25);
+  }
+  .tr-lbl{ font-size:11px; color:var(--t3); }
+  .tr-val{ font-size:14px; font-weight:700; font-family:'JetBrains Mono',monospace; letter-spacing:-0.01em; }
+
+  /* DIAGNOSIS */
+  .diag{
+    padding:18px 22px; border-radius:13px;
+    background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(245,158,11,0.03));
+    border:1px solid rgba(245,158,11,0.2);
+    border-left:3px solid var(--amber);
+    font-size:13.5px; color:var(--t2); line-height:1.7;
+    margin-bottom:18px;
+    box-shadow: 0 0 24px rgba(245,158,11,0.04);
+  }
+  .ha{ color:var(--amber); font-family:'JetBrains Mono',monospace; font-weight:700; }
+  .hw{ color:var(--t1); font-family:'JetBrains Mono',monospace; font-weight:600; }
+  .hg{ color:var(--green); font-family:'JetBrains Mono',monospace; font-weight:600; }
+  .hr{ color:var(--red); font-family:'JetBrains Mono',monospace; font-weight:600; }
+  .hc{ color:var(--cyan); font-family:'JetBrains Mono',monospace; font-weight:600; }
+
+  /* QUICK ACTIONS */
+  .qa-row{ display:flex; gap:8px; flex-wrap:wrap; }
+  .qa-btn{
+    font-size:12px; font-weight:500; color:var(--t2);
+    padding:9px 18px; border-radius:10px;
+    border:1px solid rgba(255,255,255,0.09);
+    background:var(--s2);
+    cursor:pointer; display:flex; align-items:center; gap:7px;
+    transition:all 0.15s;
+    box-shadow:0 1px 4px rgba(0,0,0,0.3);
+  }
+  .qa-btn:hover{ border-color:rgba(0,200,240,0.3); color:var(--cyan); background:rgba(0,200,240,0.05); }
+
+  /* ── VITAL SIGNS ── */
+  .vitals-grid{
+    display:grid; grid-template-columns:repeat(4, minmax(0,1fr));
+    gap:10px;
+  }
+  .vchip{
+    padding:15px 16px; border-radius:13px;
+    border:1px solid var(--border); background:var(--s2);
+    box-shadow:0 2px 8px rgba(0,0,0,0.25);
+    transition: transform 0.15s;
+  }
+  .vchip:hover{ transform:translateY(-1px); }
+  .vchip.warn{
+    background: linear-gradient(135deg, rgba(245,158,11,0.09), rgba(245,158,11,0.04));
+    border:1px solid rgba(245,158,11,0.24);
+    box-shadow:0 0 20px rgba(245,158,11,0.06), 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .vchip.crit{
+    background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.04));
+    border:1px solid rgba(239,68,68,0.25);
+    box-shadow:0 0 20px rgba(239,68,68,0.07), 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .vchip.acti{
+    background: linear-gradient(135deg, rgba(0,200,240,0.1), rgba(124,58,237,0.06));
+    border:1px solid rgba(0,200,240,0.22);
+    box-shadow:0 0 20px rgba(0,200,240,0.07), 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .vn{
+    font-size:9px; font-weight:700; letter-spacing:0.11em;
+    text-transform:uppercase; font-family:'JetBrains Mono',monospace;
+    color:var(--t4); margin-bottom:8px;
+  }
+  .vchip.warn .vn{ color:rgba(245,158,11,0.7); }
+  .vchip.crit .vn{ color:rgba(239,68,68,0.7); }
+  .vchip.acti .vn{ color:rgba(0,200,240,0.7); }
+  .vv{
+    font-size:30px; font-weight:700;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--t1); line-height:1; letter-spacing:-0.03em;
+  }
+  .vchip.warn .vv{ color:var(--amber); }
+  .vchip.crit .vv{ color:var(--red); }
+  .vchip.acti .vv{
+    font-size:16px; font-weight:700;
+    background: linear-gradient(135deg, var(--cyan), var(--violet2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    background-clip:text;
+    margin-top:5px; line-height:1.3;
+  }
+  .vd{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:9px; font-size:10px;
+  }
+
+  /* ── BOTTLENECK ── */
+  .bn-wrap{
+    display:grid; grid-template-columns:170px 1fr;
+    border-radius:16px; overflow:hidden;
+    background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(245,158,11,0.03));
+    border:1px solid rgba(245,158,11,0.22);
+    box-shadow:0 0 40px rgba(245,158,11,0.06), 0 4px 24px rgba(0,0,0,0.4);
+  }
+  .bn-l{
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding:32px 20px;
+    border-right:1px solid rgba(245,158,11,0.12);
+    background: linear-gradient(180deg, rgba(245,158,11,0.05), transparent);
+  }
+  .bn-metric-lbl{
+    font-size:9px; font-weight:700; letter-spacing:0.14em;
+    text-transform:uppercase; color:rgba(245,158,11,0.55);
+    font-family:'JetBrains Mono',monospace; text-align:center; margin-bottom:10px;
+  }
+  .bn-val{
+    font-size:52px; font-weight:900; color:var(--amber);
+    font-family:'JetBrains Mono',monospace; line-height:1; letter-spacing:-0.04em;
+  }
+  .bn-val sup{ font-size:24px; font-weight:700; vertical-align:super; }
+  .bn-sev{
+    margin-top:14px; font-size:9px; font-weight:800;
+    color:rgba(245,158,11,0.6); letter-spacing:0.14em;
+    text-transform:uppercase; font-family:'JetBrains Mono',monospace;
+    background:rgba(245,158,11,0.1); padding:3px 10px; border-radius:20px;
+    border:1px solid rgba(245,158,11,0.2);
+  }
+  .bn-r{ padding:30px 28px; }
+  .bn-title{
+    font-size:16px; font-weight:700; color:var(--amber);
+    margin-bottom:10px; letter-spacing:-0.02em;
+  }
+  .bn-desc{ font-size:13px; color:var(--t2); line-height:1.75; }
+  .bn-target{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    margin-top:18px; padding:12px 16px;
+    background:rgba(0,0,0,0.35); border-radius:10px;
+    border:1px solid rgba(255,255,255,0.05);
+    font-size:12px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+
+  /* ── CHART ── */
+  .chart-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  .tabs{ display:flex; gap:5px; flex-wrap:wrap; }
+  .tab{
+    font-size:10px; font-weight:600; padding:5px 14px; border-radius:20px;
+    font-family:'JetBrains Mono',monospace; cursor:pointer;
+    border:1px solid rgba(255,255,255,0.07); color:var(--t4);
+    transition:all 0.15s; letter-spacing:0.02em;
+  }
+  .tab.on{
+    background: linear-gradient(135deg, rgba(0,200,240,0.14), rgba(124,58,237,0.1));
+    color:var(--cyan); border-color:rgba(0,200,240,0.3);
+    box-shadow:0 0 12px rgba(0,200,240,0.1);
+  }
+  .tab:hover:not(.on){ border-color:rgba(255,255,255,0.14); color:var(--t2); }
+  .time-tabs{ display:flex; gap:4px; }
+  .ttab{
+    font-size:9px; font-weight:600; padding:4px 11px; border-radius:20px;
+    font-family:'JetBrains Mono',monospace; color:var(--t4);
+    border:1px solid var(--border); cursor:pointer;
+  }
+  .ttab.on{ color:var(--t2); border-color:rgba(255,255,255,0.14); }
+  .chart-box{
+    background:var(--s1); border-radius:16px; border:1px solid var(--border);
+    padding:22px 22px 18px; overflow:hidden;
+    box-shadow:0 4px 24px rgba(0,0,0,0.35);
+  }
+  .chart-foot{
+    font-size:9px; color:var(--t4); text-align:center;
+    margin-top:10px; font-family:'JetBrains Mono',monospace; letter-spacing:0.05em;
+  }
+
+  /* ── BEFORE/AFTER ── */
+  .ba-box{
+    background:var(--s1); border-radius:16px; border:1px solid var(--border);
+    padding:24px; box-shadow:0 4px 24px rgba(0,0,0,0.35);
+  }
+  .ba-selectors{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+  .ba-run{
+    padding:13px 18px; border-radius:11px;
+    border:1px solid var(--border); background:rgba(0,0,0,0.25);
+  }
+  .ba-run.b{
+    background: linear-gradient(135deg, rgba(0,200,240,0.09), rgba(124,58,237,0.06));
+    border-color:rgba(0,200,240,0.25);
+    box-shadow:0 0 16px rgba(0,200,240,0.07);
+  }
+  .ba-lbl{ font-size:9px; font-family:'JetBrains Mono',monospace; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:5px; }
+  .ba-run:not(.b) .ba-lbl{ color:var(--t3); }
+  .ba-run.b .ba-lbl{ color:var(--cyan); }
+  .ba-val{ font-size:13px; font-weight:600; font-family:'JetBrains Mono',monospace; }
+  .ba-run:not(.b) .ba-val{ color:var(--t2); }
+  .ba-run.b .ba-val{ color:var(--cyan); }
+  .verdict{
+    display:flex; align-items:center; gap:10px;
+    padding:11px 18px; border-radius:10px; margin-bottom:14px;
+    font-size:12px; font-weight:700;
+    background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.05));
+    border:1px solid rgba(16,185,129,0.22); color:var(--green);
+    box-shadow:0 0 16px rgba(16,185,129,0.07);
+  }
+  .diff-rows{ display:flex; flex-direction:column; gap:5px; }
+  .dr{
+    display:grid; grid-template-columns:130px 1fr 1fr 80px;
+    gap:10px; align-items:center; padding:9px 12px; border-radius:9px;
+  }
+  .dr.up{
+    background: linear-gradient(135deg, rgba(16,185,129,0.07), rgba(16,185,129,0.03));
+    border:1px solid rgba(16,185,129,0.14);
+  }
+  .dr.dn{
+    background: linear-gradient(135deg, rgba(239,68,68,0.07), rgba(239,68,68,0.03));
+    border:1px solid rgba(239,68,68,0.14);
+  }
+  .dr.up .dm{ color:var(--green); }
+  .dr.dn .dm{ color:var(--red); }
+  .dm{ font-size:11px; font-weight:600; }
+  .da{ font-size:12px; font-family:'JetBrains Mono',monospace; color:var(--t3); text-align:right; }
+  .db{ font-size:12px; font-family:'JetBrains Mono',monospace; text-align:left; padding-left:12px; }
+  .dr.up .db{ color:var(--green); }
+  .dr.dn .db{ color:var(--red); }
+  .dd{ font-size:11px; font-weight:800; font-family:'JetBrains Mono',monospace; }
+  .dr.up .dd{ color:var(--green); }
+  .dr.dn .dd{ color:var(--red); }
+  .ba-summary{
+    margin-top:14px; padding:14px 18px;
+    background:rgba(0,0,0,0.3); border-radius:10px;
+    border:1px solid rgba(255,255,255,0.05);
+    font-size:13px; color:var(--t2); line-height:1.7;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.02);
+  }
+
+  /* ── MECHANIC BRIEF ── */
+  .brief{
+    background:var(--s1); border-radius:16px; border:1px solid var(--border);
+    border-top:2px solid transparent;
+    background-clip:padding-box;
+    position:relative; overflow:hidden;
+    padding:24px 28px;
+    box-shadow:0 4px 24px rgba(0,0,0,0.35);
+  }
+  .brief::before{
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background: linear-gradient(90deg, var(--cyan), var(--violet2));
+  }
+  .brief-hdr{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:18px; padding-bottom:14px;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+  }
+  .brief-title{
+    font-size:9px; font-weight:700; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--t4); font-family:'JetBrains Mono',monospace;
+  }
+  .brief-meta{ font-size:9px; color:var(--t4); font-family:'JetBrains Mono',monospace; }
+  .brief-body{ font-size:14px; color:var(--t2); line-height:1.85; }
+
+  /* ── ARCHIVE ── */
+  .archive-btn{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 22px; background:var(--s2); border-radius:13px;
+    border:1px solid var(--border); cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,0.25);
+    transition:border-color 0.15s;
+  }
+  .archive-btn:hover{ border-color:rgba(255,255,255,0.12); }
+  .archive-btn-lbl{ font-size:13px; font-weight:600; color:var(--t2); }
+  .archive-btn-sub{ font-size:11px; color:var(--t3); margin-top:3px; }
+  .archive-count{
+    font-size:10px; font-family:'JetBrains Mono',monospace;
+    color:var(--t3); font-weight:700; letter-spacing:0.06em;
+    background:var(--s3); padding:3px 10px; border-radius:20px;
+    border:1px solid var(--border);
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar{ width:5px; background:var(--canvas); }
+  ::-webkit-scrollbar-thumb{ background:var(--s3); border-radius:3px; }
+
+  /* ── FLOAT LABELS ── */
+  .fl{ font-size:9px; color:var(--t4); font-family:'JetBrains Mono',monospace; letter-spacing:0.04em; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-l">
+    <div class="logomark"><div class="logomark-dot"></div></div>
+    <span class="nav-brand">UserBenchmark</span>
+    <span class="nav-sep">/</span>
+    <span class="nav-page">Reports Library</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="badge-runs">12 RUNS</span>
+    <button class="btn-cta">Run new test</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- ─── ZONE 1: MACHINE STATE HERO ─── -->
+  <div class="zone">
+    <div class="zone-label">Machine State</div>
+    <div class="hero-grid">
+
+      <div>
+        <div class="machine-id-label">Current Machine</div>
+        <div class="machine-cpu">AMD Ryzen 9 7900X</div>
+        <div class="machine-gpu">NVIDIA RTX 4080 · PCIe 4.0</div>
+        <div class="machine-ts">Last tested Jun 24, 2026 · 04:32</div>
+        <div class="grade-hist">
+          <div class="gh-pill" style="background:rgba(245,158,11,0.1);color:rgba(245,158,11,0.45);border:1px solid rgba(245,158,11,0.15);opacity:0.55;">C</div>
+          <div class="gh-pill" style="background:rgba(139,92,246,0.1);color:rgba(167,139,250,0.55);border:1px solid rgba(139,92,246,0.18);opacity:0.65;">B</div>
+          <div class="gh-pill" style="background:rgba(0,200,240,0.09);color:rgba(0,200,240,0.65);border:1px solid rgba(0,200,240,0.18);opacity:0.75;">A</div>
+          <div class="gh-pill" style="background:rgba(0,200,240,0.1);color:rgba(0,200,240,0.8);border:1px solid rgba(0,200,240,0.22);opacity:0.88;">A</div>
+          <div class="gh-pill" style="background:rgba(0,200,240,0.13);color:#00c8f0;border:1px solid rgba(0,200,240,0.3);">A</div>
+          <span class="gh-label">← 5 run history</span>
+        </div>
+      </div>
+
+      <div class="score-col">
+        <div class="score-glow"></div>
+        <div class="score-lbl">Overall Score</div>
+        <div class="score-num">78</div>
+        <div class="grade-seal"><span class="grade-letter">A</span></div>
+        <div class="traj">
+          <span style="font-size:16px;color:var(--green);line-height:1;">↑</span>
+          <span class="traj-txt">Improving</span>
+        </div>
+      </div>
+
+      <div class="trend-stack">
+        <div class="trend-row">
+          <span class="tr-lbl">vs last run</span>
+          <span class="tr-val" style="color:var(--green);">+6 ↑</span>
+        </div>
+        <div class="trend-row">
+          <span class="tr-lbl">vs best run</span>
+          <span class="tr-val" style="color:var(--amber);">−4 ↓</span>
+        </div>
+        <div class="trend-row">
+          <span class="tr-lbl">12-run average</span>
+          <span class="tr-val" style="color:var(--green);">+3.2 ↑</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="diag">
+      CPU boost decay is the current limiter at <span class="ha">18.6%</span>. This run improved over your previous — the fan curve change you logged on Jun 2 likely helped sustained boost behavior. Retest after addressing cooling to push CPU decay below <span class="hw">10%</span>. Thermal health at <span class="hr">54</span> needs attention before your next run.
+    </div>
+
+    <div class="qa-row">
+      <button class="qa-btn"><span style="font-size:14px;">↗</span> Open latest report</button>
+      <button class="qa-btn"><span style="font-size:13px;">⇄</span> Compare runs</button>
+      <button class="qa-btn"><span style="font-size:13px;">✎</span> Add change note</button>
+      <button class="qa-btn"><span style="font-size:13px;">↓</span> Export PDF</button>
+      <button class="qa-btn"><span style="font-size:13px;">⟳</span> New benchmark</button>
+    </div>
+  </div>
+
+  <!-- ─── ZONE 2: VITAL SIGNS ─── -->
+  <div class="zone">
+    <div class="zone-label">Vital Signs</div>
+    <div class="vitals-grid">
+
+      <div class="vchip warn">
+        <div class="vn">CPU Decay</div>
+        <div class="vv">18.6<span style="font-size:15px;font-weight:600;">%</span></div>
+        <div class="vd">
+          <span style="color:rgba(245,158,11,0.7);font-size:10px;">↑ worse than prev</span>
+          <span style="font-size:16px;color:var(--amber);">⚠</span>
+        </div>
+      </div>
+
+      <div class="vchip">
+        <div class="vn">GPU Pressure</div>
+        <div class="vv">83</div>
+        <div class="vd">
+          <span style="color:var(--green);font-size:10px;">+11 improved</span>
+          <span style="font-size:14px;color:var(--green);">↑</span>
+        </div>
+      </div>
+
+      <div class="vchip crit">
+        <div class="vn">Thermals</div>
+        <div class="vv">54</div>
+        <div class="vd">
+          <span style="color:rgba(239,68,68,0.7);font-size:10px;">↓ dropping</span>
+          <span style="font-size:14px;color:var(--red);">⚡</span>
+        </div>
+      </div>
+
+      <div class="vchip">
+        <div class="vn">Stability</div>
+        <div class="vv">76</div>
+        <div class="vd">
+          <span style="color:var(--green);font-size:10px;">+3 improved</span>
+          <span style="font-size:14px;color:var(--green);">↑</span>
+        </div>
+      </div>
+
+      <div class="vchip">
+        <div class="vn">GPU Decay</div>
+        <div class="vv">7.2<span style="font-size:15px;font-weight:600;">%</span></div>
+        <div class="vd">
+          <span style="color:var(--t4);font-size:10px;">unchanged</span>
+          <span style="font-size:13px;color:var(--t4);">→</span>
+        </div>
+      </div>
+
+      <div class="vchip">
+        <div class="vn">Synergy</div>
+        <div class="vv">82</div>
+        <div class="vd">
+          <span style="color:var(--green);font-size:10px;">+2 improved</span>
+          <span style="font-size:14px;color:var(--green);">↑</span>
+        </div>
+      </div>
+
+      <div class="vchip acti">
+        <div class="vn">GPU Backend</div>
+        <div class="vv">WebGPU</div>
+        <div class="vd">
+          <span style="color:rgba(0,200,240,0.6);font-size:10px;">latest engine</span>
+        </div>
+      </div>
+
+      <div class="vchip">
+        <div class="vn">Test Duration</div>
+        <div class="vv">4:32</div>
+        <div class="vd">
+          <span style="color:var(--t4);font-size:10px;">full benchmark</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── ZONE 3: BOTTLENECK SPOTLIGHT ─── -->
+  <div class="zone">
+    <div class="zone-label">Current Limiter</div>
+    <div class="bn-wrap">
+      <div class="bn-l">
+        <div class="bn-metric-lbl">CPU Decay</div>
+        <div class="bn-val">18.6<sup>%</sup></div>
+        <div class="bn-sev">Warning</div>
+      </div>
+      <div class="bn-r">
+        <div class="bn-title">CPU sustained boost degradation</div>
+        <div class="bn-desc">Your CPU drops 18.6% from peak under sustained load. This directly caps benchmark scores and real-world heavy workload performance. Typical causes: thermal throttling, restrictive power delivery, aggressive BIOS limits, or background processes competing during the test run.</div>
+        <div class="bn-target">
+          <span style="color:var(--t3);font-size:12px;">Retest target:</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-weight:800;color:var(--t1);font-size:13px;">CPU decay below 10%</span>
+          <span style="color:var(--t4);font-size:11px;">after cooling or power plan fix</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── ZONE 4: DIAGNOSTIC STRIP ─── -->
+  <div class="zone">
+    <div class="chart-header">
+      <div class="zone-label" style="margin-bottom:0;">Diagnostic Strip</div>
+      <div class="time-tabs">
+        <div class="ttab">All</div>
+        <div class="ttab">10</div>
+        <div class="ttab on">8</div>
+        <div class="ttab">5</div>
+        <div class="ttab">3</div>
+      </div>
+    </div>
+    <div class="tabs" style="margin-bottom:18px;">
+      <div class="tab on">Score</div>
+      <div class="tab">CPU Decay</div>
+      <div class="tab">GPU Pressure</div>
+      <div class="tab">GPU Decay</div>
+      <div class="tab">Thermals</div>
+      <div class="tab">Stability</div>
+      <div class="tab">Synergy</div>
+    </div>
+    <div class="chart-box">
+      <svg viewBox="0 0 820 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;overflow:visible;">
+        <defs>
+          <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#00c8f0" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="#00c8f0" stop-opacity="0"/>
+          </linearGradient>
+          <radialGradient id="latestGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#00c8f0" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#00c8f0" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Grid lines -->
+        <line x1="55" y1="18" x2="800" y2="18" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="55" y1="50" x2="800" y2="50" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="55" y1="82" x2="800" y2="82" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="55" y1="114" x2="800" y2="114" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+
+        <!-- Y labels -->
+        <text x="6" y="21" font-size="9" fill="rgba(255,255,255,0.2)" font-family="JetBrains Mono,monospace">100</text>
+        <text x="14" y="53" font-size="9" fill="rgba(255,255,255,0.2)" font-family="JetBrains Mono,monospace">75</text>
+        <text x="14" y="85" font-size="9" fill="rgba(255,255,255,0.2)" font-family="JetBrains Mono,monospace">50</text>
+        <text x="14" y="117" font-size="9" fill="rgba(255,255,255,0.2)" font-family="JetBrains Mono,monospace">25</text>
+
+        <!-- Area fill -->
+        <path d="M108,105 L210,96 L312,118 L414,100 L487,82 L560,65 L640,59 L720,40 L720,160 L108,160 Z" fill="url(#areaGrad)"/>
+
+        <!-- Journal flag: driver update -->
+        <line x1="487" y1="10" x2="487" y2="125" stroke="rgba(0,200,240,0.22)" stroke-width="1" stroke-dasharray="3,3"/>
+        <rect x="440" y="6" width="94" height="18" rx="5" fill="rgba(0,200,240,0.1)" stroke="rgba(0,200,240,0.3)" stroke-width="0.75"/>
+        <text x="487" y="18" font-size="8" fill="#00c8f0" font-family="JetBrains Mono,monospace" text-anchor="middle" font-weight="700">driver update</text>
+
+        <!-- Journal flag: fan curve -->
+        <line x1="640" y1="10" x2="640" y2="125" stroke="rgba(245,158,11,0.22)" stroke-width="1" stroke-dasharray="3,3"/>
+        <rect x="602" y="6" width="76" height="18" rx="5" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)" stroke-width="0.75"/>
+        <text x="640" y="18" font-size="8" fill="#f59e0b" font-family="JetBrains Mono,monospace" text-anchor="middle" font-weight="700">fan curve</text>
+
+        <!-- Line path -->
+        <polyline points="108,105 210,96 312,118 414,100 487,82 560,65 640,59 720,40" fill="none" stroke="#00c8f0" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" filter="url(#glow)"/>
+
+        <!-- Regular data points -->
+        <circle cx="108" cy="105" r="4.5" fill="#0b0f1c" stroke="#00c8f0" stroke-width="2"/>
+        <circle cx="210" cy="96" r="4.5" fill="#0b0f1c" stroke="#00c8f0" stroke-width="2"/>
+        <circle cx="312" cy="118" r="4.5" fill="#0b0f1c" stroke="#00c8f0" stroke-width="2"/>
+        <circle cx="414" cy="100" r="4.5" fill="#0b0f1c" stroke="#00c8f0" stroke-width="2"/>
+        <circle cx="487" cy="82" r="4.5" fill="#0b0f1c" stroke="#00c8f0" stroke-width="2"/>
+        <circle cx="560" cy="65" r="4.5" fill="#0b0f1c" stroke="#00c8f0" stroke-width="2"/>
+        <circle cx="640" cy="59" r="4.5" fill="#0b0f1c" stroke="#00c8f0" stroke-width="2"/>
+
+        <!-- Latest point glow halo -->
+        <circle cx="720" cy="40" r="16" fill="url(#latestGlow)"/>
+        <!-- Latest point -->
+        <circle cx="720" cy="40" r="8" fill="#00c8f0" stroke="rgba(0,200,240,0.3)" stroke-width="5"/>
+        <circle cx="720" cy="40" r="4" fill="#060810"/>
+
+        <!-- Tooltip on latest -->
+        <rect x="676" y="16" width="72" height="20" rx="6" fill="#00c8f0"/>
+        <text x="712" y="29" font-size="10" fill="#060810" font-family="JetBrains Mono,monospace" font-weight="800" text-anchor="middle">78 · A</text>
+        <line x1="712" y1="36" x2="720" y2="40" stroke="#00c8f0" stroke-width="1.5"/>
+
+        <!-- X axis labels -->
+        <text x="108" y="148" font-size="8.5" fill="rgba(255,255,255,0.18)" font-family="JetBrains Mono,monospace" text-anchor="middle">Jan 3</text>
+        <text x="210" y="148" font-size="8.5" fill="rgba(255,255,255,0.18)" font-family="JetBrains Mono,monospace" text-anchor="middle">Jan 28</text>
+        <text x="312" y="148" font-size="8.5" fill="rgba(255,255,255,0.18)" font-family="JetBrains Mono,monospace" text-anchor="middle">Feb 12</text>
+        <text x="414" y="148" font-size="8.5" fill="rgba(255,255,255,0.18)" font-family="JetBrains Mono,monospace" text-anchor="middle">Mar 5</text>
+        <text x="487" y="148" font-size="8.5" fill="rgba(255,255,255,0.18)" font-family="JetBrains Mono,monospace" text-anchor="middle">Apr 1</text>
+        <text x="560" y="148" font-size="8.5" fill="rgba(255,255,255,0.18)" font-family="JetBrains Mono,monospace" text-anchor="middle">May 9</text>
+        <text x="640" y="148" font-size="8.5" fill="rgba(255,255,255,0.18)" font-family="JetBrains Mono,monospace" text-anchor="middle">Jun 2</text>
+        <text x="720" y="148" font-size="8.5" fill="#00c8f0" font-family="JetBrains Mono,monospace" text-anchor="middle" font-weight="700">Jun 24</text>
+      </svg>
+      <div class="chart-foot">Journal flags mark what you changed between runs — cause and effect visible at a glance</div>
+    </div>
+  </div>
+
+  <!-- ─── ZONE 5: BEFORE / AFTER LAB ─── -->
+  <div class="zone">
+    <div class="zone-label">Before / After Lab</div>
+    <div class="ba-box">
+      <div class="ba-selectors">
+        <div class="ba-run">
+          <div class="ba-lbl">Run A · Before</div>
+          <div class="ba-val">Jun 2, 2026 · Score 72 · Grade B</div>
+        </div>
+        <div class="ba-run b">
+          <div class="ba-lbl">Run B · After</div>
+          <div class="ba-val">Jun 24, 2026 · Score 78 · Grade A</div>
+        </div>
+      </div>
+      <div class="verdict">
+        <span style="font-size:16px;">✓</span>
+        Clear improvement across 4 of 6 metrics — overall PC health advanced significantly
+      </div>
+      <div class="diff-rows">
+        <div class="dr up"><span class="dm">Score</span><span class="da">72</span><span class="db">78</span><span class="dd">+6 ↑</span></div>
+        <div class="dr up"><span class="dm">CPU Decay</span><span class="da">18.6%</span><span class="db">9.4%</span><span class="dd">−9.2 ↑</span></div>
+        <div class="dr dn"><span class="dm">Thermals</span><span class="da">58</span><span class="db">54</span><span class="dd">−4 ↓</span></div>
+        <div class="dr up"><span class="dm">GPU Pressure</span><span class="da">72</span><span class="db">83</span><span class="dd">+11 ↑</span></div>
+        <div class="dr up"><span class="dm">Stability</span><span class="da">73</span><span class="db">76</span><span class="dd">+3 ↑</span></div>
+        <div class="dr up"><span class="dm">Synergy</span><span class="da">80</span><span class="db">82</span><span class="dd">+2 ↑</span></div>
+      </div>
+      <div class="ba-summary">
+        This change helped. CPU decay dropped <span class="hg">9.2 points</span> and GPU pressure improved significantly. Thermal health dipped slightly — the fan speed change may have altered airflow in one zone. Keep this run as your new baseline and watch thermals on the next run.
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── ZONE 7: MECHANIC BRIEF ─── -->
+  <div class="zone">
+    <div class="zone-label">Mechanic Brief</div>
+    <div class="brief">
+      <div class="brief-hdr">
+        <div class="brief-title">Diagnostic Brief</div>
+        <div class="brief-meta">Generated · Jun 24 2026 · derived from 3 runs + journal</div>
+      </div>
+      <div class="brief-body">
+        Your latest score improved by <span class="hg">6 points</span>, with CPU decay dropping from <span class="ha">18.6%</span> to <span class="hg">9.4%</span> — the fan curve journal entry logged Jun 2 likely contributed to the sustained boost improvement. GPU pressure jumped <span class="hg">11 points</span>, suggesting the backend is staying more consistently engaged under load. However, thermal health dropped from <span class="hw">58 to 54</span> — watch this closely as further thermal degradation will start limiting your gains. Your best run scored <span class="hw">82</span> on Apr 1 and remains your benchmark target. Next: address thermal headroom directly, then retest aiming for <span class="hc">CPU decay below 10%</span> to reclaim that best-run score.
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── ZONE 8: ARCHIVE ─── -->
+  <div class="zone">
+    <div class="zone-label">Run Archive</div>
+    <div class="archive-btn">
+      <div>
+        <div class="archive-btn-lbl">View all 12 saved runs</div>
+        <div class="archive-btn-sub">Scores 54 – 82 · Jan 3, 2026 – Jun 24, 2026</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="archive-count">12 RUNS</span>
+        <span style="font-size:14px;color:var(--t3);">↓</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

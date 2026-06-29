@@ -1045,7 +1045,7 @@ img {
   top: 42vh;
   left: 0;
   right: 0;
-  bottom: 22px;
+  bottom: 0;
   overflow: hidden;
 }
 
@@ -1059,36 +1059,47 @@ img {
 }
 
 .plans-group h3 {
-  margin: 0 0 20px;
+  margin: 0 0 18px;
   padding: 0 8px;
   color: #222013;
   font-family: 'Futura PT', 'Jost', sans-serif;
-  font-size: 74px;
+  font-size: 62px;
   font-weight: 400;
   line-height: 1;
-  letter-spacing: -4.88px;
-  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  text-transform: none;
 }
 
 .cards-row {
   display: flex;
   flex-direction: row;
   gap: 0;
-  height: 388px;
+  height: 398px;
   position: relative;
+  padding: 8px 0 10px;
 }
 
 .card-slot {
   position: relative;
   padding: 0 8px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .card-slot::before {
   content: '';
   position: absolute;
   left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(34, 32, 19, 0.2);
+}
+
+.card-slot:last-child::after {
+  content: '';
+  position: absolute;
+  right: 0;
   top: 0;
   bottom: 0;
   width: 1px;
@@ -1331,7 +1342,7 @@ img {
   width: 1px;
   background: rgba(34, 32, 19, 0.2);
   align-self: stretch;
-  margin: 0 80px;
+  margin: 0 44px;
   flex-shrink: 0;
 }
 
@@ -2388,3 +2399,4 @@ img {
     justify-items: center;
   }
 }
+

@@ -2,28 +2,33 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 1.75rem 1.75rem 2rem;
-  background-color: var(--color-card);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 1px 2px rgba(20, 18, 14, 0.04);
+  min-height: 316px;
+  padding: 0.5rem 0.5rem 0.85rem;
+  background: rgba(255, 250, 240, 0.96);
+  border: 1px solid rgba(34, 32, 19, 0.1);
+  border-radius: 6px;
+  box-shadow: none;
 }
 
 .card__media {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.9rem;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #beb7ab;
 }
 
 .card__header {
   display: flex;
-  align-items: baseline;
-  gap: 1rem;
+  align-items: flex-end;
+  gap: 0.5rem;
 }
 
 .card__title {
   margin: 0;
-  font-family: "Inter", sans-serif;
+  font-family: "Futura PT", "Jost", sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: clamp(2.25rem, 7vw, 49.8px);
+  font-size: clamp(1.8rem, 4.2vw, 3.1rem);
   line-height: 1;
   letter-spacing: 0;
   color: var(--color-ink);
@@ -33,10 +38,10 @@
 .card__rule {
   flex: 1 1 auto;
   height: 1px;
-  min-width: 1.5rem;
+  min-width: 2.5rem;
   background-color: var(--color-ink);
-  opacity: 0.35;
-  transform: translateY(-0.6em);
+  opacity: 0.28;
+  transform: translateY(-0.52em);
 }
 
 .card__cta {
@@ -47,13 +52,13 @@
   font-family: "Archivo", sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 13px;
+  font-size: 10px;
   line-height: 1;
   letter-spacing: 0;
   color: var(--color-ink);
   text-decoration: none;
   white-space: nowrap;
-  transform: translateY(-0.6em);
+  transform: translateY(-0.52em);
 }
 
 .card__cta svg {
@@ -73,15 +78,15 @@
 }
 
 .card__description {
-  margin: 1.1rem 0 1.4rem;
+  margin: 0.7rem 0 0.95rem;
   font-family: "Archivo", sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 13px;
-  line-height: 1;
+  font-size: 11px;
+  line-height: 1.18;
   letter-spacing: 0;
   color: var(--color-ink);
-  max-width: 34ch;
+  max-width: 33ch;
 }
 
 .card__tags {
@@ -90,16 +95,16 @@
   list-style: none;
   display: grid;
   grid-template-columns: repeat(2, auto);
-  column-gap: 1.75rem;
-  row-gap: 0.4rem;
-  justify-content: center;
+  column-gap: 1.25rem;
+  row-gap: 0.2rem;
+  justify-content: start;
 }
 
 .card__tag {
   font-family: "Archivo", sans-serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 13px;
+  font-size: 10px;
   line-height: 1;
   letter-spacing: 0;
   color: var(--color-ink);
@@ -110,7 +115,7 @@
 }
 
 .card-line {
-  width: 100px;
+  width: 72px;
   height: 1px;
   background: black;
   flex: 0 0 auto;
@@ -120,12 +125,13 @@
   color: var(--color-ink);
   text-decoration: none;
   white-space: nowrap;
-  transform: translateY(-0.6em);
+  transform: translateY(-0.52em);
 }
 
 @media (max-width: 420px) {
   .card {
-    padding: 1.25rem 1.25rem 1.5rem;
+    min-height: 0;
+    padding: 0.5rem 0.5rem 0.8rem;
   }
 
   .card__tags {

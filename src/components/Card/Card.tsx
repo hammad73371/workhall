@@ -20,7 +20,6 @@ function Card({ title, description, tags, learnMoreUrl, images }: CardProps) {
 
       <div className="card__header">
         <h2 className="card__title">{title}</h2>
-        <div className="card-line"></div>
         <span className="card__rule" aria-hidden="true" />
         <a className="card__cta" href={learnMoreUrl}>
           Learn More
