@@ -23,6 +23,7 @@ import "./App.css";
 import { useRef } from "react";
 import { PageTransition } from "./components/PageTransition";
 import PromiseSection from "./components/PromiseSection/PromiseSection";
+import Footer from "./components/Footer/Footer";
 const stats = [
   { value: "06", label: "Location", color: "#458E71" },
   { value: "07+", label: "Years", color: "#D26C46" },
@@ -156,9 +157,7 @@ function App() {
             >
               <img src={workhallOrange} alt="WorkHall" />
             </a>
-
             <FigmaFunctionalNav isLoaded={isLoaded} />
-
             <section
               className="figma-hero figma-hero--clipped"
               aria-labelledby="hero-title"
@@ -249,17 +248,11 @@ function App() {
                 </div>
               </aside>
             </section>
-
             <AmenitiesMarquee />
-
             <PlansScrollSection />
-
             <PurposeHallsSection />
-
             <CommunitySection targetRef={whyWorkHallRef} />
-
             <WhyWorkHallSection ref={whyWorkHallRef} />
-
             <section
               className="amenities-stack-section"
               aria-labelledby="amenities-stack-title"
@@ -386,10 +379,9 @@ function App() {
                 </ScrollStackItem>
               </ScrollStack>
             </section>
-
             <PromiseSection />
-
             <LocationsMapSection />
+            <Footer onSubscribe={(email) => console.log(email)} />
           </main>
         </PageTransition>
       </ClickSpark>
