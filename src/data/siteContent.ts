@@ -13,8 +13,6 @@ export const workHallLocations: WorkHallLocation[] = [
     address: 'Shahrah-e-Faisal business corridor, Karachi',
     coordinates: [67.0637, 24.8611],
     mapsUrl: 'https://maps.app.goo.gl/8ciVzDstY5g133Pq5',
-    status: 'live',
-    note: 'Live branch from owner source',
   },
   {
     id: 'zamzama',
@@ -23,8 +21,6 @@ export const workHallLocations: WorkHallLocation[] = [
     address: 'Zamzama, DHA Phase 5, Karachi',
     coordinates: [67.0452, 24.8136],
     mapsUrl: 'https://maps.app.goo.gl/biDCMD939KtiKkVp6',
-    status: 'live',
-    note: 'Live branch from owner source',
   },
   {
     id: 'tipu-sultan',
@@ -33,32 +29,72 @@ export const workHallLocations: WorkHallLocation[] = [
     address: 'Tipu Sultan Road, Karachi',
     coordinates: [67.0796, 24.8687],
     mapsUrl: 'https://maps.app.goo.gl/N16BJZgzH9JMZCHy5',
-    status: 'live',
-    note: 'Live branch from owner source',
   },
   {
     id: 'pechs',
     name: 'Work Hall PECHS',
     area: 'PECHS',
-    address: 'Mock pin around PECHS, Karachi',
+    address: 'PECHS, Karachi',
     coordinates: [67.0673, 24.8658],
     mapsUrl: 'https://www.google.com/maps/search/?api=1&query=PECHS%20Karachi',
-    status: 'mock',
-    note: 'Mock pin, needs agency confirmation',
   },
   {
     id: 'gulshan',
     name: 'Work Hall Gulshan',
     area: 'Gulshan',
-    address: 'Mock pin around Gulshan-e-Iqbal, Karachi',
+    address: 'Gulshan-e-Iqbal, Karachi',
     coordinates: [67.0931, 24.9234],
     mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gulshan-e-Iqbal%20Karachi',
-    status: 'mock',
-    note: 'Mock pin, needs agency confirmation',
   },
 ]
 
 export const locations = workHallLocations.map((location) => location.area)
+
+export const workspaceQuizSteps: import('../types/site').WorkspaceQuizStep[] = [
+  {
+    key: 'workspaceType',
+    prompt: 'I need',
+    options: [
+      { value: 'coworking-desk', label: 'Coworking Desk', icon: 'coworking' },
+      { value: 'dedicated-desk', label: 'Dedicated Desk', icon: 'dedicated-desk' },
+      { value: 'private-office', label: 'Private Office', icon: 'private-office' },
+      { value: 'meeting-room', label: 'Meeting Room', icon: 'meeting-room' },
+      { value: 'virtual-office', label: 'Virtual Office', icon: 'virtual-office' },
+    ],
+  },
+  {
+    key: 'teamSize',
+    prompt: 'My team looks like',
+    options: [
+      { value: 'solo', label: 'Just me', icon: 'solo' },
+      { value: '2-people', label: '2 people', icon: 'pair' },
+      { value: '3-5-people', label: '3-5 people', icon: 'team-small' },
+      { value: '6-12-people', label: '6-12 people', icon: 'team-medium' },
+      { value: '12-plus-people', label: '12+ people', icon: 'team-large' },
+    ],
+  },
+  {
+    key: 'locationId',
+    prompt: 'I want to work from',
+    options: [
+      { value: 'shahrah-e-faisal', label: 'Shahrah-e-Faisal', icon: 'location' },
+      { value: 'zamzama', label: 'Zamzama', icon: 'location' },
+      { value: 'tipu-sultan', label: 'Tipu Sultan', icon: 'location' },
+      { value: 'pechs', label: 'PECHS', icon: 'location' },
+      { value: 'gulshan', label: 'Gulshan', icon: 'location' },
+    ],
+  },
+  {
+    key: 'timeline',
+    prompt: 'I want to move in',
+    options: [
+      { value: 'this-week', label: 'This week', icon: 'week' },
+      { value: 'this-month', label: 'This month', icon: 'month' },
+      { value: 'next-2-3-months', label: 'Next 2-3 months', icon: 'later' },
+      { value: 'just-exploring', label: 'Just exploring', icon: 'explore' },
+    ],
+  },
+]
 
 export const workspaceTypes = [
   {
@@ -125,12 +161,12 @@ export const navGroups: NavGroup[] = [
     icon: 'map',
     eyebrow: 'Karachi network',
     title: 'Find the Work Hall closest to you.',
-    description: 'Live Karachi branches with route guidance, Google Maps handoff, and quick switching as your week shifts.',
+    description: 'Karachi branches with route guidance, Google Maps handoff, and quick switching as your week shifts.',
     featured: {
       title: 'Find the closest branch',
       href: '#locations',
-      detail: 'Use the live map to rank branches by distance and open the best one in Google Maps.',
-      meta: 'Live route guide',
+      detail: 'Use the map to rank branches by distance and open the best one in Google Maps.',
+      meta: 'Route guide',
       icon: 'route',
       imagePosition: '50% 46%',
     },
@@ -139,7 +175,7 @@ export const navGroups: NavGroup[] = [
         title: location.area,
         href: '#locations',
         detail: location.address,
-        meta: location.status === 'live' ? 'Live location' : 'Mock pin',
+        meta: 'Karachi branch',
         icon: 'pin' as const,
         imagePosition: location.id === 'zamzama' ? '38% 58%' : location.id === 'tipu-sultan' ? '54% 42%' : '62% 48%',
       })),

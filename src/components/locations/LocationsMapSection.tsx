@@ -6,6 +6,34 @@ import { createRouteData, formatDistance, getDistanceKm } from '../../lib/locati
 import type { GeolocationStatus, UserCoordinates } from '../../types/site'
 import { ArrowIcon, LocateIcon, SearchIcon } from '../shared/icons'
 
+const locationCardContent: Record<string, { label: string; headline: string; meta: string }> = {
+  'shahrah-e-faisal': {
+    label: 'Corporate Flow',
+    headline: 'Fast access for polished business-corridor work.',
+    meta: 'Karachi branch',
+  },
+  zamzama: {
+    label: 'Neighbourhood Favorite',
+    headline: 'A softer rhythm near cafes, retail, and DHA movement.',
+    meta: 'Karachi branch',
+  },
+  'tipu-sultan': {
+    label: 'Team Momentum',
+    headline: 'Balanced for focused calls and reliable daily momentum.',
+    meta: 'Karachi branch',
+  },
+  pechs: {
+    label: 'Growth Pocket',
+    headline: 'A practical city-core base for scaling businesses.',
+    meta: 'Karachi branch',
+  },
+  gulshan: {
+    label: 'East-Side Access',
+    headline: 'A convenient east-side option near Gulshan routes.',
+    meta: 'Karachi branch',
+  },
+}
+
 function buildDirectionsUrl(userCoordinates: UserCoordinates | null, destination: [number, number], fallbackUrl: string) {
   if (!userCoordinates) return fallbackUrl
 
@@ -39,7 +67,15 @@ const baseMapStyle: maplibregl.StyleSpecification = {
     },
   ],
 }
-export function LocationsMapSection() {
+interface LocationsMapSectionProps {
+  selectedLocationId?: string
+  onSelectedLocationChange?: (locationId: string) => void
+}
+
+export function LocationsMapSection({
+  selectedLocationId,
+  onSelectedLocationChange,
+}: LocationsMapSectionProps = {}) {
   const sectionRef = useRef<HTMLElement>(null)
   const mapNodeRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<maplibregl.Map | null>(null)
@@ -50,7 +86,7 @@ export function LocationsMapSection() {
 
   const [isMapReady, setIsMapReady] = useState(false)
   const [mapError, setMapError] = useState<string | null>(null)
-  const [activeLocationId, setActiveLocationId] = useState(workHallLocations[0].id)
+  const [internalActiveLocationId, setInternalActiveLocationId] = useState(workHallLocations[0].id)
   const [isBranchMenuOpen, setIsBranchMenuOpen] = useState(false)
   const [userCoordinates, setUserCoordinates] = useState<UserCoordinates | null>(null)
   const [geoStatus, setGeoStatus] = useState<GeolocationStatus>('idle')
@@ -58,6 +94,7 @@ export function LocationsMapSection() {
     'When this section enters view, your browser will ask for location access so we can start a route guide automatically.',
   )
 
+  const activeLocationId = selectedLocationId ?? internalActiveLocationId
   const activeLocation = workHallLocations.find((location) => location.id === activeLocationId) ?? workHallLocations[0]
   const rankedLocations = workHallLocations
     .map((location) => ({
@@ -70,9 +107,19 @@ export function LocationsMapSection() {
     })
 
   const nearestLocation = userCoordinates ? rankedLocations[0] : null
+  const activeDistance = rankedLocations.find(({ location }) => location.id === activeLocationId)?.distance ?? null
   const directionsUrl = useMemo(
     () => buildDirectionsUrl(userCoordinates, activeLocation.coordinates, activeLocation.mapsUrl),
     [activeLocation.coordinates, activeLocation.mapsUrl, userCoordinates],
+  )
+
+  const setActiveLocationId = useCallback(
+    (locationId: string, { manual = false }: { manual?: boolean } = {}) => {
+      if (manual) hasManualBranchSelectionRef.current = true
+      if (selectedLocationId === undefined) setInternalActiveLocationId(locationId)
+      onSelectedLocationChange?.(locationId)
+    },
+    [onSelectedLocationChange, selectedLocationId],
   )
 
   const requestLocationAccess = useCallback(
@@ -109,7 +156,8 @@ export function LocationsMapSection() {
           )
           const selectedLocation =
             workHallLocations.find((location) => location.id === activeLocationId) ?? nearest
-          const shouldSwitchToNearest = preferNearest && !hasManualBranchSelectionRef.current
+          const shouldSwitchToNearest =
+            preferNearest && !hasManualBranchSelectionRef.current && selectedLocationId === undefined
           const routedLocation = shouldSwitchToNearest ? nearest : selectedLocation
 
           setUserCoordinates(nextCoordinates)
@@ -132,21 +180,27 @@ export function LocationsMapSection() {
         },
       )
     },
-    [activeLocationId, geoStatus],
+    [activeLocationId, geoStatus, selectedLocationId, setActiveLocationId],
   )
 
   useEffect(() => {
     const node = mapNodeRef.current
     if (!node || mapRef.current) return
-    const map = new maplibregl.Map({
-      container: node,
-      style: baseMapStyle,
-      center: karachiCenter,
-      zoom: 10.7,
-      pitch: 18,
-      bearing: -6,
-      attributionControl: false,
-    })
+    let map: maplibregl.Map
+    try {
+      map = new maplibregl.Map({
+        container: node,
+        style: baseMapStyle,
+        center: karachiCenter,
+        zoom: 10.7,
+        pitch: 18,
+        bearing: -6,
+        attributionControl: false,
+      })
+    } catch (error) {
+      setMapError(error instanceof Error ? error.message : 'Map failed to initialize.')
+      return
+    }
     const resizeMap = () => {
       requestAnimationFrame(() => map.resize())
       window.setTimeout(() => map.resize(), 120)
@@ -233,15 +287,13 @@ export function LocationsMapSection() {
       pinButton.type = 'button'
       pinButton.className = [
         'location-map-pin',
-        location.status === 'mock' ? 'is-mock' : 'is-live',
         location.id === activeLocationId ? 'is-active' : '',
       ]
         .filter(Boolean)
         .join(' ')
       pinButton.setAttribute('aria-label', `View ${location.name}`)
       pinButton.addEventListener('click', () => {
-        hasManualBranchSelectionRef.current = true
-        setActiveLocationId(location.id)
+        setActiveLocationId(location.id, { manual: true })
       })
       markerAnchor.append(pinButton)
 
@@ -366,7 +418,7 @@ export function LocationsMapSection() {
 
     map.flyTo({
       center: activeLocation.coordinates,
-      zoom: activeLocation.status === 'mock' ? 11.7 : 12.6,
+      zoom: 12.4,
       duration: 900,
       essential: true,
     })
@@ -396,35 +448,61 @@ export function LocationsMapSection() {
       aria-labelledby="locations-title"
     >
       <div className="location-copy">
-        <div className="section-kicker">Karachi network</div>
-        <h2 id="locations-title">Find the Work Hall closest to you.</h2>
-        <p>
-          Share your location to instantly rank our Karachi branches by distance, then open
-          the exact branch in Google Maps when you are ready to visit.
-        </p>
+        <div className="location-copy__intro">
+          <div>
+            <div className="section-kicker">Karachi network</div>
+            <h2 id="locations-title">Find The Nearest Work Hall.</h2>
+            <p>Pick a branch and open the fastest route.</p>
+          </div>
+        </div>
 
-        <div className="location-actions">
+        <div className="location-copy__controls" aria-label="Location map controls">
+          <button type="button" className="location-mini-control" onClick={showAllBranches}>
+            View all
+          </button>
           <button
             type="button"
-            className="primary-cta"
+            className="location-mini-control location-mini-control--icon"
             onClick={() => requestLocationAccess({ preferNearest: true, trigger: 'manual' })}
             disabled={geoStatus === 'loading'}
+            aria-label={geoStatus === 'located' ? 'Refresh route' : 'Find nearest Work Hall'}
           >
-            {geoStatus === 'loading' ? 'Starting route...' : geoStatus === 'located' ? 'Refresh route' : 'Allow location'}
             <LocateIcon />
-          </button>
-          <button type="button" className="secondary-cta" onClick={showAllBranches}>
-            View all branches
           </button>
         </div>
 
-        <div className={`location-status location-status--${geoStatus}`} role="status">
-          <strong>
-            {geoStatus === 'located' && nearestLocation
-              ? `Closest: ${nearestLocation.location.area}`
-              : 'Location-aware branch finder'}
-          </strong>
-          <span>{geoMessage}</span>
+        <div className="location-card-list" aria-label="Work Hall locations">
+          {rankedLocations.map(({ location, distance }) => {
+            const cardContent = locationCardContent[location.id]
+            const isActive = location.id === activeLocationId
+            const isNearest = geoStatus === 'located' && nearestLocation?.location.id === location.id
+
+            return (
+              <button
+                type="button"
+                key={location.id}
+                className={isActive ? 'location-branch-card is-active' : 'location-branch-card'}
+                onClick={() => setActiveLocationId(location.id, { manual: true })}
+              >
+                <div className="location-branch-card__visual" />
+
+                <div className="location-branch-card__body">
+                  <div className="location-branch-card__meta">
+                    <span className="location-branch-card__pill">{cardContent.label}</span>
+                  </div>
+
+                  <h3>{location.area}</h3>
+
+                  <p>{cardContent.headline}</p>
+
+                  <div className="location-branch-card__footer">
+                    <span>{cardContent.meta}</span>
+                    <small>{isNearest ? `Closest • ${formatDistance(distance)}` : formatDistance(distance)}</small>
+                  </div>
+                </div>
+              </button>
+            )
+          })}
         </div>
       </div>
 
@@ -433,10 +511,8 @@ export function LocationsMapSection() {
           <span>
             <small>Selected branch</small>
             <strong>{activeLocation.area}</strong>
+            <small>{formatDistance(activeDistance)}</small>
           </span>
-          <em className={activeLocation.status === 'mock' ? 'is-mock' : 'is-live'}>
-            {activeLocation.status === 'mock' ? 'Mock pin' : 'Live source'}
-          </em>
         </div>
 
         <div ref={mapNodeRef} className="workhall-map" aria-label="Interactive Work Hall locations map" />
@@ -472,14 +548,13 @@ export function LocationsMapSection() {
                     key={location.id}
                     className={location.id === activeLocationId ? 'branch-option is-selected' : 'branch-option'}
                     onClick={() => {
-                      hasManualBranchSelectionRef.current = true
-                      setActiveLocationId(location.id)
+                      setActiveLocationId(location.id, { manual: true })
                       setIsBranchMenuOpen(false)
                     }}
                   >
                     <span>
                       <strong>{location.area}</strong>
-                      <small>{location.status === 'mock' ? 'Mock pin' : 'Live branch'}</small>
+                      <small>{location.address}</small>
                     </span>
                     <em>{formatDistance(distance)}</em>
                   </button>

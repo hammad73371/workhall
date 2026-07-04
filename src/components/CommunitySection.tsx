@@ -2,10 +2,8 @@ import { useEffect, useRef } from "react";
 import adobeLogo from "../assets/community/adobe.svg";
 import anthropicLogo from "../assets/community/anthropic.svg";
 import dropboxLogo from "../assets/community/dropbox.svg";
-import emberLogo from "../assets/community/ember.svg";
 import figmaLogo from "../assets/community/figma.svg";
 import githubLogo from "../assets/community/github.svg";
-import metaLogo from "../assets/community/meta.svg";
 import microsoftLogo from "../assets/community/microsoft.svg";
 import notionLogo from "../assets/community/notion.svg";
 import slackLogo from "../assets/community/slack.svg";
@@ -15,10 +13,8 @@ import "./RotatingText.css";
 import "./CommunitySection.css";
 import {
   motion,
-  useInView,
   useScroll,
   useTransform,
-  useMotionValueEvent,
 } from "framer-motion";
 
 type CommunityTile =
@@ -187,35 +183,6 @@ const tiles: CommunityTile[] = [
 
 // const TOTAL_PAIRS = Math.ceil(tiles.length / 2);
 
-const teaserTiles = [
-  {
-    label: "Ember",
-    background: "#151515",
-    asset: emberLogo,
-    logoScale: "0.42",
-  },
-  { label: "Meta", background: "#f4f1ea", asset: metaLogo, logoScale: "0.52" },
-  {
-    label: "Dropbox",
-    background: "#0d54ff",
-    asset: dropboxLogo,
-    logoScale: "0.44",
-  },
-  {
-    label: "Spotify",
-    background: "#1ed760",
-    asset: spotifyLogo,
-    logoScale: "0.44",
-  },
-  { label: "Figma", background: "#101010", asset: figmaLogo, logoScale: "0.4" },
-  {
-    label: "Anthropic",
-    background: "#111111",
-    asset: anthropicLogo,
-    logoScale: "0.52",
-  },
-] as const;
-
 function ArrowLaunchIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -232,7 +199,6 @@ interface CommunityProps {
 export default function CommunitySection({ targetRef }: CommunityProps) {
   const gridRef = useRef<HTMLDivElement | null>(null);
   const tileRefs = useRef<Array<HTMLElement | null>>([]);
-  const teaserRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   // useEffect(() => {
   //   const grid = gridRef.current
@@ -271,11 +237,46 @@ export default function CommunitySection({ targetRef }: CommunityProps) {
     offset: ["start end", "start start"],
   });
 
-  const revealOrder = [
-    18, 15, 17, 16, 13, 12, 7, 13, 1, 10, 16, 4, 2, 11, 8, 14, 17, 5,
-  ];
+  const desktopColumns = 6;
+  const totalRows = Math.ceil(tiles.length / desktopColumns);
+  const entryOrder = tiles.map((_, index) => {
+    const row = Math.floor(index / desktopColumns);
+    const column = index % desktopColumns;
 
-  const total = revealOrder.length;
+    return row * desktopColumns + column;
+  });
+  const revealOrder = tiles.map((_, index) => {
+    const row = Math.floor(index / desktopColumns);
+    const column = index % desktopColumns;
+    const reverseRow = totalRows - 1 - row;
+
+    return reverseRow * desktopColumns + column;
+  });
+  const maxEntryOrder = Math.max(...entryOrder);
+  const maxOrder = Math.max(...revealOrder);
+
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        tileRefs.current.forEach((tile, index) => {
+          if (!tile) return;
+
+          const order = entryOrder[index];
+          const delayMs = 60 + (order / maxEntryOrder) * 420;
+          tile.style.transitionDelay = entry.isIntersecting ? `${delayMs}ms` : "0ms";
+          tile.classList.toggle("is-visible", entry.isIntersecting);
+        });
+      },
+      { threshold: 0.18, rootMargin: "0px 0px -8% 0px" }
+    );
+
+    observer.observe(grid);
+
+    return () => observer.disconnect();
+  }, [entryOrder, maxEntryOrder]);
 
   return (
     <section className="community-wrapper" aria-labelledby="community-title">
@@ -307,93 +308,140 @@ export default function CommunitySection({ targetRef }: CommunityProps) {
         </header>
 
         <div className="community-grid-wrap">
-          <div
-            ref={gridRef}
-            className="community-grid"
-            aria-label="Community wall"
-          >
-            {tiles.map((tile, index) => {
-              const order = revealOrder[index];
+          <div className="community-stage">
+            <div
+              ref={gridRef}
+              className="community-grid"
+              aria-label="Community wall"
+            >
+              {tiles.map((tile, index) => {
+                const row = Math.floor(index / desktopColumns);
+                const order = revealOrder[index];
+                const exitLeadIn = 0.03;
+                const staggerSpan = 0.46;
+                const fadeDistance = 0.13;
+                const topRowDelay = row === 0 ? 0.2 : 0;
+                const tileDelay =
+                  exitLeadIn + (order / maxOrder) * staggerSpan + topRowDelay;
 
-              const tileDelay = (order / (total - 1)) * 0.5;
-              const fadeDistance = 0.1;
-              
-              const opacity = useTransform(scrollYProgress, (latest) => {
-                const progress = (latest - tileDelay) / fadeDistance;
+                const exitProgress = useTransform(scrollYProgress, (latest) => {
+                  const progress = (latest - tileDelay) / fadeDistance;
+                  return Math.min(Math.max(progress, 0), 1);
+                });
+                const opacity = useTransform(exitProgress, [0, 1], [1, 0]);
+                const y = useTransform(exitProgress, [0, 1], [0, 110]);
+                const scale = useTransform(exitProgress, [0, 1], [1, 0.8]);
+                const filter = useTransform(
+                  exitProgress,
+                  [0, 1],
+                  ["blur(0px) saturate(1)", "blur(12px) saturate(0.65)"]
+                );
 
-                return 1 - Math.min(Math.max(progress, 0), 1);
-              });
-
-              return (
-                <motion.article
-                  key={`${tile.kind}-${tile.label}-${index}`}
-                  className={`community-tile community-tile--${tile.kind}`}
-                  ref={(node) => {
-                    tileRefs.current[index] = node;
-                  }}
-                  style={{
-                    opacity,
-                  }}
-                >
-                  <span className="community-tile__badge">{tile.badge}</span>
-
-                  {tile.kind === "logo" ? (
-                    <div
-                      className="community-tile__logo-surface"
-                      style={{ background: tile.background }}
-                    >
-                      <img
-                        className="community-tile__logo"
-                        src={tile.asset}
-                        alt={tile.label}
-                        style={{ transform: `scale(${tile.logoScale ?? "1"})` }}
-                      />
-                    </div>
-                  ) : (
-                    <img
-                      className="community-tile__photo"
-                      src={tile.image}
-                      alt={tile.label}
+                return (
+                  <article
+                    key={`${tile.kind}-${tile.label}-${index}`}
+                    className={`community-tile community-tile--${tile.kind}`}
+                    ref={(node) => {
+                      tileRefs.current[index] = node;
+                    }}
+                  >
+                    <motion.div
+                      className="community-tile-motion"
                       style={{
-                        objectPosition: tile.objectPosition ?? "center center",
+                        opacity,
+                        y,
+                        scale,
+                        filter,
                       }}
+                    >
+                      <span className="community-tile__badge">{tile.badge}</span>
+
+                      {tile.kind === "logo" ? (
+                        <div
+                          className="community-tile__logo-surface"
+                          style={{ background: tile.background }}
+                        >
+                          <img
+                            className="community-tile__logo"
+                            src={tile.asset}
+                            alt={tile.label}
+                            style={{ transform: `scale(${tile.logoScale ?? "1"})` }}
+                          />
+                        </div>
+                      ) : (
+                        <img
+                          className="community-tile__photo"
+                          src={tile.image}
+                          alt={tile.label}
+                          style={{
+                            objectPosition: tile.objectPosition ?? "center center",
+                          }}
+                        />
+                      )}
+                    </motion.div>
+                  </article>
+                );
+              })}
+            </div>
+
+            {/* <div className="community-teaser-row" aria-hidden="true">
+              {teaserTiles.map((tile, index) => {
+                const teaserLeadIn = 0.01;
+                const teaserStaggerSpan = 0.18;
+                const teaserTravel = 0.2;
+                const teaserDelay =
+                  teaserLeadIn +
+                  (index / Math.max(teaserTiles.length - 1, 1)) * teaserStaggerSpan;
+                const teaserProgress = useTransform(scrollYProgress, (latest) => {
+                  const progress = (latest - teaserDelay) / teaserTravel;
+                  return Math.min(Math.max(progress, 0), 1);
+                });
+                const teaserOpacity = useTransform(teaserProgress, [0, 1], [0, 1]);
+                const teaserY = useTransform(teaserProgress, [0, 1], [160, 0]);
+                const teaserScale = useTransform(teaserProgress, [0, 1], [0.76, 1]);
+                const teaserFilter = useTransform(
+                  teaserProgress,
+                  [0, 1],
+                  ["blur(14px) saturate(0.68)", "blur(0px) saturate(1)"]
+                );
+
+                return (
+                  <motion.div
+                    key={tile.label}
+                    className="community-teaser-tile"
+                    ref={(node) => {
+                      teaserRefs.current[index] = node;
+                    }}
+                    style={{
+                      background: tile.background,
+                      opacity: teaserOpacity,
+                      y: teaserY,
+                      scale: teaserScale,
+                      filter: teaserFilter,
+                    }}
+                  >
+                    <img
+                      className="community-teaser-tile__logo"
+                      src={tile.asset}
+                      alt=""
+                      style={{ transform: `scale(${tile.logoScale})` }}
                     />
-                  )}
-                </motion.article>
-              );
-            })}
+                  </motion.div>
+                );
+              })}
+            </div> */}
+
+            <div className="community-cta-row">
+              <a href="#book-tour" className="community-cta">
+                <span>Become Part Of The Community</span>
+                <span className="community-cta__badge" aria-hidden="true">
+                  <ArrowLaunchIcon />
+                </span>
+              </a>
+            </div>
           </div>
 
           <div className="community-handoff-trigger" aria-hidden="true" />
-
-          <div className="community-teaser-row" aria-hidden="true">
-            {teaserTiles.map((tile, index) => (
-              <div
-                key={tile.label}
-                className="community-teaser-tile"
-                style={{ background: tile.background }}
-                ref={(node) => {
-                  teaserRefs.current[index] = node;
-                }}
-              >
-                <img
-                  className="community-teaser-tile__logo"
-                  src={tile.asset}
-                  alt=""
-                  style={{ transform: `scale(${tile.logoScale})` }}
-                />
-              </div>
-            ))}
-          </div>
-
-          <div className="community-cta-row">
-            <a href="#book-tour" className="community-cta">
-              <span>Become Part Of The Community</span>
-              <span className="community-cta__badge" aria-hidden="true">
-                <ArrowLaunchIcon />
-              </span>
-            </a>
-          </div>
         </div>
       </div>
     </section>

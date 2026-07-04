@@ -118,7 +118,34 @@ export function ClickSpark({ sparkColor = '#6d4b2f', sparkSize = 12, sparkRadius
   const sparksRef = useRef<Spark[]>([])
   const frameRef = useRef<number | null>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
-  useEffect(() => { const canvas = canvasRef.current; const parent = canvas?.parentElement; if (!canvas || !parent) return; let resizeTimeout = 0; const resizeCanvas = () => { const { width, height } = parent.getBoundingClientRect(); const pixelRatio = window.devicePixelRatio || 1; const nextWidth = Math.max(1, Math.floor(width * pixelRatio)); const nextHeight = Math.max(1, Math.floor(height * pixelRatio)); if (canvas.width !== nextWidth || canvas.height !== nextHeight) { canvas.width = nextWidth; canvas.height = nextHeight; canvas.style.width = `${width}px`; canvas.style.height = `${height}px` } }; const handleResize = () => { window.clearTimeout(resizeTimeout); resizeTimeout = window.setTimeout(resizeCanvas, 100) }; const observer = new ResizeObserver(handleResize); observer.observe(parent); resizeCanvas(); return () => { observer.disconnect(); window.clearTimeout(resizeTimeout) } }, [])
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    let resizeTimeout = 0
+    const resizeCanvas = () => {
+      const pixelRatio = window.devicePixelRatio || 1
+      const width = window.innerWidth
+      const height = window.innerHeight
+      const nextWidth = Math.max(1, Math.floor(width * pixelRatio))
+      const nextHeight = Math.max(1, Math.floor(height * pixelRatio))
+      if (canvas.width !== nextWidth || canvas.height !== nextHeight) {
+        canvas.width = nextWidth
+        canvas.height = nextHeight
+        canvas.style.width = `${width}px`
+        canvas.style.height = `${height}px`
+      }
+    }
+    const handleResize = () => {
+      window.clearTimeout(resizeTimeout)
+      resizeTimeout = window.setTimeout(resizeCanvas, 100)
+    }
+    resizeCanvas()
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      window.clearTimeout(resizeTimeout)
+    }
+  }, [])
   const easeFunc = useCallback((progress: number) => { switch (easing) { case 'linear': return progress; case 'ease-in': return progress * progress; case 'ease-in-out': return progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress; case 'ease-out': default: return progress * (2 - progress) } }, [easing])
   useEffect(() => {
     const canvas = canvasRef.current
@@ -167,7 +194,16 @@ export function ClickSpark({ sparkColor = '#6d4b2f', sparkSize = 12, sparkRadius
     context.clearRect(0, 0, canvas.width, canvas.height)
     frameRef.current = null
   }, [duration, easeFunc, extraScale, sparkColor, sparkRadius, sparkSize])
-  const handleClick = (event: ReactMouseEvent<HTMLDivElement>) => { const canvas = canvasRef.current; if (!canvas) return; const rect = canvas.getBoundingClientRect(); const x = event.clientX - rect.left; const y = event.clientY - rect.top; const now = performance.now(); const newSparks = Array.from({ length: sparkCount }, (_, index) => ({ x, y, angle: (2 * Math.PI * index) / sparkCount, startTime: now })); sparksRef.current.push(...newSparks); if (frameRef.current === null) frameRef.current = window.requestAnimationFrame(draw) }
+  const handleClick = (event: ReactMouseEvent<HTMLDivElement>) => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const x = event.clientX
+    const y = event.clientY
+    const now = performance.now()
+    const newSparks = Array.from({ length: sparkCount }, (_, index) => ({ x, y, angle: (2 * Math.PI * index) / sparkCount, startTime: now }))
+    sparksRef.current.push(...newSparks)
+    if (frameRef.current === null) frameRef.current = window.requestAnimationFrame(draw)
+  }
   return <div className="click-spark" onClick={handleClick}><canvas ref={canvasRef} className="click-spark__canvas" aria-hidden="true" />{children}</div>
 }
 

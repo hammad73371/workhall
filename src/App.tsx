@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AmenitiesMarquee from "./components/AmenitiesMarquee";
 import { BookingConcierge } from "./components/booking/BookingConcierge";
 import CommunitySection from "./components/CommunitySection";
@@ -20,10 +20,12 @@ import {
 } from "lucide-react";
 import workhallOrange from "./assets/workhall-orange.svg";
 import "./App.css";
-import { useRef } from "react";
 import { PageTransition } from "./components/PageTransition";
 import PromiseSection from "./components/PromiseSection/PromiseSection";
+import { WorkspaceFitQuizSection } from "./components/WorkspaceFitQuizSection";
 import Footer from "./components/Footer/Footer";
+import { workHallLocations } from "./data/siteContent";
+import type { WorkspaceQuizAnswers } from "./types/site";
 const stats = [
   { value: "06", label: "Location", color: "#458E71" },
   { value: "07+", label: "Years", color: "#D26C46" },
@@ -70,6 +72,9 @@ function useCountUp(
 
 function App() {
   const whyWorkHallRef = useRef(null);
+  const [selectedLocationId, setSelectedLocationId] = useState(
+    workHallLocations[0].id,
+  );
 
   const [loaderDone, setLoaderDone] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -127,6 +132,16 @@ function App() {
     const timeout = window.setTimeout(() => setIsLoaded(true), 0);
     return () => window.clearTimeout(timeout);
   }, [loaderDone]);
+
+  const handleQuizComplete = (answers: WorkspaceQuizAnswers) => {
+    if (answers.locationId) {
+      setSelectedLocationId(answers.locationId);
+    }
+
+    document
+      .getElementById("locations")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   if (!loaderDone) {
     // return <PageLoader onComplete={() => setLoaderDone(true)} />;
@@ -380,7 +395,11 @@ function App() {
               </ScrollStack>
             </section>
             <PromiseSection />
-            <LocationsMapSection />
+            <WorkspaceFitQuizSection onComplete={handleQuizComplete} />
+            <LocationsMapSection
+              selectedLocationId={selectedLocationId}
+              onSelectedLocationChange={setSelectedLocationId}
+            />
             <Footer onSubscribe={(email) => console.log(email)} />
           </main>
         </PageTransition>

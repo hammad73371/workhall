@@ -87,9 +87,12 @@ img {
 }
 
 .click-spark__canvas {
-  position: absolute;
-  inset: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
   z-index: 80;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
 }
 

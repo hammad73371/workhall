@@ -1,4 +1,29 @@
 export type BookingPanel = 'location' | 'seats'
+export type WorkspaceQuizAnswerKey = 'workspaceType' | 'teamSize' | 'locationId' | 'timeline'
+export type WorkspaceTypeValue =
+  | 'coworking-desk'
+  | 'dedicated-desk'
+  | 'private-office'
+  | 'meeting-room'
+  | 'virtual-office'
+export type TeamSizeValue = 'solo' | '2-people' | '3-5-people' | '6-12-people' | '12-plus-people'
+export type MoveInTimelineValue = 'this-week' | 'this-month' | 'next-2-3-months' | 'just-exploring'
+export type QuizGlyphName =
+  | 'coworking'
+  | 'dedicated-desk'
+  | 'private-office'
+  | 'meeting-room'
+  | 'virtual-office'
+  | 'solo'
+  | 'pair'
+  | 'team-small'
+  | 'team-medium'
+  | 'team-large'
+  | 'location'
+  | 'week'
+  | 'month'
+  | 'later'
+  | 'explore'
 
 export type PricingPlan = {
   id: string
@@ -59,8 +84,25 @@ export type WorkHallLocation = {
   address: string
   coordinates: [number, number]
   mapsUrl: string
-  status: 'live' | 'mock'
-  note: string
+}
+
+export type WorkspaceQuizOption<TValue extends string = string> = {
+  value: TValue
+  label: string
+  icon: QuizGlyphName
+}
+
+export type WorkspaceQuizStep = {
+  key: WorkspaceQuizAnswerKey
+  prompt: string
+  options: WorkspaceQuizOption[]
+}
+
+export type WorkspaceQuizAnswers = {
+  workspaceType: WorkspaceTypeValue | null
+  teamSize: TeamSizeValue | null
+  locationId: WorkHallLocation['id'] | null
+  timeline: MoveInTimelineValue | null
 }
 
 export type UserCoordinates = {
