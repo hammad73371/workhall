@@ -5,6 +5,7 @@ import { karachiCenter, routeCasingLayerId, routeLayerId, routeSourceId, workHal
 import { createRouteData, formatDistance, getDistanceKm } from '../../lib/locationUtils'
 import type { GeolocationStatus, UserCoordinates } from '../../types/site'
 import { ArrowIcon, LocateIcon, SearchIcon } from '../shared/icons'
+import { ShuffleText } from '../shared/ShuffleText'
 
 const locationCardContent: Record<string, { label: string; headline: string; meta: string }> = {
   'shahrah-e-faisal': {
@@ -451,7 +452,7 @@ export function LocationsMapSection({
         <div className="location-copy__intro">
           <div>
             <div className="section-kicker">Karachi network</div>
-            <h2 id="locations-title">Find The Nearest Work Hall.</h2>
+            <h2 id="locations-title"><ShuffleText text="Find The Nearest Work Hall." finalColor="#15110d" /></h2>
             <p>Pick a branch and open the fastest route.</p>
           </div>
         </div>

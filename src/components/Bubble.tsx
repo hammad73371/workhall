@@ -68,10 +68,10 @@ export default function Bubble({
         <circle cx="12" cy="12" r="10" fill="currentColor" stroke="none" />
         <path
           d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
-          stroke="#F26B47"
+          stroke="#D26D45"
           strokeWidth="2.6"
         />
-        <path d="M12 17h.01" stroke="#F26B47" strokeWidth="3.2" />
+        <path d="M12 17h.01" stroke="#D26D45" strokeWidth="3.2" />
       </svg>
     </motion.div>
   );

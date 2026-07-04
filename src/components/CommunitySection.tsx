@@ -11,6 +11,7 @@ import spotifyLogo from "../assets/community/spotify.svg";
 import RotatingText from "./RotatingText";
 import "./RotatingText.css";
 import "./CommunitySection.css";
+import { ShuffleText } from "./shared/ShuffleText";
 import {
   motion,
   useScroll,
@@ -287,9 +288,9 @@ export default function CommunitySection({ targetRef }: CommunityProps) {
         </div>
 
         <header className="community-heading" id="community-title">
-          <span>that&apos;s why Work Hall is where</span>
+          <span><ShuffleText text="that's why Work Hall is where" finalColor="#15110d" /></span>
           <span className="community-heading__line">
-            <em>Pakistan&apos;s Top</em>
+            <em><ShuffleText text="Pakistan's Top" startDelay={90} finalColor="#15110d" /></em>
             <RotatingText
               texts={["Startups", "Agencies", "Creators", "Founders"]}
               rotationInterval={2000}
@@ -302,9 +303,9 @@ export default function CommunitySection({ targetRef }: CommunityProps) {
               splitLevelClassName="community-rotating-split"
               transition={{ type: "spring", damping: 30, stiffness: 400 }}
             />
-            <strong>come</strong>
+            <strong><ShuffleText text="come" startDelay={180} finalColor="#15110d" /></strong>
           </span>
-          <span>to work.</span>
+          <span><ShuffleText text="to work." startDelay={260} finalColor="#15110d" /></span>
         </header>
 
         <div className="community-grid-wrap">

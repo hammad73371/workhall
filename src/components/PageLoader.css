@@ -4,13 +4,13 @@
   z-index: 9999;
   pointer-events: all;
   overflow: hidden;
-  background: #bf603d;
+  background: #d26d45;
 }
 
 .loader-orange {
   position: absolute;
   inset: 0;
-  background: #bf603d;
+  background: #d26d45;
   z-index: 0;
 }
 

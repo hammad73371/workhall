@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500&family=DM+Sans:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&family=Jost:wght@400&display=swap');
 @import './styles/foundation.css';
 @import './styles/booking-pricing.css';
 @import './styles/story-location.css';
@@ -10,9 +9,9 @@
   --ink: #15110d;
   --muted: #857f78;
   --bone: #fffaf0;
-  --clay: #d26c46;
+  --clay: #d26d45;
   --aubergine: #321d32;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sans);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -155,7 +154,7 @@ img {
   border-radius: 5px;
   background: #ffffff;
   color: #000000;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sans);
   font-size: 16px;
   font-weight: 400;
   line-height: 1;
@@ -174,7 +173,7 @@ img {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(135deg, #df835d 0%, #d26c46 62%, #c96743 100%);
+  background: linear-gradient(135deg, #d26d45 0%, #d26d45 62%, #d26d45 100%);
   clip-path: inset(0 0 0 calc(100% - 36px) round 5px);
   transition: clip-path 440ms cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -187,7 +186,7 @@ img {
 }
 
 .figma-nav__item.is-open {
-  box-shadow: 0 12px 26px rgba(210, 108, 70, 0.18);
+  box-shadow: 0 12px 26px rgba(210, 109, 69, 0.18);
 }
 
 .figma-nav__item:hover,
@@ -210,7 +209,7 @@ img {
   width: 36px;
   height: 100%;
   border-radius: 0 5px 5px 0;
-  background: #d26c46;
+  background: #d26d45;
   flex-shrink: 0;
   transition:
     background 360ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -255,9 +254,9 @@ img {
   min-width: 149px;
   padding: 14px 28px;
   border-radius: 5px;
-  background: #c97b5a;
+  background: #d26d45;
   color: #ffffff;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--sans);
   font-size: 16px;
   font-weight: 500;
   line-height: 1;
@@ -275,10 +274,10 @@ img {
   gap: 14px;
   width: min(900px, calc(100vw - 80px));
   padding: 12px;
-  border: 1px solid rgba(151, 80, 43, 0.18);
+  border: 1px solid rgba(210, 109, 69, 0.18);
   border-radius: 14px;
   background:
-    radial-gradient(rgba(151, 80, 43, 0.08) 1px, transparent 1px),
+    radial-gradient(rgba(210, 109, 69, 0.08) 1px, transparent 1px),
     linear-gradient(180deg, rgba(255, 250, 240, 0.98), rgba(239, 225, 199, 0.98));
   background-size: 13px 13px, auto;
   box-shadow: 0 26px 76px rgba(94, 50, 28, 0.22);
@@ -305,7 +304,7 @@ img {
   display: grid;
   gap: 10px;
   padding-left: 14px;
-  border-left: 1px solid rgba(151, 80, 43, 0.16);
+  border-left: 1px solid rgba(210, 109, 69, 0.16);
 }
 
 .figma-feature-card {
@@ -317,7 +316,7 @@ img {
   align-content: end;
   overflow: hidden;
   padding: 18px;
-  border: 1px solid rgba(151, 80, 43, 0.16);
+  border: 1px solid rgba(210, 109, 69, 0.16);
   border-radius: 14px;
   background:
     linear-gradient(120deg, rgba(255, 250, 240, 0.9), rgba(255, 250, 240, 0.64)),
@@ -357,7 +356,7 @@ img {
 }
 
 .figma-feature-card:hover {
-  border-color: rgba(151, 80, 43, 0.24);
+  border-color: rgba(210, 109, 69, 0.24);
   box-shadow: 0 16px 36px rgba(94, 50, 28, 0.14);
   transform: translateY(-2px);
 }
@@ -384,11 +383,11 @@ img {
 .figma-feature-card__top .nav-glyph {
   width: 18px;
   height: 18px;
-  color: #d96b4a;
+  color: #d26d45;
 }
 
 .figma-feature-card__top em {
-  color: #d96b4a;
+  color: #d26d45;
   font-size: 11px;
   font-weight: 900;
   font-style: normal;
@@ -398,7 +397,7 @@ img {
 
 .figma-feature-card strong {
   color: #15110d;
-  font-family: 'Jost', sans-serif;
+  font-family: var(--sans);
   font-size: 18px;
   font-weight: 500;
   line-height: 1.06;
@@ -515,9 +514,9 @@ img {
 
 .figma-hero__headline-block h1 {
   margin: 0;
-  font-family: 'Futura PT', 'Futura-Book', 'Jost', sans-serif;
+  font-family: var(--display);
   font-size: clamp(54px, 6vw, 100px);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 0.95;
   letter-spacing: -0.03em;
 }
@@ -530,7 +529,7 @@ img {
 
 .figma-hero__headline-block h1 em {
   margin-top: 0;
-  color: #d26c46;
+  color: #d26d45;
 }
 
 .figma-hero__headline-block {
@@ -542,7 +541,7 @@ img {
   width: min(821px, 100%);
   margin: 0 0 auto;
   color: #857f78;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sans);
   font-size: clamp(15px, 1.6vw, 28px);
   font-weight: 400;
   line-height: 1.4;
@@ -605,7 +604,7 @@ img {
 
 .figma-search-card .booking-console--hero .booking-field:hover,
 .figma-search-card .booking-console--hero .booking-field[aria-expanded='true'] {
-  border-color: rgba(210, 108, 70, 0.34);
+  border-color: rgba(210, 109, 69, 0.34);
   background: rgba(255, 247, 237, 0.92);
   box-shadow: none;
   transform: none;
@@ -613,7 +612,7 @@ img {
 
 .figma-search-card .booking-field strong {
   color: #3f312d;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sans);
   font-size: 15px;
   font-weight: 500;
   letter-spacing: 0;
@@ -645,7 +644,7 @@ img {
   background: rgba(140, 132, 100, 0.14);
   color: #5d4b41;
   box-shadow: none;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--sans);
   font-size: 13px;
   font-weight: 500;
 }
@@ -672,7 +671,7 @@ img {
   min-height: 44px;
   padding: 0 22px;
   border-radius: 5px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--sans);
   font-size: 16px;
   font-weight: 500;
   line-height: 1;
@@ -728,9 +727,9 @@ img {
 
 .figma-search-card .booking-required-hint {
   margin-top: 6px;
-  border: 1px solid rgba(210, 108, 70, 0.2);
+  border: 1px solid rgba(210, 109, 69, 0.2);
   border-radius: 14px;
-  background: rgba(210, 108, 70, 0.08);
+  background: rgba(210, 109, 69, 0.08);
   color: #5f3c3a;
   font-size: 12px;
   font-weight: 700;
@@ -756,12 +755,12 @@ img {
 .figma-search-card .panel-option,
 .figma-search-card .booking-seat-presets button,
 .figma-search-card .seat-control button {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sans);
 }
 
 .figma-search-card .booking-popover__eyebrow {
   margin-bottom: 10px;
-  color: #d26c46;
+  color: #d26d45;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -780,21 +779,21 @@ img {
 
 .figma-search-card .panel-option:hover,
 .figma-search-card .panel-option.is-selected {
-  border-color: rgba(210, 108, 70, 0.28);
+  border-color: rgba(210, 109, 69, 0.28);
   background: rgba(255, 245, 235, 0.98);
   transform: none;
 }
 
 .figma-search-card .seat-control button {
   border-radius: 10px;
-  background: #d26c46;
+  background: #d26d45;
   color: #fffaf0;
   box-shadow: none;
 }
 
 .figma-search-card .seat-control strong {
   color: #3f2d30;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--sans);
   font-size: 36px;
 }
 
@@ -811,7 +810,7 @@ img {
 
 .figma-search-card .booking-seat-presets button:hover,
 .figma-search-card .booking-seat-presets button.is-selected {
-  border-color: rgba(210, 108, 70, 0.26);
+  border-color: rgba(210, 109, 69, 0.26);
   background: rgba(255, 243, 232, 1);
   color: #43282c;
 }
@@ -832,21 +831,21 @@ img {
 
 .figma-search-card .plan-card:hover,
 .figma-search-card .plan-card.is-selected {
-  border-color: rgba(210, 108, 70, 0.24);
+  border-color: rgba(210, 109, 69, 0.24);
   background: rgba(255, 245, 235, 0.98);
   transform: none;
 }
 
 .figma-search-card .plan-card__top strong {
   color: #3d2c31;
-  font-family: 'Jost', 'Nunito Sans', sans-serif;
+  font-family: var(--sans);
   font-size: 19px;
   font-weight: 500;
   letter-spacing: -0.03em;
 }
 
 .figma-search-card .plan-card__top em {
-  color: #c97b5a;
+  color: #d26d45;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -896,7 +895,7 @@ img {
 
 .figma-search-card .seat-control--popover button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 20px rgba(210, 108, 70, 0.14);
+  box-shadow: 0 10px 20px rgba(210, 109, 69, 0.14);
 }
 
 .figma-search-card .seat-control--popover strong {
@@ -908,7 +907,7 @@ img {
 .figma-search-card .booking-seat-story {
   margin: 12px 0 0;
   color: #6f6257;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sans);
   font-size: 12px;
   font-weight: 500;
   line-height: 1.35;
@@ -934,9 +933,9 @@ img {
   padding: 0 16px;
   border: 0;
   border-radius: 14px;
-  background: #d26c46;
+  background: #d26d45;
   color: #fffaf0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--sans);
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0;
@@ -947,8 +946,8 @@ img {
 }
 
 .figma-search-card .seat-confirm:hover {
-  background: #c8643f;
-  box-shadow: 0 12px 22px rgba(210, 108, 70, 0.18);
+  background: #d26d45;
+  box-shadow: 0 12px 22px rgba(210, 109, 69, 0.18);
   transform: translateY(-1px);
 }
 
@@ -986,7 +985,7 @@ img {
   gap: 5px;
   margin-bottom: 32px;
   color: #000000;
-  font-family: 'Archivo', sans-serif;
+  font-family: var(--sans);
   font-size: 18px;
   font-weight: 500;
   line-height: 1;
@@ -1006,17 +1005,17 @@ img {
   gap: 0;
 }
 
-.plans-header__heading span {
+.plans-header__heading > span {
   color: #000000;
-  font-family: 'Futura PT', 'Jost', sans-serif;
+  font-family: var(--display);
   font-size: 80px;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1;
   letter-spacing: -0.02em;
 }
 
 .plans-header__heading .is-accent {
-  color: #c97b5a;
+  color: #d26d45;
   font-size: 86px;
 }
 
@@ -1024,7 +1023,7 @@ img {
   max-width: 620px;
   margin: 24px 0 0;
   color: #857f78;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sans);
   font-size: 22px;
   font-weight: 300;
   line-height: 1.4;
@@ -1065,9 +1064,9 @@ img {
   margin: 0 0 18px;
   padding: 0 8px;
   color: #222013;
-  font-family: 'Futura PT', 'Jost', sans-serif;
+  font-family: var(--display);
   font-size: 62px;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1;
   letter-spacing: -0.05em;
   text-transform: none;
@@ -1116,7 +1115,7 @@ img {
   border-radius: 12px;
   overflow: hidden;
   flex-shrink: 0;
-  border: 1.5px solid #c97b5a;
+  border: 1.5px solid #d26d45;
   cursor: pointer;
 }
 
@@ -1156,7 +1155,7 @@ img {
 
 .category-path {
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sans);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -1169,7 +1168,7 @@ img {
   border-radius: 999px;
   padding: 4px 12px;
   color: #ffffff;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sans);
   font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
@@ -1184,8 +1183,8 @@ img {
 }
 
 .card-overline {
-  color: #c97b5a;
-  font-family: 'DM Sans', sans-serif;
+  color: #d26d45;
+  font-family: var(--sans);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -1195,7 +1194,7 @@ img {
 .card-middle h4 {
   margin: 4px 0 8px;
   color: #ffffff;
-  font-family: 'Futura PT', 'Jost', sans-serif;
+  font-family: var(--display);
   font-size: 42px;
   font-weight: 700;
   line-height: 1;
@@ -1207,7 +1206,7 @@ img {
   max-width: 280px;
   margin: 0;
   color: rgba(255, 255, 255, 0.85);
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sans);
   font-size: 13px;
   font-weight: 400;
   line-height: 1.5;
@@ -1235,7 +1234,7 @@ img {
   width: 72px;
   flex-shrink: 0;
   color: rgba(255, 255, 255, 0.6);
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sans);
   font-size: 11px;
   font-weight: 400;
 }
@@ -1252,7 +1251,7 @@ img {
   display: block;
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #c97b5a, #e8956b);
+  background: linear-gradient(90deg, #d26d45, #d26d45);
 }
 
 .card-cta-row {
@@ -1269,7 +1268,7 @@ img {
   border-radius: 999px;
   padding: 9px 18px;
   color: #ffffff;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sans);
   font-size: 13px;
   font-weight: 500;
   white-space: nowrap;
@@ -1309,7 +1308,7 @@ img {
   max-width: none;
   margin: 0;
   color: #222013;
-  font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+  font-family: var(--sans);
   font-size: 12px;
   font-weight: 400;
   line-height: 1.32;
@@ -1323,7 +1322,7 @@ img {
   gap: 3px;
   margin-top: 4px;
   color: #222013;
-  font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+  font-family: var(--sans);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.015em;
@@ -1349,12 +1348,17 @@ img {
   flex-shrink: 0;
 }
 
+.plans-scroll-section,
+.plans-scroll-section * {
+  font-kerning: normal;
+}
+
 .plans-scroll-section__progress {
   position: absolute;
   bottom: 0;
   left: 0;
   height: 3px;
-  background: #c97b5a;
+  background: #d26d45;
   transition: none;
 }
 
@@ -1380,14 +1384,14 @@ img {
 }
 
 .figma-stat strong {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--sans);
   font-size: clamp(48px, 3.7vw, 70.78px);
   font-weight: 500;
   line-height: 1;
 }
 
 .figma-stat span {
-  font-family: 'Archivo', sans-serif;
+  font-family: var(--sans);
   font-size: clamp(21px, 1.68vw, 32.17px);
   font-weight: 400;
   line-height: 1;
@@ -1457,7 +1461,7 @@ img {
 .word-rise {
   display: inline-block;
   color: #000000;
-  font-family: 'Futura PT', 'Futura-Book', 'Jost', sans-serif;
+  font-family: var(--display);
   font-size: clamp(54px, 6vw, 100px);
   font-weight: 400;
   line-height: 0.95;
@@ -1516,7 +1520,7 @@ img {
 
   @keyframes colorBleed {
     from { color: #000000; }
-    to { color: #d26c46; }
+    to { color: #d26d45; }
   }
 
   @keyframes fadeUp {
@@ -1778,7 +1782,7 @@ img {
     padding: 34px 0 0 56px;
   }
 
-  .plans-header__heading span {
+  .plans-header__heading > span {
     font-size: clamp(58px, 7vh, 74px);
   }
 
@@ -1858,7 +1862,7 @@ img {
     height: 44px;
     padding: 0 11px;
     border-radius: 12px;
-    background: #d26c46;
+    background: #d26d45;
     color: #ffffff;
     flex-shrink: 0;
   }
@@ -1950,7 +1954,7 @@ img {
     justify-content: center;
     min-height: 50px;
     border-radius: 12px;
-    background: #c97b5a;
+    background: #d26d45;
     color: #ffffff;
     font-size: 15px;
     font-weight: 500;
@@ -2098,7 +2102,7 @@ img {
     height: 46px;
     padding: 0 11px;
     border-radius: 12px;
-    background: #d26c46;
+    background: #d26d45;
     color: #ffffff;
   }
 
@@ -2189,7 +2193,7 @@ img {
     justify-content: center;
     min-height: 50px;
     border-radius: 12px;
-    background: #c97b5a;
+    background: #d26d45;
     color: #ffffff;
     font-size: 15px;
     font-weight: 500;
@@ -2270,7 +2274,7 @@ img {
     pointer-events: auto;
   }
 
-  .plans-scroll-section--mobile .plans-header__heading span {
+  .plans-scroll-section--mobile .plans-header__heading > span {
     font-size: clamp(42px, 7vw, 72px);
     line-height: 0.95;
   }

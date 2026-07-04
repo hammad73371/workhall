@@ -8,6 +8,7 @@
   border: 1px solid rgba(34, 32, 19, 0.1);
   border-radius: 6px;
   box-shadow: none;
+  font-family: var(--sans);
 }
 
 .card__media {
@@ -25,8 +26,8 @@
 
 .card__title {
   margin: 0;
-  font-family: "Futura PT", "Jost", sans-serif;
-  font-weight: 400;
+  font-family: var(--display);
+  font-weight: 700;
   font-style: normal;
   font-size: clamp(1.8rem, 4.2vw, 3.1rem);
   line-height: 1;
@@ -49,7 +50,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  font-family: "Archivo", sans-serif;
+  font-family: var(--sans);
   font-weight: 400;
   font-style: normal;
   font-size: 10px;
@@ -79,7 +80,7 @@
 
 .card__description {
   margin: 0.7rem 0 0.95rem;
-  font-family: "Archivo", sans-serif;
+  font-family: var(--sans);
   font-weight: 400;
   font-style: normal;
   font-size: 11px;
@@ -101,13 +102,21 @@
 }
 
 .card__tag {
-  font-family: "Archivo", sans-serif;
+  font-family: var(--sans);
   font-weight: 400;
   font-style: normal;
   font-size: 10px;
   line-height: 1;
   letter-spacing: 0;
   color: var(--color-ink);
+}
+
+.card__header,
+.card__cta,
+.card__description,
+.card__tags,
+.card__tag {
+  font-family: var(--sans);
 }
 
 .card__tag::before {

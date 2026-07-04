@@ -11,7 +11,7 @@
   overflow: hidden;
   border-radius: 24px 24px 0 0;
   z-index: 1;
-  background: #F26B47;
+  background: #D26D45;
 
   /* new */
   display: flex;
@@ -40,7 +40,7 @@
   transform: translateX(-50%);
   transform-origin: center bottom;
   will-change: transform, opacity;
-  color: #000;
+  color: #F8F0E3;
 }
 
 .wh-overlay__icon {
@@ -67,7 +67,7 @@
   gap: 7px;
   margin-bottom: 22px;
   color: #ffffff;
-  font-family: "DM Sans", sans-serif;
+  font-family: var(--sans);
   font-size: 14px;
   font-weight: 400;
   line-height: 1;
@@ -84,8 +84,8 @@
   display: grid;
   gap: clamp(8px, 1vw, 14px);
   margin: 0;
-  color: #000;
-  font-family: "Futura PT", "Futura-Book", "Jost", sans-serif;
+  color: #F8F0E3;
+  font-family: var(--display);
   font-size: clamp(3rem, 6.4vw, 6.45rem);
   font-weight: 700;
   line-height: 1.04;

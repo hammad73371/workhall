@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { promiseSteps } from "./promiseData";
 import "./PromiseSection.css";
+import { ShuffleText } from "../shared/ShuffleText";
 
 const DIM_OPACITY = 0.3;
 const FULL_OPACITY = 1;
@@ -31,7 +32,7 @@ function PromiseSection() {
     <section className="promise-section">
       <motion.div className="promise-section__inner" style={{ opacity }}>
         <h2 className="promise-section__heading">
-          and nothing you don&apos;t.
+          <ShuffleText text="and nothing you don't." />
         </h2>
 
         <div ref={sectionRef} className="promise-steps" role="list">

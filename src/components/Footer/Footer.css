@@ -7,7 +7,7 @@
   --sp-gray-400: #b4b1ab;
   --sp-gray-500: #8a877f;
   --sp-gray-600: #6b6862;
-  --sp-orange: #c8632a;
+  --sp-orange: #d26d45;
   --sp-radius-sm: 6px;
   --sp-radius-md: 10px;
   --sp-radius-pill: 999px;
@@ -16,9 +16,7 @@
 
   background: var(--sp-white);
   color: var(--sp-black);
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica,
-    Arial, sans-serif;
+  font-family: var(--sans);
   padding: clamp(32px, 5vw, 64px) clamp(20px, 5vw, 64px) 0;
   box-sizing: border-box;
 }
@@ -66,6 +64,7 @@
   font-weight: 800;
   letter-spacing: -0.02em;
   margin: 0;
+  font-family: var(--display);
 }
 
 .sp-footer-tagline {
@@ -276,6 +275,7 @@
   margin: 0 0 14px;
   font-size: 13px;
   color: var(--sp-gray-500);
+  font-family: var(--display);
 }
 
 .sp-footer-links {
@@ -295,7 +295,7 @@
 .sp-footer-link:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
-  color: #d26c46;
+  color: #d26d45;
   transition: color 0.15s ease;
 }
 

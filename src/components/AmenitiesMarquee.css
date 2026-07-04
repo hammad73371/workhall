@@ -153,7 +153,7 @@
 
 /* Gradient bloom - coral/pink top-left corner */
 .amenity-card-name {
-  font-family: "Futura PT", "Jost", sans-serif;
+  font-family: var(--display);
   font-size: clamp(28px, 3.8vw, 60px);
   font-weight: 900;
   line-height: 1;
@@ -245,7 +245,7 @@
 }
 
 .amenity-back-kicker {
-  font-family: "DM Sans", sans-serif;
+  font-family: var(--sans);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -256,7 +256,7 @@
 }
 
 .amenity-back-heading {
-  font-family: "Futura PT", "Jost", sans-serif;
+  font-family: var(--display);
   font-size: clamp(18px, 2vw, 28px);
   font-weight: 700;
   line-height: 1.15;
@@ -273,7 +273,7 @@
 }
 
 .amenity-back-body {
-  font-family: "DM Sans", sans-serif;
+  font-family: var(--sans);
   font-size: clamp(12px, 1vw, 14px);
   font-weight: 400;
   line-height: 1.6;

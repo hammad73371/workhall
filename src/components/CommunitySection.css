@@ -17,7 +17,7 @@
   align-items: center;
   gap: 10px;
   color: #000000;
-  font-family: "DM Sans", sans-serif;
+  font-family: var(--sans);
   font-size: clamp(18px, 1.55vw, 25px);
   font-weight: 300;
   line-height: 1.32;
@@ -26,7 +26,7 @@
 .community-kicker__square {
   width: clamp(18px, 1.1vw, 25px);
   height: clamp(18px, 1.1vw, 25px);
-  background: #f26b47;
+  background: #d26d45;
   flex-shrink: 0;
 }
 
@@ -35,9 +35,9 @@
   gap: clamp(12px, 1.1vw, 22px);
   margin: clamp(34px, 3vw, 54px) 0 0;
   color: #000000;
-  font-family: "Futura PT", "Futura-Book", "Jost", sans-serif;
+  font-family: var(--display);
   font-size: clamp(34px, 3.95vw, 70px);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.02;
   letter-spacing: -0.03em;
 }
@@ -58,11 +58,11 @@
 .community-heading__line strong {
   font: inherit;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .community-heading__line em {
-  color: #c97b5a;
+  color: #d26d45;
   margin-right: clamp(12px, 1vw, 22px);
 }
 
@@ -81,13 +81,13 @@
   min-height: clamp(54px, 4vw, 72px);
   padding: 8px 16px 8px 12px;
   border-radius: 5px;
-  background: #f26b47;
+  background: #d26d45;
   color: #ffffff;
   overflow: hidden;
   vertical-align: middle;
-  font-family: "Inter", sans-serif;
+  font-family: var(--display);
   font-size: clamp(27.36px, 2.394vw, 37.62px);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1;
   white-space: nowrap;
   box-sizing: border-box;
@@ -206,7 +206,7 @@
   border-radius: 6px;
   background: rgba(245, 240, 232, 0.16);
   color: rgba(247, 240, 231, 0.92);
-  font-family: "DM Sans", sans-serif;
+  font-family: var(--sans);
   font-size: clamp(8px, 0.58vw, 10px);
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -315,7 +315,7 @@
   border-radius: 12px;
   background: #f4f4f4;
   color: #000000;
-  font-family: "Inter", sans-serif;
+  font-family: var(--sans);
   font-size: clamp(18px, 1.35vw, 22px);
   font-weight: 400;
   line-height: 1;
@@ -335,7 +335,7 @@
   width: 62px;
   height: 62px;
   border-radius: 10px;
-  background: #f26b47;
+  background: #d26d45;
   color: #ffffff;
   flex-shrink: 0;
 }

@@ -1,4 +1,4 @@
-﻿.membership-band {
+.membership-band {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 0.84fr) minmax(430px, 1fr);
@@ -104,7 +104,7 @@
   width: 84%;
   height: 0.15em;
   border-radius: 999px 70% 999px 55%;
-  background: linear-gradient(90deg, rgba(212, 101, 67, 0.96), rgba(214, 170, 58, 0.84));
+  background: linear-gradient(90deg, rgba(210, 109, 69, 0.96), rgba(214, 170, 58, 0.84));
   content: '';
   transform: translateX(-50%) rotate(-1deg);
 }
@@ -161,7 +161,7 @@
   color: var(--ink);
   font-family: var(--display);
   font-size: clamp(22px, 2.4vw, 32px);
-  font-weight: 650;
+  font-weight: 700;
   line-height: 1.05;
 }
 
@@ -325,7 +325,7 @@
   color: var(--ink);
   font-family: var(--display);
   font-size: clamp(28px, 3vw, 38px);
-  font-weight: 650;
+  font-weight: 700;
   line-height: 1.04;
 }
 
@@ -383,7 +383,7 @@
   margin-top: 0;
   border: 1px solid rgba(84, 55, 29, 0.16);
   border-radius: 24px;
-  background: #d47453;
+  background: #d26d45;
   box-shadow: 0 28px 82px rgba(64, 43, 22, 0.14);
 }
 
@@ -417,7 +417,7 @@
   color: var(--bone);
   font-family: var(--display);
   font-size: 41.6px;
-  font-weight: 650;
+  font-weight: 700;
   letter-spacing: 0;
   line-height: 0.94;
   white-space: nowrap;
@@ -447,7 +447,7 @@
   border: 1px solid rgba(255, 250, 240, 0.24);
   border-radius: 8px;
   background: var(--bone);
-  color: #d47453;
+  color: #d26d45;
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -524,7 +524,7 @@
 
 .location-branch-card:hover,
 .location-branch-card.is-active {
-  border-color: rgba(212, 101, 67, 0.28);
+  border-color: rgba(210, 109, 69, 0.28);
   box-shadow: 0 20px 44px rgba(64, 43, 22, 0.12);
   transform: translateY(-2px);
 }
@@ -535,7 +535,7 @@
 
 .location-branch-card.is-active::after {
   background: var(--clay);
-  box-shadow: 0 0 0 5px rgba(212, 101, 67, 0.12);
+  box-shadow: 0 0 0 5px rgba(210, 109, 69, 0.12);
 }
 
 .location-branch-card__visual {
@@ -676,7 +676,7 @@
   z-index: 5;
   max-width: min(360px, calc(100% - 32px));
   padding: 10px 12px;
-  border: 1px solid rgba(212, 101, 67, 0.18);
+  border: 1px solid rgba(210, 109, 69, 0.18);
   border-radius: 8px;
   background: rgba(255, 250, 240, 0.86);
   color: var(--clay);
@@ -1891,7 +1891,7 @@
   margin-top: 14px;
   font-family: var(--display);
   font-size: clamp(74px, 9vw, 142px);
-  font-weight: 650;
+  font-weight: 700;
   line-height: 0.82;
   text-transform: uppercase;
 }
@@ -2477,7 +2477,7 @@
 }
 
 .pricing-audience-group {
-  --pricing-frame: #d46543;
+  --pricing-frame: #d26d45;
   isolation: isolate;
 }
 
@@ -2535,7 +2535,7 @@
 .pricing-section--horizontal.is-pricing-view .pricing-audience-group--individuals::after {
   box-shadow:
     inset 0 0 0 1px rgba(255, 250, 240, 0.42),
-    0 28px 82px rgba(212, 101, 67, 0.16);
+    0 28px 82px rgba(210, 109, 69, 0.16);
 }
 
 .pricing-section--horizontal.is-pricing-view .pricing-audience-group--teams::after {
@@ -2720,7 +2720,7 @@
 }
 
 .pricing-lab[data-audience='teams'] .pricing-lab__headline p {
-  color: rgba(217, 107, 67, 0.78);
+  color: rgba(210, 109, 69, 0.78);
 }
 
 .pricing-lab[data-audience='teams'] .section-kicker,
@@ -2729,22 +2729,22 @@
 }
 
 .pricing-lab[data-audience='teams'] .pricing-lab__switcher {
-  border-color: rgba(217, 107, 67, 0.34);
-  background: rgba(217, 107, 67, 0.16);
+  border-color: rgba(210, 109, 69, 0.34);
+  background: rgba(210, 109, 69, 0.16);
 }
 
 .pricing-lab[data-audience='teams'] .pricing-lab__switcher button {
-  border-color: rgba(217, 107, 67, 0.2);
+  border-color: rgba(210, 109, 69, 0.2);
   background: rgba(255, 250, 240, 0.9);
   color: var(--ink);
 }
 
 .pricing-lab[data-audience='teams'] .pricing-lab__switcher button:hover,
 .pricing-lab[data-audience='teams'] .pricing-lab__switcher button.is-active {
-  border-color: rgba(217, 107, 67, 0.72);
+  border-color: rgba(210, 109, 69, 0.72);
   background: var(--clay);
   color: var(--ink);
-  box-shadow: 0 14px 34px rgba(217, 107, 67, 0.22);
+  box-shadow: 0 14px 34px rgba(210, 109, 69, 0.22);
 }
 
 .pricing-lab[data-audience='teams'] .pricing-lab__switcher button.is-active span {
@@ -2943,7 +2943,7 @@
 }
 
 .pricing-lab[data-audience='teams'] .pricing-lab__board-note {
-  border-color: rgba(217, 107, 67, 0.24);
+  border-color: rgba(210, 109, 69, 0.24);
   background: rgba(255, 250, 240, 0.9);
 }
 
@@ -3276,6 +3276,7 @@
     animation: none;
   }
 }
+
 
 
 

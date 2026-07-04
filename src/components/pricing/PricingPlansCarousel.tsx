@@ -6,6 +6,7 @@ import { cn, getRevealMotionProps } from '../../lib/siteMotion'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import type { PricingPlan } from '../../types/site'
 import { ArrowIcon, CheckIcon } from '../shared/icons'
+import { ShuffleText } from '../shared/ShuffleText'
 
 function getInitialPricingAudience(): PricingPlan['audience'] {
   if (typeof window === 'undefined') return 'individuals'
@@ -188,7 +189,7 @@ export function PricingPlansCarousel({
             >
               Plans and pricing
             </motion.div>
-            <h2 id="pricing-title">Choose the amount of room your workday needs.</h2>
+            <h2 id="pricing-title"><ShuffleText text="Choose the amount of room your workday needs." finalColor="#15110d" /></h2>
             <p>
               No pricing maze, no office jargon. Start with the way you work, then let the plan show how much privacy, rhythm, and support you actually need.
             </p>

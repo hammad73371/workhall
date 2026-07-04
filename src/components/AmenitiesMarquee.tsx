@@ -27,9 +27,9 @@ const amenities = [
     kicker: "Always open when work spills over",
     heading1: "Open 24/7, 365 Days\nWith Full Access",
     heading: "Free Gated Parking At All Locations",
-    bg: "#D26C46",
+    bg: "#D26D45",
 
-    iconBg: "#893A1E",
+    iconBg: "#D26D45",
     body: "Early starts, late decks, weekend catch-ups, and off-pattern schedules still land in a room that is already ready.",
     icon: <ShieldCheck size={25} color="#FFFFFF" />,
   },
@@ -132,9 +132,9 @@ const amenities = [
     kicker: "One less errand",
     heading1: "Car & Bike Cleaning\nOn Site",
     heading: "Car & Bike Cleaning On Site",
-    bg: "#D26C46",
+    bg: "#D26D45",
 
-    iconBg: "#893A1E",
+    iconBg: "#D26D45",
     body: "One more errand stays off the to-do list while the workday keeps moving.",
     icon: <Sparkles size={25} color="#FFFFFF" />,
   },
@@ -149,7 +149,7 @@ const amenities = [
 // };
 
 const backgrounds: Record<string, string> = {
-  "#D26C46": "#C4532B",
+  "#D26D45": "#D26D45",
   "#E0A5CF": "#B24C8B",
   "#458E71": "#296549",
   "#516AA9": "#3F5FAA",

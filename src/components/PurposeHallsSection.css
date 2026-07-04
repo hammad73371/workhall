@@ -68,7 +68,7 @@
   align-items: center;
   gap: clamp(6px, 0.5vw, 10px);
   color: #000000;
-  font-family: 'Archivo', sans-serif;
+  font-family: var(--sans);
   font-size: var(--ph-kicker-size);
   font-weight: 500;
   line-height: 1.08;
@@ -88,18 +88,18 @@
   width: 100%;
 }
 
-.ph-clean-heading span {
+.ph-clean-heading > span {
   color: #15110d;
-  font-family: 'Futura PT', 'Futura-Book', 'Jost', sans-serif;
+  font-family: var(--display);
   font-size: var(--ph-heading-size);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 0.86;
   letter-spacing: 0;
   white-space: nowrap;
 }
 
 .ph-clean-heading .is-accent {
-  color: #c97b5a;
+  color: #d26d45;
 }
 
 .ph-clean-body {
@@ -146,9 +146,9 @@
 .ph-clean-item-copy h3 {
   margin: 0;
   color: #857f78;
-  font-family: 'Instrument Serif', serif;
+  font-family: var(--display);
   font-size: var(--ph-title-size);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.08;
   transform: scale(1) translateX(0);
   transform-origin: left center;
@@ -162,7 +162,7 @@
   margin: 0;
   color: #857f78;
   opacity: 0.55;
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--sans);
   font-size: var(--ph-body-size);
   font-weight: 400;
   line-height: 1.4;
@@ -203,7 +203,7 @@
   left: 0;
   width: var(--ph-indicator-size);
   height: var(--ph-indicator-size);
-  background: #c97b5a;
+  background: #d26d45;
   transform-origin: center;
   transition:
     transform var(--ph-motion-duration) var(--ph-motion-ease),
@@ -282,9 +282,9 @@
   left: clamp(20px, 2vw, 30px);
   bottom: clamp(20px, 2.2vw, 30px);
   color: #ffffff;
-  font-family: 'Instrument Serif', serif;
+  font-family: var(--display);
   font-size: clamp(26px, 2vw, 38px);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 1.1;
   text-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
 }
@@ -427,7 +427,7 @@
     overflow: visible;
   }
 
-  .ph-clean-heading span {
+  .ph-clean-heading > span {
     white-space: normal;
   }
 

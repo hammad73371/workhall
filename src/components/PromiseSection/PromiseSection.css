@@ -1,11 +1,11 @@
 .promise-section {
   background: linear-gradient(
     160deg,
-    #d26c46 0%,
-    #d26c46 45%,
-    #d67a57 65%,
-    #dc8f70 85%,
-    #df9a7c 100%
+    #d26d45 0%,
+    #d26d45 45%,
+    #d26d45 65%,
+    #d26d45 85%,
+    #d26d45 100%
   );
 
   color: #f8f0e3;
@@ -20,8 +20,8 @@
 
 .promise-section__heading {
   margin: 0 0 clamp(3rem, 9vw, 6rem);
-  font-family: "Instrument ", Serif;
-  font-weight: 500;
+  font-family: var(--display);
+  font-weight: 700;
   font-size: clamp(2.1rem, 6vw, 4.4rem);
   line-height: 1.15;
   color: inherit;
@@ -66,7 +66,7 @@
 
 .promise-steps__label {
   margin: 0;
-  font-family: "DM Sans";
+  font-family: var(--sans);
   font-size: clamp(0.85rem, 1.6vw, 1.05rem);
   font-weight: 400;
   letter-spacing: 0.01em;

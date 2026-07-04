@@ -1,5 +1,5 @@
 .workspace-quiz-section {
-  --workspace-quiz-orange: #d47553;
+  --workspace-quiz-orange: #d26d45;
   --workspace-quiz-cream: #ece4d7;
   --workspace-quiz-text: #1c160f;
   position: relative;
@@ -58,7 +58,7 @@
 
 .workspace-quiz__chrome-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  background: #de8a6c;
+  background: #d26d45;
 }
 
 .workspace-quiz__chrome-button:disabled {
@@ -93,7 +93,7 @@
 
 .workspace-quiz__progress {
   color: rgba(28, 22, 15, 0.72);
-  font-family: "DM Sans", sans-serif;
+  font-family: var(--sans);
   font-size: 15px;
   font-weight: 500;
   letter-spacing: 0.04em;
@@ -121,7 +121,7 @@
 .workspace-quiz__title {
   margin: 0;
   color: var(--workspace-quiz-text);
-  font-family: "Futura PT", "Futura-Book", "Jost", sans-serif;
+  font-family: var(--display);
   font-size: clamp(4rem, 7vw, 6rem);
   font-weight: 700;
   line-height: 0.98;
@@ -139,7 +139,7 @@
   width: min(620px, 100%);
   margin: 0;
   color: rgba(28, 22, 15, 0.76);
-  font-family: "DM Sans", sans-serif;
+  font-family: var(--sans);
   font-size: clamp(1rem, 1.3vw, 1.2rem);
   line-height: 1.55;
   text-align: center;
@@ -158,16 +158,16 @@
   align-items: center;
   min-height: 40px;
   padding: 0 16px;
-  border: 1px solid rgba(212, 117, 83, 0.22);
+  border: 1px solid rgba(210, 109, 69, 0.22);
   border-radius: 999px;
   background: var(--workspace-quiz-orange);
   color: var(--workspace-quiz-cream);
-  font-family: "DM Sans", sans-serif;
+  font-family: var(--sans);
   font-size: 0.92rem;
   font-weight: 600;
   line-height: 1;
   box-shadow:
-    0 12px 24px rgba(212, 117, 83, 0.12),
+    0 12px 24px rgba(210, 109, 69, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
@@ -178,7 +178,7 @@
   align-items: center;
   gap: 10px;
   color: var(--workspace-quiz-orange);
-  font-family: "DM Sans", sans-serif;
+  font-family: var(--sans);
   font-size: 0.92rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -190,10 +190,10 @@
   width: 92px;
   height: 92px;
   border-radius: 28px;
-  border: 1px solid rgba(212, 118, 83, 0.22);
+  border: 1px solid rgba(210, 109, 69, 0.22);
   background: var(--workspace-quiz-orange);
   box-shadow:
-    0 16px 34px rgba(212, 118, 83, 0.18),
+    0 16px 34px rgba(210, 109, 69, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
   display: inline-flex;
   align-items: center;
@@ -229,11 +229,11 @@
   position: absolute;
   width: clamp(180px, 18vw, 220px);
   padding: 18px 18px 16px;
-  border: 1px solid rgba(212, 118, 83, 0.18);
+  border: 1px solid rgba(210, 109, 69, 0.18);
   border-radius: 22px;
   background: var(--workspace-quiz-orange);
   box-shadow:
-    0 18px 44px rgba(212, 118, 83, 0.18),
+    0 18px 44px rgba(210, 109, 69, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.16);
   display: grid;
   gap: 10px;
@@ -268,7 +268,7 @@
 
 .workspace-quiz__intro-sidecard strong {
   color: var(--workspace-quiz-cream);
-  font-family: "Futura PT", "Futura-Book", "Jost", sans-serif;
+  font-family: var(--display);
   font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -276,7 +276,7 @@
 
 .workspace-quiz__intro-sidecard span {
   color: rgba(236, 228, 215, 0.84);
-  font-family: "DM Sans", sans-serif;
+  font-family: var(--sans);
   font-size: 0.92rem;
   line-height: 1.45;
 }
@@ -340,7 +340,7 @@
   width: 100%;
   max-width: none;
   align-self: end;
-  font-family: "Futura PT", "Futura-Book", "Jost", sans-serif;
+  font-family: var(--display);
   font-size: clamp(1.58rem, 1.72vw, 2.35rem);
   font-weight: 700;
   line-height: 0.94;

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Card from "./Card/Card";
 import type { CarouselImage } from "../types";
+import { ShuffleText } from "./shared/ShuffleText";
 
 const SCROLL_BUDGET = 2400;
 const DESKTOP_MEDIA_QUERY = "(min-width: 1025px)";
@@ -559,8 +560,8 @@ export function PlansScrollSection() {
           </div>
 
           <div className="plans-header__heading" id="plans-title">
-            <span>Because We&apos;ve Got A Space</span>
-            <span className="is-accent">Every Way You Work</span>
+            <span><ShuffleText text="Because We've Got A Space" finalColor="#15110d" /></span>
+            <span className="is-accent"><ShuffleText text="Every Way You Work" startDelay={120} finalColor="#15110d" /></span>
           </div>
 
           <p>
@@ -613,8 +614,8 @@ export function PlansScrollSection() {
           </div>
 
           <div className="plans-header__heading" id="plans-title">
-            <span>Because We&apos;ve Got A Space</span>
-            <span className="is-accent">Every Way You Work</span>
+            <span><ShuffleText text="Because We've Got A Space" finalColor="#15110d" /></span>
+            <span className="is-accent"><ShuffleText text="Every Way You Work" startDelay={120} finalColor="#15110d" /></span>
           </div>
 
           <p>

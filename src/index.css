@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Inter+Tight:wght@400;500;600;700;800&display=swap");
 
 #root {
   min-height: 100vh;
@@ -23,7 +23,7 @@
     width: 70%;
     height: 60%;
     margin-top: 3rem;
-    background-color: #d26c46;
+    background-color: #d26d45;
     border-radius: 24px;
     position: relative;
     overflow: hidden;
@@ -33,7 +33,7 @@
   .frame {
     width: 20%;
     margin-top: 3rem;
-    background-color: #d26c46;
+    background-color: #d26d45;
     border-radius: 24px;
     height: 56%;
     position: relative;
@@ -85,7 +85,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: #ff8301;
+  background: #d26d45;
 
   animation: blink 1s infinite;
   position: relative;
@@ -96,7 +96,7 @@
   color: #fff;
   font-weight: 800;
   font-size: 36px;
-  font-family: "Bebas Neue", sans-serif;
+  font-family: "Inter Tight", sans-serif;
 }
 
 .frame-blackout {

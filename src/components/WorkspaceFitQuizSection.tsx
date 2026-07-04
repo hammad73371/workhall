@@ -27,6 +27,7 @@ import type {
   WorkspaceTypeValue,
 } from '../types/site'
 import { ArrowIcon } from './shared/icons'
+import { ShuffleText } from './shared/ShuffleText'
 import './WorkspaceFitQuizSection.css'
 
 const initialAnswers: WorkspaceQuizAnswers = {
@@ -180,8 +181,8 @@ export function WorkspaceFitQuizSection({ onComplete }: WorkspaceFitQuizSectionP
                 </span>
 
                 <h2 id="workspace-quiz-title" className="workspace-quiz__title workspace-quiz__title--intro">
-                  <span>Find Your</span>
-                  <span>Work Hall Match</span>
+                  <span><ShuffleText text="Find Your" finalColor="#15110d" /></span>
+                  <span><ShuffleText text="Work Hall Match" startDelay={120} finalColor="#15110d" /></span>
                 </h2>
 
                 <p className="workspace-quiz__intro-copy">
@@ -222,7 +223,7 @@ export function WorkspaceFitQuizSection({ onComplete }: WorkspaceFitQuizSectionP
                 transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
               >
                 <h2 id="workspace-quiz-title" className="workspace-quiz__title">
-                  {currentStep.prompt}
+                  <ShuffleText text={currentStep.prompt} finalColor="#15110d" />
                 </h2>
 
                 <div

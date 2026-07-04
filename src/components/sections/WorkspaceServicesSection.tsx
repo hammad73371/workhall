@@ -2,6 +2,7 @@
 import type { CSSProperties } from 'react'
 import { services } from '../../data/siteContent'
 import { ArrowIcon, CoworkingIcon, MeetingRoomIcon, OfficeSuiteIcon } from '../shared/icons'
+import { ShuffleText } from '../shared/ShuffleText'
 
 const serviceIconMap = {
   coworking: CoworkingIcon,
@@ -15,7 +16,7 @@ export function WorkspaceServicesSection() {
       <div className="service-section__intro">
         <div>
           <div className="section-kicker">What you can book</div>
-          <h2 id="services-title">Three clear ways to work from Work Hall.</h2>
+          <h2 id="services-title"><ShuffleText text="Three clear ways to work from Work Hall." finalColor="#15110d" /></h2>
           <p className="service-section__lead">Pick the shape of the day first. Work Hall handles the room, rhythm, access, and the little invisible things that make a workday feel lighter.</p>
         </div>
         <aside className="service-section__note" aria-label="Service guide">

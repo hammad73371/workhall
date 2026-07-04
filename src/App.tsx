@@ -11,6 +11,7 @@ import Stack from "./components/Stack";
 import WhyWorkHallSection from "./components/WhyWorkHallSection";
 import ScrollStack, { ScrollStackItem } from "./components/ScrollStack";
 import { ClickSpark } from "./components/shared/effects";
+import { ShuffleText } from "./components/shared/ShuffleText";
 import {
   ShieldCheck,
   Clock3,
@@ -26,9 +27,11 @@ import { WorkspaceFitQuizSection } from "./components/WorkspaceFitQuizSection";
 import Footer from "./components/Footer/Footer";
 import { workHallLocations } from "./data/siteContent";
 import type { WorkspaceQuizAnswers } from "./types/site";
+import { TextEffectsLab } from "./components/TextEffectsLab";
+import { useLocation } from "react-router-dom";
 const stats = [
   { value: "06", label: "Location", color: "#458E71" },
-  { value: "07+", label: "Years", color: "#D26C46" },
+  { value: "07+", label: "Years", color: "#D26D45" },
   { value: "800+", label: "Seats", color: "#3B59A3" },
   { value: "40k+", label: "Sq.ft area", color: "#8C8464" },
 ];
@@ -71,6 +74,7 @@ function useCountUp(
 }
 
 function App() {
+  const location = useLocation();
   const whyWorkHallRef = useRef(null);
   const [selectedLocationId, setSelectedLocationId] = useState(
     workHallLocations[0].id,
@@ -148,10 +152,14 @@ function App() {
     // return setLoaderDone(true);
   }
 
+  if (location.pathname === "/text-effects-lab") {
+    return <TextEffectsLab />;
+  }
+
   return (
     <>
       <ClickSpark
-        sparkColor="#c97b5a"
+        sparkColor="#d26d45"
         sparkSize={14}
         sparkRadius={22}
         sparkCount={10}
@@ -203,8 +211,8 @@ function App() {
                       </div>
                     </div>
                     <h1 id="hero-title">
-                      <span>Re-Think Your</span>
-                      <em>Workspace.</em>
+                      <span><ShuffleText text="Re-Think Your" finalColor="#15110d" /></span>
+                      <em><ShuffleText text="Workspace." startDelay={120} finalColor="#15110d" /></em>
                     </h1>
                   </div>
 
@@ -284,11 +292,11 @@ function App() {
                   id="amenities-stack-title"
                   className="amenities-stack-title"
                 >
-                  <span>Because we give you</span>
+                  <span><ShuffleText text="Because we give you" finalColor="#15110d" /></span>
                   <span className="amenities-stack-title__accent">
-                    everything
+                    <ShuffleText text="everything" startDelay={120} finalColor="#15110d" />
                   </span>
-                  <span>you need</span>
+                  <span><ShuffleText text="you need" startDelay={220} finalColor="#15110d" /></span>
                 </h2>
               </div>
 

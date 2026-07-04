@@ -63,7 +63,7 @@ export function MetricsStrip() {
   return (
     <div className="metrics-strip" aria-label="Work Hall impact numbers">
       <AnimatedMetric value={6} label="Locations" delay={100} color="#2f8d71" formatter={(value) => value.toString().padStart(2, '0')} />
-      <AnimatedMetric value={7} label="Years" suffix="+" delay={240} color="#d46543" formatter={(value) => value.toString().padStart(2, '0')} />
+      <AnimatedMetric value={7} label="Years" suffix="+" delay={240} color="#d26d45" formatter={(value) => value.toString().padStart(2, '0')} />
       <AnimatedMetric value={800} label="Seats" suffix="+" delay={380} color="#315aa8" />
       <AnimatedMetric value={40000} label="Sq. ft. area" suffix="+" delay={520} color="#8c8867" formatter={(value) => `${Math.round(value / 1000)}k`} />
     </div>

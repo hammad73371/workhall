@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import './PurposeHallsSection.css'
+import { ShuffleText } from './shared/ShuffleText'
 
 const TRANSITION_MS = 700
 const WHEEL_THRESHOLD = 5
@@ -364,8 +365,8 @@ export default function PurposeHallsSection() {
             </div>
 
             <div className="ph-clean-heading" id="purpose-halls-title">
-              <span>and because work isn&apos;t</span>
-              <span className="is-accent">always just a desk:</span>
+              <span><ShuffleText text="and because work isn't" finalColor="#15110d" /></span>
+              <span className="is-accent"><ShuffleText text="always just a desk:" startDelay={120} finalColor="#15110d" /></span>
             </div>
           </header>
 

@@ -1,0 +1,53 @@
+.shuffle-text {
+  display: inline;
+  white-space: pre-wrap;
+}
+
+.shuffle-text__space {
+  display: inline;
+}
+
+.shuffle-text__word {
+  display: inline-block;
+  color: var(--shuffle-accent-color, #d26d45);
+  background:
+    linear-gradient(90deg, var(--shuffle-accent-color, #d26d45) 0 0) left bottom / 100% 88% no-repeat;
+  opacity: 0.45;
+  filter: blur(3px);
+  transform: translateY(0.03em);
+  will-change: color, background-size, opacity, filter, transform;
+}
+
+.shuffle-text.is-active .shuffle-text__word {
+  animation:
+    shuffle-text-word-reveal var(--word-duration, var(--shuffle-duration, 720ms)) cubic-bezier(0.22, 1, 0.36, 1) var(--word-delay, 0ms) both,
+    shuffle-text-underpaint calc(var(--word-duration, var(--shuffle-duration, 720ms)) + 80ms) cubic-bezier(0.22, 1, 0.36, 1) var(--word-delay, 0ms) both;
+}
+
+@keyframes shuffle-text-word-reveal {
+  0% {
+    color: var(--shuffle-accent-color, #d26d45);
+    opacity: 0.45;
+    filter: blur(3px);
+  }
+  100% {
+    color: var(--shuffle-final-color, currentColor);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes shuffle-text-underpaint {
+  0% {
+    background-size: 100% 88%;
+    background-position: left bottom;
+  }
+  72% {
+    background-size: 100% 88%;
+    background-position: left bottom;
+  }
+  100% {
+    background-size: 100% 0%;
+    background-position: left bottom;
+  }
+}
