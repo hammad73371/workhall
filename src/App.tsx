@@ -9,20 +9,13 @@ import { PlansScrollSection } from "./components/PlansScrollSection";
 import PurposeHallsSection from "./components/PurposeHallsSection";
 import Stack from "./components/Stack";
 import WhyWorkHallSection from "./components/WhyWorkHallSection";
-import ScrollStack, { ScrollStackItem } from "./components/ScrollStack";
 import { ClickSpark } from "./components/shared/effects";
 import { ShuffleText } from "./components/shared/ShuffleText";
-import {
-  ShieldCheck,
-  Clock3,
-  LayoutTemplate,
-  HandHelping,
-  Sparkles,
-} from "lucide-react";
 import workhallOrange from "./assets/workhall-orange.svg";
 import "./App.css";
 import { PageTransition } from "./components/PageTransition";
 import PromiseSection from "./components/PromiseSection/PromiseSection";
+import { TestimonialsSection } from "./components/TestimonialsSection";
 import { WorkspaceFitQuizSection } from "./components/WorkspaceFitQuizSection";
 import Footer from "./components/Footer/Footer";
 import { workHallLocations } from "./data/siteContent";
@@ -276,133 +269,29 @@ function App() {
             <PurposeHallsSection />
             <CommunitySection targetRef={whyWorkHallRef} />
             <WhyWorkHallSection ref={whyWorkHallRef} />
-            <section
-              className="amenities-stack-section"
-              aria-labelledby="amenities-stack-title"
-            >
-              <div className="amenities-stack-header">
-                <div className="amenities-stack-kicker">
-                  <span
-                    className="amenities-stack-kicker__square"
-                    aria-hidden="true"
-                  />
-                  <span>Amenities</span>
-                </div>
-                <h2
-                  id="amenities-stack-title"
-                  className="amenities-stack-title"
-                >
-                  <span><ShuffleText text="Because we give you" finalColor="#15110d" /></span>
-                  <span className="amenities-stack-title__accent">
-                    <ShuffleText text="everything" startDelay={120} finalColor="#15110d" />
-                  </span>
-                  <span><ShuffleText text="you need" startDelay={220} finalColor="#15110d" /></span>
-                </h2>
-              </div>
-
-              <ScrollStack
-                useWindowScroll
-                itemDistance={60}
-                itemScale={0.03}
-                itemStackDistance={30}
-                stackPosition="20%"
-                scaleEndPosition="10%"
-                baseScale={0.85}
-                blurAmount={2}
-              >
-                <ScrollStackItem>
-                  <div className="ss-card__icon-box">
-                    <ShieldCheck size={28} color="#FFFFFF" />
-                  </div>
-                  <div className="ss-card__copy">
-                    <span className="ss-card__kicker">
-                      Always open when work spills over
-                    </span>
-                    <span className="ss-card__name">
-                      Open 24/7, 365 Days With Full Access
-                    </span>
-                    <p className="ss-card__body">
-                      Early starts, late decks, weekend catch-ups, and
-                      off-pattern schedules still land in a room that is already
-                      ready.
-                    </p>
-                  </div>
-                  <span className="ss-card__number">01</span>
-                </ScrollStackItem>
-
-                <ScrollStackItem>
-                  <div className="ss-card__icon-box">
-                    <Clock3 size={28} color="#FFFFFF" />
-                  </div>
-                  <div className="ss-card__copy">
-                    <span className="ss-card__kicker">Arrival, handled</span>
-                    <span className="ss-card__name">
-                      Free Gated Parking At All Locations
-                    </span>
-                    <p className="ss-card__body">
-                      No circling the block before the workday starts. Drive in,
-                      lock up, and move straight into the room.
-                    </p>
-                  </div>
-                  <span className="ss-card__number">02</span>
-                </ScrollStackItem>
-
-                <ScrollStackItem>
-                  <div className="ss-card__icon-box">
-                    <LayoutTemplate size={28} color="#FFFFFF" />
-                  </div>
-                  <div className="ss-card__copy">
-                    <span className="ss-card__kicker">
-                      Quiet help, without the interruption
-                    </span>
-                    <span className="ss-card__name">
-                      Staff Service At Your Desk
-                    </span>
-                    <p className="ss-card__body">
-                      The small operational asks do not have to break
-                      concentration. Support can reach you where you are already
-                      working.
-                    </p>
-                  </div>
-                  <span className="ss-card__number">03</span>
-                </ScrollStackItem>
-
-                <ScrollStackItem>
-                  <div className="ss-card__icon-box">
-                    <HandHelping size={28} color="#FFFFFF" />
-                  </div>
-                  <div className="ss-card__copy">
-                    <span className="ss-card__kicker">
-                      Built around how you work
-                    </span>
-                    <span className="ss-card__name">Custom Office Layouts</span>
-                    <p className="ss-card__body">
-                      Rooms can be shaped around the team, storage, privacy
-                      level, and the tempo of the work itself.
-                    </p>
-                  </div>
-                  <span className="ss-card__number">04</span>
-                </ScrollStackItem>
-
-                <ScrollStackItem>
-                  <div className="ss-card__icon-box">
-                    <Sparkles size={28} color="#FFFFFF" />
-                  </div>
-                  <div className="ss-card__copy">
-                    <span className="ss-card__kicker">One less errand</span>
-                    <span className="ss-card__name">
-                      Car &amp; Bike Cleaning On Site
-                    </span>
-                    <p className="ss-card__body">
-                      One more errand stays off the to-do list while the workday
-                      keeps moving.
-                    </p>
-                  </div>
-                  <span className="ss-card__number">05</span>
-                </ScrollStackItem>
-              </ScrollStack>
-            </section>
             <PromiseSection />
+            <section
+              className="testimonials-intro-strip"
+              aria-labelledby="testimonials-intro-title"
+            >
+              <div className="testimonials-intro-strip__inner">
+                <h2
+                  id="testimonials-intro-title"
+                  className="testimonials-intro-strip__title"
+                >
+                  <ShuffleText
+                    text={"though don't just\ntake our word for it"}
+                    finalColor="currentColor"
+                    rootMargin="0px 0px -12% 0px"
+                  />
+                </h2>
+                <p className="testimonials-intro-strip__copy">
+                  Hear it from member teams and individuals who have actually
+                  worked out of WorkHall and been part of the community here.
+                </p>
+              </div>
+            </section>
+            <TestimonialsSection />
             <WorkspaceFitQuizSection onComplete={handleQuizComplete} />
             <LocationsMapSection
               selectedLocationId={selectedLocationId}

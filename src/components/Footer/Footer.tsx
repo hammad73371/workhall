@@ -108,18 +108,21 @@ export const Footer: React.FC<FooterProps> = ({
             </a>
           </div>
 
-          <div className="sp-footer-ai">
-            <p className="sp-footer-ai-label">{brand.askAiLabel}</p>
-            <div className="sp-footer-ai-icons">
-              {brand.askAiIcons.map((icon) => (
-                <button
+        <div className="sp-footer-ai">
+          <p className="sp-footer-ai-label">{brand.askAiLabel}</p>
+          <p className="sp-footer-ai-copy">{brand.askAiCopy}</p>
+          <div className="sp-footer-ai-icons">
+            {brand.askAiIcons.map((icon) => (
+                <a
                   key={icon.id}
-                  type="button"
+                  href={icon.href}
                   className="sp-footer-ai-icon"
                   aria-label={icon.label}
+                  target={icon.external ? "_blank" : undefined}
+                  rel={icon.external ? "noopener noreferrer" : undefined}
                 >
                   <AiGlyph variant={icon.icon} className="sp-footer-ai-glyph" />
-                </button>
+                </a>
               ))}
             </div>
           </div>

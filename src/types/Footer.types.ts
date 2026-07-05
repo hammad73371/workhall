@@ -18,7 +18,9 @@ export interface FooterColumn {
 export interface AskAiIcon {
   id: string;
   label: string;
-  icon: "spark" | "diamond" | "orbit" | "anthropic" | "atom";
+  href: string;
+  external?: boolean;
+  icon: "openai" | "gemini" | "perplexity" | "claude" | "grok";
 }
 
 export interface FooterBrand {
@@ -37,6 +39,7 @@ export interface FooterBrand {
   ceoVideoActionLabel: string;
   ceoVideoHref: string;
   askAiLabel: string;
+  askAiCopy: string;
   askAiIcons: AskAiIcon[];
 }
 

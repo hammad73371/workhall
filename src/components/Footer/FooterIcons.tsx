@@ -68,10 +68,12 @@ export const PlayIcon: React.FC<IconProps> = ({ className }) => (
 );
 
 export const AiGlyph: React.FC<
-  IconProps & { variant: "spark" | "diamond" | "orbit" | "anthropic" | "atom" }
+  IconProps & {
+    variant: "openai" | "gemini" | "perplexity" | "claude" | "grok";
+  }
 > = ({ className, variant }) => {
   switch (variant) {
-    case "spark":
+    case "openai":
       return (
         <svg
           className={className}
@@ -80,57 +82,20 @@ export const AiGlyph: React.FC<
           aria-hidden="true"
         >
           <path
-            d="M12 3l1.6 5.9L19.5 12l-5.9 1.6L12 21l-1.6-7.4L4.5 12l5.9-3.1z"
-            fill="currentColor"
-          />
-        </svg>
-      );
-    case "diamond":
-      return (
-        <svg
-          className={className}
-          viewBox="0 0 24 24"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M12 4l4 4-4 12-4-12z"
+            d="M12 4.6c1.6-1 3.8-.6 4.9 1 1.1 1.6.9 3.7-.5 5.1 1.8.2 3.3 1.7 3.4 3.6.1 1.9-1.1 3.6-2.9 4.1-.2 1.8-1.8 3.2-3.7 3.2-1.9 0-3.5-1.4-3.7-3.2-1.8-.5-3-2.2-2.9-4.1.1-1.9 1.6-3.4 3.4-3.6-1.4-1.4-1.6-3.5-.5-5.1 1.1-1.6 3.3-2 4.9-1z"
             stroke="currentColor"
-            strokeWidth="1.4"
+            strokeWidth="1.55"
             strokeLinejoin="round"
           />
-          <path d="M8 8h8" stroke="currentColor" strokeWidth="1.4" />
+          <path
+            d="M12 4.6v4.1m3.9 2.2-3.5 2m-4.3 2.4-3.5 2m0-8.8 3.5 2m4.3 2.4 3.5 2"
+            stroke="currentColor"
+            strokeWidth="1.55"
+            strokeLinecap="round"
+          />
         </svg>
       );
-    case "orbit":
-      return (
-        <svg
-          className={className}
-          viewBox="0 0 24 24"
-          fill="none"
-          aria-hidden="true"
-        >
-          <ellipse
-            cx="12"
-            cy="12"
-            rx="9"
-            ry="4"
-            stroke="currentColor"
-            strokeWidth="1.4"
-          />
-          <ellipse
-            cx="12"
-            cy="12"
-            rx="4"
-            ry="9"
-            stroke="currentColor"
-            strokeWidth="1.4"
-            transform="rotate(30 12 12)"
-          />
-          <circle cx="12" cy="12" r="1.4" fill="currentColor" />
-        </svg>
-      );
-    case "anthropic":
+    case "gemini":
       return (
         <svg
           className={className}
@@ -139,12 +104,43 @@ export const AiGlyph: React.FC<
           aria-hidden="true"
         >
           <path
-            d="M8.2 6h2.4l5.2 12h-2.4l-1.1-2.7H9.2L8.1 18H5.7zm.9 7.3h2.7L10.4 9z"
+            d="M12 2.8c1 4.7 1.9 5.6 6.2 6.4-4.3.8-5.2 1.7-6.2 6.4-1-4.7-1.9-5.6-6.2-6.4 4.3-.8 5.2-1.7 6.2-6.4z"
             fill="currentColor"
           />
         </svg>
       );
-    case "atom":
+    case "perplexity":
+      return (
+        <svg
+          className={className}
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M8 5.5h8M8 18.5h8M5.5 8v8M18.5 8v8M8 8l8 8M16 8l-8 8"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+    case "claude":
+      return (
+        <svg
+          className={className}
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M7.6 18 11.8 6h1.9L18 18h-2.5l-.9-2.6h-3.8L10 18zm3.8-4.6h2.5L12.6 9z"
+            fill="currentColor"
+          />
+        </svg>
+      );
+    case "grok":
     default:
       return (
         <svg
@@ -153,32 +149,12 @@ export const AiGlyph: React.FC<
           fill="none"
           aria-hidden="true"
         >
-          <circle cx="12" cy="12" r="1.6" fill="currentColor" />
-          <ellipse
-            cx="12"
-            cy="12"
-            rx="9"
-            ry="3.4"
+          <path
+            d="M7 6.5h10L7 17.5h10"
             stroke="currentColor"
-            strokeWidth="1.3"
-          />
-          <ellipse
-            cx="12"
-            cy="12"
-            rx="9"
-            ry="3.4"
-            stroke="currentColor"
-            strokeWidth="1.3"
-            transform="rotate(60 12 12)"
-          />
-          <ellipse
-            cx="12"
-            cy="12"
-            rx="9"
-            ry="3.4"
-            stroke="currentColor"
-            strokeWidth="1.3"
-            transform="rotate(120 12 12)"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       );
