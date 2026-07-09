@@ -436,7 +436,7 @@ function PlansGroup({
             key={card.planName}
             className={mobile ? "card-slot card-slot--mobile" : "card-slot"}
           >
-            <Card {...card} />
+            <Card {...card} variant="plans-glow" />
           </div>
         ))}
       </div>

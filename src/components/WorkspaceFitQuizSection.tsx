@@ -161,57 +161,14 @@ export function WorkspaceFitQuizSection({ onComplete }: WorkspaceFitQuizSectionP
                 exit={{ opacity: 0, y: -20, scale: 0.985 }}
                 transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
               >
-                <span className="workspace-quiz__badge workspace-quiz__badge--solo">
-                  <span className="workspace-quiz__badge-icon">
-                    <QuizIcon name="solo" className="workspace-quiz__badge-glyph" />
-                  </span>
-                  <span>Solo operator</span>
-                </span>
-                <span className="workspace-quiz__badge workspace-quiz__badge--location">
-                  <span className="workspace-quiz__badge-icon">
-                    <QuizIcon name="location" className="workspace-quiz__badge-glyph" />
-                  </span>
-                  <span>Across Karachi</span>
-                </span>
-                <span className="workspace-quiz__badge workspace-quiz__badge--team">
-                  <span className="workspace-quiz__badge-icon">
-                    <QuizIcon name="team-medium" className="workspace-quiz__badge-glyph" />
-                  </span>
-                  <span>Growing teams</span>
-                </span>
-
                 <h2 id="workspace-quiz-title" className="workspace-quiz__title workspace-quiz__title--intro">
                   <span><ShuffleText text="Find Your" finalColor="#15110d" /></span>
                   <span><ShuffleText text="Work Hall Match" startDelay={120} finalColor="#15110d" /></span>
                 </h2>
 
                 <p className="workspace-quiz__intro-copy">
-                  Four quick decisions. We&apos;ll point you to the right setup, the right branch,
-                  and the next step that actually fits.
+                  Four quick decisions and we&apos;ll point you to the setup that fits.
                 </p>
-
-                <div className="workspace-quiz__intro-pills" aria-hidden="true">
-                  <span>Private offices</span>
-                  <span>Dedicated desks</span>
-                  <span>Meeting rooms</span>
-                  <span>Virtual office</span>
-                </div>
-
-                <div className="workspace-quiz__intro-sidecard workspace-quiz__intro-sidecard--left">
-                  <div className="workspace-quiz__intro-sidecard-icon">
-                    <Building2 aria-hidden="true" />
-                  </div>
-                  <strong>6 locations</strong>
-                  <span>spread across Karachi&apos;s work corridors</span>
-                </div>
-
-                <div className="workspace-quiz__intro-sidecard workspace-quiz__intro-sidecard--right">
-                  <div className="workspace-quiz__intro-sidecard-icon">
-                    <CalendarClock aria-hidden="true" />
-                  </div>
-                  <strong>Fastest route</strong>
-                  <span>choose the setup first, then jump straight to the best branch</span>
-                </div>
               </motion.div>
             ) : (
               <motion.div

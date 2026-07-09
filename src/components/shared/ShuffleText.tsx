@@ -113,7 +113,7 @@ export function ShuffleText({
             }}
             aria-hidden="true"
           >
-            {token}
+            <span className="shuffle-text__word-text">{token}</span>
           </span>
         )
       })}

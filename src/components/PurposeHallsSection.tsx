@@ -145,6 +145,24 @@ export default function PurposeHallsSection() {
     touchStartYRef.current = null
   }
 
+  const releaseToBoundary = (nextDirection: Direction) => {
+    const outer = outerRef.current
+    releaseEngagement()
+
+    if (!outer || typeof window === 'undefined') return
+
+    const outerTop = outer.getBoundingClientRect().top + window.scrollY
+    const exitScrollY =
+      nextDirection === 1
+        ? outerTop + outer.offsetHeight - window.innerHeight + 2
+        : Math.max(0, outerTop - 2)
+
+    window.scrollTo({
+      top: exitScrollY,
+      behavior: 'auto',
+    })
+  }
+
   const goToStep = (nextStep: number, nextDirection: Direction) => {
     setDirection(nextDirection)
     setPreviousStep(currentStepRef.current)
@@ -221,12 +239,12 @@ export default function PurposeHallsSection() {
       }
 
       if (delta > WHEEL_THRESHOLD && atLastStep) {
-        releaseEngagement()
+        releaseToBoundary(1)
         return
       }
 
       if (delta < -WHEEL_THRESHOLD && atFirstStep) {
-        releaseEngagement()
+        releaseToBoundary(-1)
         return
       }
 
@@ -265,13 +283,13 @@ export default function PurposeHallsSection() {
 
       if (delta > SWIPE_THRESHOLD && atLastStep) {
         touchStartYRef.current = null
-        releaseEngagement()
+        releaseToBoundary(1)
         return
       }
 
       if (delta < -SWIPE_THRESHOLD && atFirstStep) {
         touchStartYRef.current = null
-        releaseEngagement()
+        releaseToBoundary(-1)
         return
       }
 

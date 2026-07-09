@@ -9,6 +9,7 @@ import {
   PlayIcon,
   AiGlyph,
 } from "./FooterIcons";
+import FooterLanyardCard from "./FooterLanyardCard";
 import "./Footer.css";
 
 export interface FooterProps {
@@ -54,8 +55,7 @@ export const Footer: React.FC<FooterProps> = ({
             <a href={brand.taglineLinkHref} className="sp-footer-tagline-link">
               {brand.taglineLinkLabel}
             </a>{" "}
-            to receive the Superpower Code: a free guide to understanding your
-            health and the systems that matter most.
+            {brand.tagline.replace("Not sure where to start? Join the Work Hall list", "").trim()}
           </p>
 
           <form className="sp-footer-form" onSubmit={handleSubmit}>
@@ -130,33 +130,44 @@ export const Footer: React.FC<FooterProps> = ({
 
         <nav className="sp-footer-columns" aria-label="Footer navigation">
           {columns.map((column, colIdx) => (
-            <div className="sp-footer-column" key={colIdx}>
+            <div
+              className={
+                column.sections.some((section) => section.title === "Resources")
+                  ? "sp-footer-column sp-footer-column--lanyard"
+                  : "sp-footer-column"
+              }
+              key={colIdx}
+            >
               {column.sections.map((section) => (
-                <div className="sp-footer-section" key={section.title}>
-                  <p className="sp-footer-section-title">{section.title}</p>
-                  <ul className="sp-footer-links">
-                    {section.links.map((link) => (
-                      <li key={link.label}>
-                        <a
-                          href={link.href}
-                          className="sp-footer-link"
-                          target={link.external ? "_blank" : undefined}
-                          rel={
-                            link.external ? "noopener noreferrer" : undefined
-                          }
-                        >
-                          {section.showIcons && socialIconFor(link.label)}
-                          <span>{link.label}</span>
-                          {link.badge && (
-                            <span className="sp-footer-badge">
-                              {link.badge}
-                            </span>
-                          )}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                section.title === "Resources" ? (
+                  <FooterLanyardCard key={section.title} />
+                ) : (
+                  <div className="sp-footer-section" key={section.title}>
+                    <p className="sp-footer-section-title">{section.title}</p>
+                    <ul className="sp-footer-links">
+                      {section.links.map((link) => (
+                        <li key={link.label}>
+                          <a
+                            href={link.href}
+                            className="sp-footer-link"
+                            target={link.external ? "_blank" : undefined}
+                            rel={
+                              link.external ? "noopener noreferrer" : undefined
+                            }
+                          >
+                            {section.showIcons && socialIconFor(link.label)}
+                            <span>{link.label}</span>
+                            {link.badge && (
+                              <span className="sp-footer-badge">
+                                {link.badge}
+                              </span>
+                            )}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )
               ))}
             </div>
           ))}
