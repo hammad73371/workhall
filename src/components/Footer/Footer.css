@@ -1,6 +1,6 @@
 .sp-footer {
   --sp-black: #15110d;
-  --sp-white: #fffaf0;
+  --sp-white: #fffdfa;
   --sp-gray-100: #f5ede2;
   --sp-gray-200: #eadfce;
   --sp-gray-300: #dacbb7;
@@ -16,7 +16,7 @@
 
   background:
     radial-gradient(circle at 16% 8%, rgba(210, 109, 69, 0.08), transparent 18%),
-    linear-gradient(180deg, #ece4d7 0%, #f3ebdf 100%);
+    linear-gradient(180deg, #f6f2eb 0%, #fbfaf7 100%);
   color: var(--sp-black);
   font-family: var(--sans);
   padding: clamp(40px, 5vw, 72px) clamp(20px, 5vw, 64px) 0;
@@ -366,6 +366,7 @@
   position: relative;
   min-height: clamp(540px, 58vw, 760px);
   margin-top: clamp(-270px, -18vw, -168px);
+  overflow: visible;
 }
 
 .sp-footer-lanyard-card__frame {
@@ -376,11 +377,28 @@
   background: transparent;
 }
 
+.sp-footer-lanyard-wrapper {
+  position: absolute;
+  top: -32vh;
+  right: -24vw;
+  bottom: -14vh;
+  left: -24vw;
+  z-index: 0;
+  width: auto;
+  min-height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+  pointer-events: auto;
+}
+
 .sp-footer-lanyard-card__frame canvas {
-  position: static;
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100% !important;
-  height: clamp(540px, 58vw, 760px) !important;
+  height: 100% !important;
   pointer-events: auto;
 }
 
@@ -500,6 +518,13 @@
 
   .sp-footer-lanyard-card {
     margin-top: 0;
+  }
+
+  .sp-footer-lanyard-wrapper {
+    top: -12vh;
+    right: -18vw;
+    bottom: -8vh;
+    left: -18vw;
   }
 }
 

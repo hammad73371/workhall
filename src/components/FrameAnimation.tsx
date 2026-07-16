@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { motion, useAnimate } from "framer-motion";
+import workhallBlack from "../assets/workhall-black.svg";
 
 interface IntroCinematicProps {
   onRevealNext: () => void;
@@ -79,16 +80,17 @@ export function FrameAnimation({
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         className="frame"
       >
-        <div className="frame__media" />
-        <motion.div
-          initial={{ y: 80, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 1.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="cam-status"
-        >
-          <span className="cam-text">CAM ON</span>
-          <span className="blink-dot"></span>
-        </motion.div>
+        <div className="frame__media">
+          <motion.img
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 1.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="frame__mark"
+            src={workhallBlack}
+            alt="WorkHall"
+            draggable={false}
+          />
+        </div>
       </motion.div>
 
       <div className="frame-blackout" />

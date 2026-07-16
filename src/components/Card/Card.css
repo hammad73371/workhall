@@ -12,81 +12,13 @@
 }
 
 .card--plans-glow {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  --card-glow-x: 88%;
-  --card-glow-y: 90%;
-  --card-highlight-x: 14%;
-  --card-highlight-y: 8%;
-  --card-accent-x: 18%;
-  --card-accent-y: 12%;
-  --card-glow-size: 28%;
-  --card-accent-size: 40%;
-  --card-glow-opacity: 0.42;
-  --card-accent-opacity: 0.28;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.62) 0%, rgba(247, 236, 224, 0.36) 100%),
-    radial-gradient(circle at var(--card-glow-x) var(--card-glow-y), rgba(210, 109, 69, var(--card-glow-opacity)), transparent var(--card-glow-size)),
-    radial-gradient(circle at var(--card-highlight-x) var(--card-highlight-y), rgba(255, 255, 255, 0.54), transparent 28%),
-    radial-gradient(circle at var(--card-accent-x) var(--card-accent-y), rgba(210, 109, 69, var(--card-accent-opacity)), transparent var(--card-accent-size)),
-    radial-gradient(circle at 60% 54%, rgba(210, 109, 69, 0.16), transparent 48%),
-    linear-gradient(180deg, rgba(251, 245, 234, 0.72) 0%, rgba(244, 236, 223, 0.62) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: #ECE4D7;
+  border: 1px solid rgba(34, 32, 19, 0.12);
   border-radius: 18px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.92),
-    inset 0 0 0 1px rgba(210, 109, 69, 0.1),
-    0 22px 40px rgba(101, 62, 39, 0.12),
-    0 0 0 1px rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(22px) saturate(1.14);
-  -webkit-backdrop-filter: blur(22px) saturate(1.14);
-  transition:
-    transform 220ms ease,
-    box-shadow 220ms ease,
-    border-color 220ms ease,
-    background 220ms ease;
-}
-
-.card--plans-glow::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    linear-gradient(128deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0.14) 24%, transparent 46%),
-    radial-gradient(circle at var(--card-highlight-x) var(--card-highlight-y), rgba(255, 255, 255, 0.38), transparent 22%);
-  opacity: 0.94;
-  pointer-events: none;
-}
-
-.card--plans-glow::after {
-  content: "";
-  position: absolute;
-  inset: auto -12% -18% auto;
-  width: 66%;
-  aspect-ratio: 1;
-  z-index: 0;
-  background: radial-gradient(circle, rgba(210, 109, 69, calc(var(--card-glow-opacity) * 0.76)) 0%, transparent 68%);
-  filter: blur(22px);
-  pointer-events: none;
-}
-
-.card--plans-glow:hover {
-  transform: translateY(-3px);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.68) 0%, rgba(247, 236, 224, 0.4) 100%),
-    radial-gradient(circle at var(--card-glow-x) var(--card-glow-y), rgba(210, 109, 69, calc(var(--card-glow-opacity) + 0.1)), transparent calc(var(--card-glow-size) + 3%)),
-    radial-gradient(circle at var(--card-highlight-x) var(--card-highlight-y), rgba(255, 255, 255, 0.62), transparent 30%),
-    radial-gradient(circle at var(--card-accent-x) var(--card-accent-y), rgba(210, 109, 69, calc(var(--card-accent-opacity) + 0.08)), transparent calc(var(--card-accent-size) + 3%)),
-    radial-gradient(circle at 60% 54%, rgba(210, 109, 69, 0.22), transparent 50%),
-    linear-gradient(180deg, rgba(251, 245, 234, 0.78) 0%, rgba(244, 236, 223, 0.68) 100%);
-  border-color: rgba(255, 255, 255, 0.82);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.96),
-    inset 0 0 0 1px rgba(210, 109, 69, 0.14),
-    0 28px 44px rgba(101, 62, 39, 0.16),
-    0 0 0 1px rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: background 180ms ease, border-color 180ms ease;
 }
 
 .card__media {
@@ -97,22 +29,9 @@
 }
 
 .card--plans-glow .card__media {
-  position: relative;
-  z-index: 1;
   border-radius: 12px;
-  background:
-    linear-gradient(180deg, rgba(255, 249, 241, 0.72) 0%, rgba(243, 232, 217, 0.5) 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.34),
-    inset 0 0 0 2px rgba(210, 109, 69, 0.07),
-    0 10px 20px rgba(67, 50, 33, 0.05);
-}
-
-.card--plans-glow .card__header,
-.card--plans-glow .card__description,
-.card--plans-glow .card__tags {
-  position: relative;
-  z-index: 1;
+  background: #ded6ca;
+  box-shadow: none;
 }
 
 .card__header {

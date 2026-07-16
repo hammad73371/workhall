@@ -17,7 +17,7 @@
 .loader-black-wipe {
   position: absolute;
   inset: -8% -14%;
-  background: #f8f0e3;
+  background: #fbfaf7;
   z-index: 1;
   transform: translate3d(-118%, 0, 0) skewX(-16deg);
   transform-origin: left center;

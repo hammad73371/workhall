@@ -43,60 +43,18 @@
 .frame__media {
   position: absolute;
   inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
-.frame__media::before {
-  content: "";
-  position: absolute;
-  top: -700px;
-  left: -700px;
-  right: -700px;
-  bottom: -700px;
-  background-image: url("/workhall-6a3bfa7213f257aa995760a1.png");
-  background-repeat: repeat;
-  background-size: 700px 700px;
-  will-change: transform;
-  animation: frameInfiniteAnimation 18s linear infinite;
-}
-
-@keyframes frameInfiniteAnimation {
-  from {
-    transform: translate(0, 0);
-  }
-  to {
-    transform: translate(700px, 700px);
-  }
-}
-
-.cam-status {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  will-change: transform;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 6px;
-}
-
-.blink-dot {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: #d26d45;
-
-  animation: blink 1s infinite;
-  position: relative;
-  top: -1px;
-}
-
-.cam-text {
-  color: #fff;
-  font-weight: 800;
-  font-size: 36px;
-  font-family: "Inter Tight", sans-serif;
+.frame__mark {
+  width: clamp(132px, 12vw, 208px);
+  height: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
 }
 
 .frame-blackout {
@@ -107,14 +65,4 @@
   pointer-events: none;
   z-index: 2;
   will-change: transform, opacity, border-radius;
-}
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
 }

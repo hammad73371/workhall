@@ -237,7 +237,6 @@ const AmenityCard: React.FC<
             } as React.CSSProperties
           }
         >
-          <span className="amenity-card-back__logo" aria-hidden="true" />
           <span className="amenity-back-kicker">{kicker}</span>
           {/* <div className="amenity-empty-box"></div> */}
           {/* <span className="amenity-back-heading">{heading}</span> */}

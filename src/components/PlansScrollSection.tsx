@@ -3,9 +3,9 @@ import Card from "./Card/Card";
 import type { CarouselImage } from "../types";
 import { ShuffleText } from "./shared/ShuffleText";
 
-const SCROLL_BUDGET = 2400;
+const SCROLL_BUDGET = 1320;
 const DESKTOP_MEDIA_QUERY = "(min-width: 1025px)";
-const MIN_SCROLL_BUDGET = 920;
+const MIN_SCROLL_BUDGET = 420;
 
 interface PlanCardProps {
   planName: string;
@@ -174,33 +174,6 @@ const individualCards: PlanCardProps[] = [
       },
     ],
   },
-  {
-    planName: "Nox",
-    title: "Nox",
-    description:
-      "Shared or fixed desk at a reduced rate. Same space,same amenities, same great community, just during thequieter hours of the night.",
-    tags: [
-      "Budget-conscious freelancers",
-      "Part time workers",
-      " People serving overseas clients",
-      "Night owls",
-    ],
-    learnMoreUrl: "#virtual",
-    images: [
-      {
-        src: "https://picsum.photos/seed/virtual-1/900/700",
-        alt: "Reception desk used for mail handling",
-      },
-      {
-        src: "https://picsum.photos/seed/virtual-2/900/700",
-        alt: "Meeting room available on demand",
-      },
-      {
-        src: "https://picsum.photos/seed/virtual-3/900/700",
-        alt: "Building exterior signage",
-      },
-    ],
-  },
 ];
 
 const teamCards: PlanCardProps[] = [
@@ -253,33 +226,6 @@ const teamCards: PlanCardProps[] = [
       },
     ],
   },
-  {
-    planName: "Suite",
-    title: "Suite",
-    description:
-      "A fully private office space designed around how your team works. Custom layout, your branding, your environment,your rules.",
-    tags: [
-      "Custom Builds",
-      "Branded Offices",
-      "Long-term Leases",
-      "Specialized Teams",
-    ],
-    learnMoreUrl: "#custom",
-    images: [
-      {
-        src: "https://picsum.photos/seed/custom-1/900/700",
-        alt: "Custom branded office interior",
-      },
-      {
-        src: "https://picsum.photos/seed/custom-2/900/700",
-        alt: "Configured storage and layout",
-      },
-      {
-        src: "https://picsum.photos/seed/custom-3/900/700",
-        alt: "Team working in a tailored space",
-      },
-    ],
-  },
 ];
 
 const enterpriseCards: PlanCardProps[] = [
@@ -324,28 +270,6 @@ const enterpriseCards: PlanCardProps[] = [
       {
         src: "https://picsum.photos/seed/enterprise-campus-3/900/700",
         alt: "Enterprise campus placeholder three",
-      },
-    ],
-  },
-  {
-    planName: "Custom",
-    title: "Custom",
-    description:
-      "Placeholder enterprise build for brands that need tailored layouts, long-term planning, and a fully bespoke workplace environment.",
-    tags: ["Bespoke Layouts", "Branding", "Long-term Scale", "Executive Teams"],
-    learnMoreUrl: "#enterprise-custom",
-    images: [
-      {
-        src: "https://picsum.photos/seed/enterprise-custom-1/900/700",
-        alt: "Enterprise custom placeholder one",
-      },
-      {
-        src: "https://picsum.photos/seed/enterprise-custom-2/900/700",
-        alt: "Enterprise custom placeholder two",
-      },
-      {
-        src: "https://picsum.photos/seed/enterprise-custom-3/900/700",
-        alt: "Enterprise custom placeholder three",
       },
     ],
   },
@@ -496,13 +420,13 @@ export function PlansScrollSection() {
       const viewportWidth = window.innerWidth;
       const nextMaxTranslate = Math.max(
         0,
-        track.scrollWidth - viewportWidth + 300,
+        track.scrollWidth - viewportWidth,
       );
       maxTranslateRef.current = nextMaxTranslate;
 
       const nextBudget =
         nextMaxTranslate > 0
-          ? Math.max(MIN_SCROLL_BUDGET, Math.round(nextMaxTranslate * 1.15))
+          ? Math.max(MIN_SCROLL_BUDGET, Math.round(nextMaxTranslate * 0.58))
           : 0;
 
       if (scrollBudgetRef.current !== nextBudget) {
@@ -563,25 +487,19 @@ export function PlansScrollSection() {
             <span><ShuffleText text="Because We've Got A Space" finalColor="#15110d" /></span>
             <span className="is-accent"><ShuffleText text="Every Way You Work" startDelay={120} finalColor="#15110d" /></span>
           </div>
-
-          <p>
-            Whether you&apos;re a freelancer who needs a desk or an enterprise
-            that needs the whole floor - there&apos;s a plan that fits exactly
-            how you build.
-          </p>
         </div>
 
         <div className="plans-mobile-groups">
           <PlansGroup
-            title="Individuals"
-            cards={individualCards}
-            description="Flexible coworking, assigned desks, and virtual setup for people who need a reliable everyday base without committing to more room than the day needs."
-            mobile
-          />
-          <PlansGroup
             title="Teams"
             cards={teamCards}
             description="Private offices, enterprise setups, and tailored room to grow for teams that need more privacy, more structure, and a base that can scale with them."
+            mobile
+          />
+          <PlansGroup
+            title="Freelancers"
+            cards={individualCards}
+            description="Flexible coworking, assigned desks, and virtual setup for people who need a reliable everyday base without committing to more room than the day needs."
             mobile
           />
           <PlansGroup
@@ -595,8 +513,8 @@ export function PlansScrollSection() {
     );
   }
 
-  const individualsOpacity = getGroupOpacity(progress, 0);
-  const teamsOpacity = getGroupOpacity(progress, 0.5);
+  const teamsOpacity = getGroupOpacity(progress, 0);
+  const freelancersOpacity = getGroupOpacity(progress, 0.5);
   const enterprisesOpacity = getGroupOpacity(progress, 1);
 
   return (
@@ -617,30 +535,24 @@ export function PlansScrollSection() {
             <span><ShuffleText text="Because We've Got A Space" finalColor="#15110d" /></span>
             <span className="is-accent"><ShuffleText text="Every Way You Work" startDelay={120} finalColor="#15110d" /></span>
           </div>
-
-          <p>
-            Whether you&apos;re a freelancer who needs a desk or an enterprise
-            that needs the whole floor - there&apos;s a plan that fits exactly
-            how you build.
-          </p>
         </div>
 
         <div className="plans-track-zone">
           <div ref={trackRef} className="plans-track">
             <PlansGroup
-              title="Individuals"
-              cards={individualCards}
-              description="Flexible coworking, assigned desks, and virtual setup for people who need a reliable everyday base without committing to more room than the day needs."
-              opacity={individualsOpacity}
+              title="Teams"
+              cards={teamCards}
+              description="Private offices, enterprise setups, and tailored room to grow for teams that need more privacy, more structure, and a base that can scale with them."
+              opacity={teamsOpacity}
             />
 
             <div className="group-divider" aria-hidden="true" />
 
             <PlansGroup
-              title="Teams"
-              cards={teamCards}
-              description="Private offices, enterprise setups, and tailored room to grow for teams that need more privacy, more structure, and a base that can scale with them."
-              opacity={teamsOpacity}
+              title="Freelancers"
+              cards={individualCards}
+              description="Flexible coworking, assigned desks, and virtual setup for people who need a reliable everyday base without committing to more room than the day needs."
+              opacity={freelancersOpacity}
             />
 
             <div className="group-divider" aria-hidden="true" />

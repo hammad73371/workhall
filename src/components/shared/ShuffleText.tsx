@@ -19,12 +19,12 @@ type ShuffleTextProps = {
 export function ShuffleText({
   text,
   className = '',
-  threshold = 0.2,
-  rootMargin = '0px 0px -10% 0px',
+  threshold = 0,
+  rootMargin = '0px',
   triggerOnce = true,
   startDelay = 0,
-  stagger = 120,
-  duration = 720,
+  stagger = 60,
+  duration = 360,
   accentColor = '#D26D45',
   finalColor = 'currentColor',
 }: ShuffleTextProps) {

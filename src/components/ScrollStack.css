@@ -42,7 +42,7 @@
 }
 
 .scroll-stack-card:nth-child(even) {
-  background: #fffaf0;
+  background: #fffdfa;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.62),
     0 18px 44px rgba(64, 43, 22, 0.08);
@@ -179,7 +179,7 @@
 .amenities-stack-section {
   position: relative;
   padding: clamp(56px, 9vw, 120px) 0;
-  background: #f8f0e3;
+  background: #fbfaf7;
 }
 
 .amenities-stack-shell {

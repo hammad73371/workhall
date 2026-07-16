@@ -74,6 +74,17 @@ export default function Stack({
   mobileClickOnly = false,
   mobileBreakpoint = 768,
 }: StackProps) {
+  const perimeterOffsets = [
+    { x: -18, y: 18, rotate: -8 },
+    { x: 18, y: -18, rotate: 8 },
+    { x: -16, y: -20, rotate: -6 },
+    { x: 16, y: 20, rotate: 6 },
+    { x: -28, y: 4, rotate: -10 },
+    { x: 28, y: -4, rotate: 10 },
+    { x: 4, y: -28, rotate: 4 },
+    { x: -4, y: 28, rotate: -4 },
+  ]
+
   const [isMobile, setIsMobile] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [stack, setStack] = useState<{ id: number; content: React.ReactNode }[]>(() =>
@@ -128,12 +139,14 @@ export default function Stack({
       {stack.map((card, index) => {
         const randomRotate = randomRotation ? Math.random() * 6 - 3 : 0
         const depth = stack.length - index - 1
-        const isTopRightTail = depth >= 2 && depth % 2 === 0
-        const xOffset = isTopRightTail ? depth * 16 : -depth * 14
-        const yOffset = isTopRightTail ? -depth * 12 : depth * 12
-        const rotateZ = isTopRightTail
-          ? depth * 2.8 + randomRotate
-          : (stack.length - index - 1) * 5 + randomRotate
+        const offset =
+          depth === 0
+            ? { x: 0, y: 0, rotate: 0 }
+            : perimeterOffsets[(depth - 1) % perimeterOffsets.length]
+        const ringScale = depth <= 1 ? 1 : 1 + (depth - 1) * 0.16
+        const xOffset = offset.x * ringScale
+        const yOffset = offset.y * ringScale
+        const rotateZ = offset.rotate * ringScale + randomRotate
 
         return (
           <CardRotate

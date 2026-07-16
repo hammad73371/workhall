@@ -51,7 +51,7 @@ function PromiseSection() {
   const backgroundColor = useTransform(
     scrollYProgress,
     [0, 0.38, 0.62, 1],
-    ["#f8f0e3", "#f8f0e3", "#d26d45", "#d26d45"],
+    ["#fbfaf7", "#fbfaf7", "#d26d45", "#d26d45"],
   );
 
   const promiseOpacity = useTransform(

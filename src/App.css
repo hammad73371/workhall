@@ -5,10 +5,10 @@
 
 :root {
   color: #000000;
-  background: #f8f0e3;
+  background: #fbfaf7;
   --ink: #15110d;
   --muted: #857f78;
-  --bone: #fffaf0;
+  --bone: #fffdfa;
   --clay: #d26d45;
   --aubergine: #321d32;
   font-family: var(--sans);
@@ -35,7 +35,7 @@ html {
 
 body {
   margin: 0;
-  background: #f8f0e3;
+  background: #fbfaf7;
   overflow-x: hidden;
 }
 
@@ -73,7 +73,7 @@ img {
 }
 
 .testimonials-intro-strip {
-  background: #ece4d7;
+  background: #f6f2eb;
 }
 
 .testimonials-intro-strip__inner {
@@ -123,7 +123,7 @@ img {
 
 .figma-page-shell {
   min-height: 100vh;
-  background: #f8f0e3;
+  background: #fbfaf7;
   overflow-x: clip;
 }
 
@@ -987,7 +987,7 @@ img {
 .plans-scroll-section {
   position: relative;
   width: 100%;
-  background: #fff5e9;
+  background: #fcfaf6;
 }
 
 .plans-scroll-section__sticky {
@@ -995,7 +995,7 @@ img {
   top: 0;
   height: 100vh;
   overflow: hidden;
-  background: #fff5e9;
+  background: #fcfaf6;
 }
 
 .plans-header {
@@ -1003,7 +1003,7 @@ img {
   top: 0;
   left: 0;
   right: 0;
-  height: 38vh;
+  height: 27vh;
   padding: 48px 0 0 77px;
   z-index: 10;
   display: flex;
@@ -1041,7 +1041,7 @@ img {
 .plans-header__heading > span {
   color: #000000;
   font-family: var(--display);
-  font-size: 80px;
+  font-size: 40px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -1049,12 +1049,12 @@ img {
 
 .plans-header__heading .is-accent {
   color: #d26d45;
-  font-size: 86px;
+  font-size: 43px;
 }
 
 .plans-header p {
   max-width: 620px;
-  margin: 24px 0 0;
+  margin: 18px 0 0;
   color: #857f78;
   font-family: var(--sans);
   font-size: 22px;
@@ -1077,7 +1077,7 @@ img {
 
 .plans-track-zone {
   position: absolute;
-  top: 42vh;
+  top: 29vh;
   left: 0;
   right: 0;
   bottom: 0;
@@ -1088,17 +1088,17 @@ img {
   display: flex;
   flex-direction: column;
   gap: 0;
-  width: 1136px;
+  width: 780px;
   flex-shrink: 0;
   position: relative;
 }
 
 .plans-group h3 {
-  margin: 0 0 18px;
+  margin: 0 0 22px;
   padding: 0 8px;
   color: #222013;
   font-family: var(--display);
-  font-size: 62px;
+  font-size: 124px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.05em;
@@ -1116,6 +1116,8 @@ img {
 
 .card-slot {
   position: relative;
+  flex: 0 0 363px;
+  width: 363px;
   padding: 0 8px;
   display: flex;
   align-items: flex-start;
@@ -1405,7 +1407,7 @@ img {
   margin-top: 14px;
   padding: 20px 60px;
   border-radius: 36px;
-  background: #ece4d7;
+  background: #f5f1e9;
 }
 
 .figma-stat {
@@ -1458,7 +1460,7 @@ img {
 }
 
 .hero-page {
-  background-color: #e5d9ca;
+  background-color: #f6f2eb;
 }
 
 .headline-block {
@@ -1503,8 +1505,8 @@ img {
 
 @media (prefers-reduced-motion: no-preference) {
   @keyframes bgWarm {
-    from { background-color: #e5d9ca; }
-    to { background-color: #f8f0e3; }
+    from { background-color: #f6f2eb; }
+    to { background-color: #fbfaf7; }
   }
 
   @keyframes navDrop {
@@ -2308,7 +2310,7 @@ img {
   }
 
   .plans-scroll-section--mobile .plans-header__heading > span {
-    font-size: clamp(42px, 7vw, 72px);
+    font-size: clamp(24px, 4.5vw, 36px);
     line-height: 0.95;
   }
 
@@ -2329,7 +2331,7 @@ img {
   }
 
   .plans-group--mobile h3 {
-    font-size: clamp(38px, 7vw, 58px);
+    font-size: clamp(56px, 9vw, 84px);
     letter-spacing: -0.04em;
   }
 

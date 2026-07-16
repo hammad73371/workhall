@@ -1,11 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  Canvas,
-  extend,
-  useFrame,
-  type ThreeEvent,
-} from "@react-three/fiber";
+import { Canvas, extend, useFrame, type ThreeEvent } from "@react-three/fiber";
 import { Environment, Lightformer, RoundedBox, useTexture } from "@react-three/drei";
 import {
   BallCollider,
@@ -14,21 +9,80 @@ import {
   RigidBody,
   useRopeJoint,
   useSphericalJoint,
-  type RigidBodyProps,
   type RapierRigidBody,
+  type RigidBodyProps,
 } from "@react-three/rapier";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 import * as THREE from "three";
-import workhallOrange from "../../assets/workhall-orange.svg";
+import workhallWhite from "../../assets/workhall-white.svg";
 
 extend({ MeshLineGeometry, MeshLineMaterial });
+
+const FOOTER_CARD_SCALE = 0.8;
+const FOOTER_CARD_OFFSET_Y = -1.2;
+const FOOTER_CARD_CAP_CENTER_Y = 1.76;
+const FOOTER_CARD_CAP_HEIGHT = 0.08;
+const FOOTER_CARD_RENDER_ANCHOR_Y =
+  FOOTER_CARD_OFFSET_Y +
+  FOOTER_CARD_SCALE * (FOOTER_CARD_CAP_CENTER_Y + FOOTER_CARD_CAP_HEIGHT * 0.5);
+const FOOTER_CARD_JOINT_Y = 1.45;
 
 type LanyardRigidBody = RapierRigidBody & {
   lerped?: THREE.Vector3;
 };
 
-function LanyardBand() {
-  const cardAttachment = useMemo(() => new THREE.Vector3(0, 0.62, 0), []);
+function WorkHallCard() {
+  const [frontMap, backMap] = useTexture([workhallWhite, workhallWhite]);
+
+  useEffect(() => {
+    [frontMap, backMap].forEach((texture) => {
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.needsUpdate = true;
+    });
+  }, [frontMap, backMap]);
+
+  return (
+    <>
+      <RoundedBox args={[2.14, 3.06, 0.024]} radius={0.16} smoothness={6}>
+        <meshBasicMaterial
+          color="#d26d45"
+        />
+      </RoundedBox>
+
+      <mesh position={[0, 0, 0.014]} scale={[1.48, 1.48, 1]}>
+        <planeGeometry args={[1, 1]} />
+        <meshBasicMaterial map={frontMap} transparent opacity={0.97} toneMapped={false} />
+      </mesh>
+
+      <mesh position={[0, 0, -0.014]} rotation={[0, Math.PI, 0]} scale={[1.48, 1.48, 1]}>
+        <planeGeometry args={[1, 1]} />
+        <meshBasicMaterial map={backMap} transparent opacity={0.97} toneMapped={false} />
+      </mesh>
+
+      <mesh position={[0, 1.58, 0.018]}>
+        <boxGeometry args={[0.34, 0.18, 0.06]} />
+        <meshBasicMaterial color="#efe6d8" />
+      </mesh>
+
+      <mesh position={[0, 1.76, 0]}>
+        <cylinderGeometry args={[0.18, 0.18, 0.08, 28]} />
+        <meshBasicMaterial color="#d8cbb8" />
+      </mesh>
+    </>
+  );
+}
+
+interface BandProps {
+  maxSpeed?: number;
+  minSpeed?: number;
+  isMobile?: boolean;
+}
+
+function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
+  const cardAttachment = useMemo(
+    () => new THREE.Vector3(0, FOOTER_CARD_RENDER_ANCHOR_Y, 0),
+    [],
+  );
   const cardWorldAttachment = useMemo(() => new THREE.Vector3(), []);
   const cardRotation = useMemo(() => new THREE.Quaternion(), []);
   const band = useRef<THREE.Mesh>(null!);
@@ -38,24 +92,13 @@ function LanyardBand() {
   const j3 = useRef<RapierRigidBody>(null!);
   const card = useRef<RapierRigidBody>(null!);
 
-  const [logoFront, logoBack] = useTexture([workhallOrange, workhallOrange]);
-  const [dragged, setDragged] = useState<false | THREE.Vector3>(false);
-  const [hovered, setHovered] = useState(false);
-  const [curve] = useState(
-    () =>
-      new THREE.CatmullRomCurve3([
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-      ]),
-  );
-  const pointerVec = useMemo(() => new THREE.Vector3(), []);
-  const dragOffset = useMemo(() => new THREE.Vector3(), []);
-  const dragDirection = useMemo(() => new THREE.Vector3(), []);
+  const vec = useMemo(() => new THREE.Vector3(), []);
+  const ang = useMemo(() => new THREE.Vector3(), []);
+  const rot = useMemo(() => new THREE.Vector3(), []);
+  const dir = useMemo(() => new THREE.Vector3(), []);
 
   const segmentProps: RigidBodyProps = {
-    type: "dynamic" as const,
+    type: "dynamic",
     canSleep: true,
     colliders: false,
     angularDamping: 4,
@@ -70,29 +113,45 @@ function LanyardBand() {
     return body.lerped;
   };
 
-  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 0.7]);
-  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 0.7]);
-  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 0.7]);
-  useSphericalJoint(j3, card, [[0, 0, 0], [0, 2.54, 0]]);
+  const [curve] = useState(
+    () =>
+      new THREE.CatmullRomCurve3([
+        new THREE.Vector3(),
+        new THREE.Vector3(),
+        new THREE.Vector3(),
+        new THREE.Vector3(),
+      ]),
+  );
+  const [dragged, drag] = useState<false | THREE.Vector3>(false);
+  const [hovered, hover] = useState(false);
+
+  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
+  useSphericalJoint(j3, card, [
+    [0, 0, 0],
+    [0, FOOTER_CARD_JOINT_Y, 0],
+  ]);
 
   useEffect(() => {
-    if (!hovered) return;
-    document.body.style.cursor = dragged ? "grabbing" : "grab";
-    return () => {
-      document.body.style.cursor = "auto";
-    };
-  }, [dragged, hovered]);
+    if (hovered) {
+      document.body.style.cursor = dragged ? "grabbing" : "grab";
+      return () => {
+        document.body.style.cursor = "auto";
+      };
+    }
+  }, [hovered, dragged]);
 
   useFrame((state, delta) => {
     if (dragged && typeof dragged !== "boolean") {
-      pointerVec.set(state.pointer.x, state.pointer.y, 0.6).unproject(state.camera);
-      dragDirection.copy(pointerVec).sub(state.camera.position).normalize();
-      pointerVec.add(dragDirection.multiplyScalar(state.camera.position.length()));
+      vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
+      dir.copy(vec).sub(state.camera.position).normalize();
+      vec.add(dir.multiplyScalar(state.camera.position.length()));
       [card, j1, j2, j3, fixed].forEach((ref) => ref.current?.wakeUp());
       card.current?.setNextKinematicTranslation({
-        x: pointerVec.x - dragged.x,
-        y: pointerVec.y - dragged.y,
-        z: pointerVec.z - dragged.z,
+        x: vec.x - dragged.x,
+        y: vec.y - dragged.y,
+        z: vec.z - dragged.z,
       });
     }
 
@@ -100,12 +159,15 @@ function LanyardBand() {
 
     [j1, j2].forEach((ref) => {
       const lerped = getLerped(ref.current);
-      const distance = Math.max(
+      const clampedDistance = Math.max(
         0.1,
         Math.min(1, lerped.distanceTo(ref.current.translation())),
       );
-      lerped.lerp(ref.current.translation(), delta * (18 + distance * 28));
-    });
+      lerped.lerp(
+        ref.current.translation(),
+        delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)),
+        );
+      });
 
     cardRotation.set(
       card.current.rotation().x,
@@ -122,16 +184,12 @@ function LanyardBand() {
     curve.points[1].copy(getLerped(j2.current));
     curve.points[2].copy(getLerped(j1.current));
     curve.points[3].copy(fixed.current.translation());
-    (band.current.geometry as any).setPoints(curve.getPoints(28));
+    (band.current.geometry as any).setPoints(curve.getPoints(isMobile ? 16 : 32));
 
-    const angvel = card.current.angvel();
-    const rotation = card.current.rotation();
+    ang.copy(card.current.angvel());
+    rot.copy(card.current.rotation());
     card.current.setAngvel(
-      {
-        x: angvel.x,
-        y: angvel.y - rotation.y * 0.25,
-        z: angvel.z,
-      },
+      { x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z },
       true,
     );
   });
@@ -140,89 +198,49 @@ function LanyardBand() {
 
   return (
     <>
-      <group position={[0, 3.55, 0]}>
+      <group position={[0, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
-        <RigidBody ref={j1} position={[0.42, 0, 0]} {...segmentProps}>
+        <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps} type="dynamic">
           <BallCollider args={[0.1]} />
         </RigidBody>
-        <RigidBody ref={j2} position={[0.86, 0, 0]} {...segmentProps}>
+        <RigidBody position={[1, 0, 0]} ref={j2} {...segmentProps} type="dynamic">
           <BallCollider args={[0.1]} />
         </RigidBody>
-        <RigidBody ref={j3} position={[1.28, 0, 0]} {...segmentProps}>
+        <RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps} type="dynamic">
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
+          position={[2, 0, 0]}
           ref={card}
-          position={[1.72, -0.2, 0]}
           {...segmentProps}
           type={dragged ? "kinematicPosition" : "dynamic"}
         >
-          <CuboidCollider args={[1.17, 1.625, 0.08]} />
+          <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
-            position={[0, -1.52, 0]}
-            scale={1.352}
-            onPointerOver={() => setHovered(true)}
-            onPointerOut={() => setHovered(false)}
+            scale={FOOTER_CARD_SCALE}
+            position={[0, FOOTER_CARD_OFFSET_Y, -0.05]}
+            onPointerOver={() => hover(true)}
+            onPointerOut={() => hover(false)}
             onPointerUp={(event: ThreeEvent<PointerEvent>) => {
               (event.target as Element).releasePointerCapture(event.pointerId);
-              setDragged(false);
+              drag(false);
             }}
             onPointerDown={(event: ThreeEvent<PointerEvent>) => {
               (event.target as Element).setPointerCapture(event.pointerId);
-              dragOffset.copy(card.current.translation());
-              setDragged(new THREE.Vector3().copy(event.point).sub(dragOffset));
+              drag(new THREE.Vector3().copy(event.point).sub(vec.copy(card.current.translation())));
             }}
           >
-            <RoundedBox args={[2.14, 3.06, 0.12]} radius={0.16} smoothness={5}>
-              <meshPhysicalMaterial
-                color="#f6eee2"
-                roughness={0.82}
-                metalness={0.03}
-                clearcoat={0.2}
-                clearcoatRoughness={0.28}
-              />
-            </RoundedBox>
-
-            <mesh position={[0, 0, 0.072]} scale={[1.72, 1.72, 1]}>
-              <planeGeometry args={[1.48, 1.48]} />
-              <meshBasicMaterial
-                map={logoFront}
-                transparent
-                opacity={0.97}
-                toneMapped={false}
-              />
-            </mesh>
-
-            <mesh position={[0, 0, -0.072]} rotation={[0, Math.PI, 0]} scale={[1.72, 1.72, 1]}>
-              <planeGeometry args={[1.48, 1.48]} />
-              <meshBasicMaterial
-                map={logoBack}
-                transparent
-                opacity={0.97}
-                toneMapped={false}
-              />
-            </mesh>
-
-            <mesh position={[0, 1.58, 0.08]}>
-              <boxGeometry args={[0.34, 0.18, 0.1]} />
-              <meshStandardMaterial color="#e8dccb" metalness={0.22} roughness={0.5} />
-            </mesh>
-
-            <mesh position={[0, 1.76, 0]}>
-              <cylinderGeometry args={[0.18, 0.18, 0.1, 28]} />
-              <meshStandardMaterial color="#c9b9a7" metalness={0.45} roughness={0.35} />
-            </mesh>
+            <WorkHallCard />
           </group>
         </RigidBody>
       </group>
-
-      <mesh ref={band as any}>
+      <mesh ref={band as React.MutableRefObject<THREE.Mesh>}>
         <meshLineGeometry />
         <meshLineMaterial
           color="#d26d45"
           depthTest={false}
-          resolution={[1000, 1000]}
-          lineWidth={0.5}
+          resolution={isMobile ? [1000, 2000] : [1000, 1000]}
+          lineWidth={0.9}
         />
       </mesh>
     </>
@@ -230,38 +248,55 @@ function LanyardBand() {
 }
 
 function FooterLanyardScene() {
+  const [isMobile, setIsMobile] = useState<boolean>(
+    () => typeof window !== "undefined" && window.innerWidth < 768,
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <Canvas
-      camera={{ position: [0, 0, 15.25], fov: 52 }}
-      dpr={[1, 1.75]}
+      camera={{ position: [0, 0, 30], fov: 20 }}
+      dpr={[1, isMobile ? 1.5 : 2]}
       gl={{ alpha: true }}
+      onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), 0)}
     >
-      <ambientLight intensity={1.55} />
-      <directionalLight position={[2, 5, 5]} intensity={2.35} color="#fff7ef" />
-      <Physics gravity={[0, -26, 0]} timeStep={1 / 60}>
-        <LanyardBand />
+      <ambientLight intensity={Math.PI} />
+      <Physics gravity={[0, -40, 0]} timeStep={isMobile ? 1 / 30 : 1 / 60}>
+        <Band isMobile={isMobile} />
       </Physics>
-      <Environment blur={0.8}>
+      <Environment blur={0.75}>
         <Lightformer
-          intensity={1.8}
-          color="#fffaf0"
-          position={[0, 4, 6]}
-          rotation={[0, 0, Math.PI / 5]}
-          scale={[10, 0.8, 1]}
+          intensity={2}
+          color="white"
+          position={[0, -1, 5]}
+          rotation={[0, 0, Math.PI / 3]}
+          scale={[100, 0.1, 1]}
         />
         <Lightformer
           intensity={3}
-          color="#f2dfcf"
-          position={[-4, 1, 3]}
-          rotation={[0, Math.PI / 2, 0]}
-          scale={[12, 5, 1]}
+          color="white"
+          position={[-1, -1, 1]}
+          rotation={[0, 0, Math.PI / 3]}
+          scale={[100, 0.1, 1]}
         />
         <Lightformer
-          intensity={2.6}
-          color="#d26d45"
-          position={[5, -1, 2]}
-          rotation={[0, -Math.PI / 2, 0]}
-          scale={[8, 4, 1]}
+          intensity={3}
+          color="white"
+          position={[1, 1, 1]}
+          rotation={[0, 0, Math.PI / 3]}
+          scale={[100, 0.1, 1]}
+        />
+        <Lightformer
+          intensity={10}
+          color="white"
+          position={[-10, 0, 14]}
+          rotation={[0, Math.PI / 2, Math.PI / 3]}
+          scale={[100, 10, 1]}
         />
       </Environment>
     </Canvas>
@@ -272,7 +307,9 @@ export default function FooterLanyardCard() {
   return (
     <aside className="sp-footer-lanyard-card" aria-label="WorkHall card">
       <div className="sp-footer-lanyard-card__frame">
-        <FooterLanyardScene />
+        <div className="sp-footer-lanyard-wrapper">
+          <FooterLanyardScene />
+        </div>
       </div>
     </aside>
   );

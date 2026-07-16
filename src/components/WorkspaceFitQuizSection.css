@@ -1,6 +1,6 @@
 .workspace-quiz-section {
   --workspace-quiz-orange: #d26d45;
-  --workspace-quiz-cream: #ece4d7;
+  --workspace-quiz-cream: #f6f2eb;
   --workspace-quiz-text: #1c160f;
   position: relative;
   min-height: clamp(780px, 92vh, 1040px);

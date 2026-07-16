@@ -106,7 +106,7 @@ export function BookingConcierge({ variant = 'section' }: { variant?: 'section' 
           <div className="booking-popover booking-popover--seats">
             <button type="button" className="booking-field booking-field--seats" aria-expanded={openPanel === 'seats'} onClick={() => togglePanel('seats')}>
               <span>
-                <strong>How Many People?</strong>
+                <strong>How Many Seats?</strong>
                 <small>{seats ? (seats === 1 ? 'Solo workspace' : `${seats} people`) : 'Choose team size'}</small>
               </span>
               <span className="seat-stepper" aria-hidden="true">{String(seats ?? 3).padStart(2, '0')}</span>
