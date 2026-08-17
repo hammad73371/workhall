@@ -1,0 +1,20 @@
+.coverflow { width: 100%; }
+.coverflow__stage { position: relative; }
+.coverflow__frame { overflow: hidden; padding: 42px 0 54px; outline: none; cursor: grab; perspective: min(920px, 68vw); touch-action: pan-y; }
+.coverflow__frame:active { cursor: grabbing; }
+.coverflow__track { position: relative; height: clamp(260px, 26vw, 390px); transform-style: preserve-3d; user-select: none; }
+.coverflow__card { position: absolute; top: 0; left: 50%; width: clamp(205px, 21vw, 320px); aspect-ratio: .83; overflow: hidden; padding: 0; border: 0; border-radius: 22px; background: #ded5c6; box-shadow: 0 24px 55px rgba(21,17,13,.17); color: #fffaf2; text-align: left; transform-origin: center; will-change: transform; }
+.coverflow__card img, .coverflow__overlay { position: absolute; inset: 0; width: 100%; height: 100%; }
+.coverflow__card img { object-fit: cover; }
+.coverflow__overlay { background: linear-gradient(180deg, rgba(21,17,13,.02), rgba(21,17,13,.82)); }
+.coverflow__content { position: absolute; right: 22px; bottom: 21px; left: 22px; z-index: 1; display: grid; gap: 5px; }
+.coverflow__content small { font-size: .65rem; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+.coverflow__content strong { font-family: var(--sans); font-size: clamp(1.6rem, 2.4vw, 2.6rem); font-weight: 650; letter-spacing: -.06em; line-height: .88; }
+.coverflow__content em { font-size: .76rem; font-style: normal; font-weight: 600; line-height: 1.25; opacity: .82; }
+.coverflow__arrow { position: absolute; top: 50%; z-index: 120; display: grid; width: 46px; height: 46px; place-items: center; border: 1px solid rgba(21,17,13,.18); border-radius: 50%; background: rgba(255,250,242,.88); color: var(--ink); transform: translateY(-50%); }
+.coverflow__arrow--previous { left: max(18px, 9%); }
+.coverflow__arrow--next { right: max(18px, 9%); }
+.coverflow__pagination { display: flex; justify-content: center; gap: 8px; }
+.coverflow__pagination button { width: 7px; height: 7px; border-radius: 99px; background: rgba(21,17,13,.22); transition: width .2s, background .2s; }
+.coverflow__pagination button.is-active { width: 27px; background: var(--location-accent); }
+@media (max-width: 700px) { .coverflow__frame { padding: 30px 0 38px; } .coverflow__track { height: 300px; } .coverflow__card { width: 220px; } .coverflow__arrow { width: 40px; height: 40px; } .coverflow__arrow--previous { left: 10px; } .coverflow__arrow--next { right: 10px; } }

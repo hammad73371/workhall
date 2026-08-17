@@ -485,6 +485,24 @@
   justify-items: start;
 }
 
+.location-detail-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding-bottom: 7px;
+  border-bottom: 2px solid currentColor;
+  color: var(--ink);
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.location-detail-link .icon {
+  width: 16px;
+  height: 16px;
+}
+
 .location-branch-card {
   position: relative;
   display: grid;

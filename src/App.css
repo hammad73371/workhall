@@ -1420,10 +1420,16 @@ img {
 
 .figma-stat strong {
   font-family: var(--sans);
-  font-size: clamp(48px, 3.7vw, 70.78px);
+  font-size: clamp(56px, 4.2vw, 80px);
   font-weight: 500;
   line-height: 1;
 }
+
+.figma-stat__counter { display: block; height: 1.16em; overflow: hidden; font-variant-numeric: tabular-nums; line-height: 1.16; }
+.figma-stat__counter-window { display: block; height: 1.16em; overflow: hidden; }
+.figma-stat__counter-reel { display: block; will-change: transform; }
+.figma-stat__counter-reel > span { display: block; height: 1.16em; line-height: 1.16; }
+.figma-stat .figma-stat__counter span { font-size: inherit; }
 
 .figma-stat span {
   font-family: var(--sans);

@@ -173,7 +173,7 @@ export const navGroups: NavGroup[] = [
     items: [
       ...workHallLocations.map((location) => ({
         title: location.area,
-        href: '#locations',
+        href: `/locations/${location.id}`,
         detail: location.address,
         meta: 'Karachi branch',
         icon: 'pin' as const,

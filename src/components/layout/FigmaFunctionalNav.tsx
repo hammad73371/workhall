@@ -5,6 +5,7 @@ import { navGroups } from '../../data/siteContent'
 import type { NavFeature, NavGroup } from '../../types/site'
 import { ArrowIcon, NavGlyph } from '../shared/icons'
 import workhallOrange from '../../assets/workhall-orange.svg'
+import { useLocation } from 'react-router-dom'
 
 type FigmaNavGroup = NavGroup & { visualLabel: string }
 
@@ -67,9 +68,12 @@ function DownArrowBadge() {
   )
 }
 
-function FigmaFeatureCard({ feature, variant, onClick }: { feature: NavFeature; variant: 'hero' | 'large' | 'small' | 'rail'; onClick: () => void }) {
+const resolveSiteHref = (href: string, pathname: string) =>
+  href.startsWith('#') && pathname !== '/' ? `/${href}` : href
+
+function FigmaFeatureCard({ feature, variant, onClick, pathname }: { feature: NavFeature; variant: 'hero' | 'large' | 'small' | 'rail'; onClick: () => void; pathname: string }) {
   return (
-    <a href={feature.href} className={`figma-feature-card figma-feature-card--${variant}`} style={{ '--nav-image-position': feature.imagePosition ?? 'center' } as CSSProperties} onClick={onClick}>
+    <a href={resolveSiteHref(feature.href, pathname)} className={`figma-feature-card figma-feature-card--${variant}`} style={{ '--nav-image-position': feature.imagePosition ?? 'center' } as CSSProperties} onClick={onClick}>
       <span className="figma-feature-card__image" aria-hidden="true" />
       <span className="figma-feature-card__content">
         <span className="figma-feature-card__top">
@@ -85,6 +89,7 @@ function FigmaFeatureCard({ feature, variant, onClick }: { feature: NavFeature; 
 }
 
 export function FigmaFunctionalNav({ isLoaded }: { isLoaded: boolean }) {
+  const { pathname } = useLocation()
   const [openGroupId, setOpenGroupId] = useState<string | null>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const navRef = useRef<HTMLElement>(null)
@@ -146,7 +151,7 @@ export function FigmaFunctionalNav({ isLoaded }: { isLoaded: boolean }) {
   return (
     <header ref={navRef} className={isLoaded ? 'figma-nav-layer is-loaded' : 'figma-nav-layer'} aria-label="Main navigation">
       <div className="figma-nav__mobile-bar">
-        <a href="#top" className="figma-nav__mobile-brand" aria-label="WorkHall home">
+        <a href={pathname === '/' ? '#top' : '/'} className="figma-nav__mobile-brand" aria-label="WorkHall home">
           <img src={workhallOrange} alt="WorkHall" />
         </a>
         <button
@@ -179,7 +184,7 @@ export function FigmaFunctionalNav({ isLoaded }: { isLoaded: boolean }) {
           </button>
         ))}
       </nav>
-      <a href="#virtual-tour" className="figma-nav__tour virtual-tour-btn">
+      <a href={resolveSiteHref('#virtual-tour', pathname)} className="figma-nav__tour virtual-tour-btn">
         Virtual Tour
       </a>
 
@@ -217,7 +222,7 @@ export function FigmaFunctionalNav({ isLoaded }: { isLoaded: boolean }) {
                         {[group.featured, ...group.items].slice(0, 6).map((item) => (
                           <a
                             key={`${group.id}-${item.title}`}
-                            href={item.href}
+                            href={resolveSiteHref(item.href, pathname)}
                             className="figma-nav__mobile-link"
                             onClick={() => {
                               setIsMobileMenuOpen(false)
@@ -236,7 +241,7 @@ export function FigmaFunctionalNav({ isLoaded }: { isLoaded: boolean }) {
             </div>
 
             <a
-              href="#virtual-tour"
+              href={resolveSiteHref('#virtual-tour', pathname)}
               className="figma-nav__mobile-tour"
               onClick={() => setIsMobileMenuOpen(false)}
             >
@@ -259,19 +264,19 @@ export function FigmaFunctionalNav({ isLoaded }: { isLoaded: boolean }) {
             transition={{ duration: 0.18, ease: 'easeOut' }}
           >
             <div className="figma-nav__main-panel">
-              <FigmaFeatureCard feature={activeGroup.featured} variant="hero" onClick={() => setOpenGroupId(null)} />
+              <FigmaFeatureCard feature={activeGroup.featured} variant="hero" pathname={pathname} onClick={() => setOpenGroupId(null)} />
               {activeGroup.items.slice(0, 1).map((item) => (
-                <FigmaFeatureCard key={item.title} feature={item} variant="large" onClick={() => setOpenGroupId(null)} />
+                <FigmaFeatureCard key={item.title} feature={item} variant="large" pathname={pathname} onClick={() => setOpenGroupId(null)} />
               ))}
               <div className="figma-nav__small-row">
                 {activeGroup.items.slice(1, 4).map((item) => (
-                  <FigmaFeatureCard key={item.title} feature={item} variant="small" onClick={() => setOpenGroupId(null)} />
+                  <FigmaFeatureCard key={item.title} feature={item} variant="small" pathname={pathname} onClick={() => setOpenGroupId(null)} />
                 ))}
               </div>
             </div>
             <aside className="figma-nav__rail" aria-label={`${activeGroup.visualLabel} quick links`}>
               {activeGroup.items.slice(4, 7).map((item) => (
-                <FigmaFeatureCard key={item.title} feature={item} variant="rail" onClick={() => setOpenGroupId(null)} />
+                <FigmaFeatureCard key={item.title} feature={item} variant="rail" pathname={pathname} onClick={() => setOpenGroupId(null)} />
               ))}
             </aside>
           </motion.div>

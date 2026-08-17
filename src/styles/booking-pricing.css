@@ -552,7 +552,8 @@
 }
 
 .enquiry-form input,
-.enquiry-form textarea {
+.enquiry-form textarea,
+.enquiry-form select {
   width: 100%;
   padding: 14px 16px;
   border: 1px solid rgba(84, 55, 29, 0.16);
@@ -567,7 +568,8 @@
 }
 
 .enquiry-form input:focus,
-.enquiry-form textarea:focus {
+.enquiry-form textarea:focus,
+.enquiry-form select:focus {
   outline: none;
   border-color: var(--aubergine);
   box-shadow: 0 0 0 4px rgba(50, 29, 50, 0.08);

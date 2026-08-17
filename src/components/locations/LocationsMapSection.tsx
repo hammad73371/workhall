@@ -42,7 +42,7 @@ function buildDirectionsUrl(userCoordinates: UserCoordinates | null, destination
   const target = `${destination[1]},${destination[0]}`
   return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${target}&travelmode=driving`
 }
-const baseMapStyle: maplibregl.StyleSpecification = {
+export const workHallBaseMapStyle: maplibregl.StyleSpecification = {
   version: 8,
   sources: {
     carto: {
@@ -191,7 +191,7 @@ export function LocationsMapSection({
     try {
       map = new maplibregl.Map({
         container: node,
-        style: baseMapStyle,
+        style: workHallBaseMapStyle,
         center: karachiCenter,
         zoom: 10.7,
         pitch: 18,
@@ -505,6 +505,11 @@ export function LocationsMapSection({
             )
           })}
         </div>
+
+        <a className="location-detail-link" href={`/locations/${activeLocation.id}`}>
+          Explore the {activeLocation.area} branch
+          <ArrowIcon />
+        </a>
       </div>
 
       <div className="location-map-shell">

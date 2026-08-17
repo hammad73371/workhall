@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/locations/:path*", "destination": "/index.html" },
+    { "source": "/text-effects-lab", "destination": "/index.html" }
+  ]
+}

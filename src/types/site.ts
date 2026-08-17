@@ -86,6 +86,30 @@ export type WorkHallLocation = {
   mapsUrl: string
 }
 
+export type LocationWorkspace = {
+  title: string
+  description: string
+  bestFor: string
+}
+
+export type LocationPageContent = WorkHallLocation & {
+  eyebrow: string
+  headline: string
+  introduction: string
+  businessFocus: string
+  branchDetail?: string
+  branchNote: string
+  accent: string
+  secondaryAccent: string
+  heroImage: string
+  heroImagePosition?: string
+  gallery: Array<{ src: string; alt: string; position?: string }>
+  highlights: Array<{ value: string; label: string }>
+  workspaces: LocationWorkspace[]
+  amenities: string[]
+  accessNotes: string[]
+}
+
 export type WorkspaceQuizOption<TValue extends string = string> = {
   value: TValue
   label: string

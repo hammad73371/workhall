@@ -18,10 +18,22 @@ function getSeatMessage(seats: number) {
   return 'A larger team footprint that likely needs a more tailored setup and a clearer planning conversation.'
 }
 
-export function BookingConcierge({ variant = 'section' }: { variant?: 'section' | 'hero' }) {
+interface BookingConciergeProps {
+  variant?: 'section' | 'hero' | 'location-cta'
+  fixedLocation?: string
+  ctaClassName?: string
+  ctaLabel?: string
+}
+
+export function BookingConcierge({
+  variant = 'section',
+  fixedLocation,
+  ctaClassName,
+  ctaLabel = 'Book now',
+}: BookingConciergeProps) {
   const conciergeRef = useRef<HTMLDivElement>(null)
   const [openPanel, setOpenPanel] = useState<BookingPanel | null>(null)
-  const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(fixedLocation ?? null)
   const [seats, setSeats] = useState<number | null>(null)
   const [isEnquiryOpen, setIsEnquiryOpen] = useState(false)
   const [isEnquirySent, setIsEnquirySent] = useState(false)
@@ -71,6 +83,19 @@ export function BookingConcierge({ variant = 'section' }: { variant?: 'section' 
 
   return (
     <>
+      {variant === 'location-cta' ? (
+        <button
+          type="button"
+          className={ctaClassName ?? 'primary-cta'}
+          onClick={() => {
+            setOpenPanel(null)
+            setIsEnquiryOpen(true)
+          }}
+        >
+          {ctaLabel}
+          <ArrowIcon />
+        </button>
+      ) : (
       <div ref={conciergeRef} className={variant === 'hero' ? 'booking-console booking-console--hero' : 'booking-console'} aria-label="Book a Work Hall workspace">
         <div className="booking-fields booking-fields--compact">
           <div className="booking-popover booking-popover--location">
@@ -163,6 +188,7 @@ export function BookingConcierge({ variant = 'section' }: { variant?: 'section' 
         </div>
         {hasTriedBooking && !isEnquiryReady && <p className="booking-required-hint" role="status">{requiredHint}</p>}
       </div>
+      )}
       {isEnquiryOpen && typeof document !== 'undefined' ? createPortal(
         <div className="enquiry-modal" role="dialog" aria-modal="true" aria-labelledby="enquiry-title">
           <button type="button" className="enquiry-modal__backdrop" aria-label="Close enquiry form" onClick={closeEnquiryModal} />
@@ -184,6 +210,7 @@ export function BookingConcierge({ variant = 'section' }: { variant?: 'section' 
                   </div>
                 )}
                 <form className="enquiry-form" onSubmit={handleEnquirySubmit}>
+                  <label className="enquiry-form__full"><span>Team size</span><select required value={seats ?? ''} onChange={(event) => setSeats(Number(event.target.value))}><option value="" disabled>Select team size</option>{[1, 2, 3, 4, 6, 8, 12, 20].map((seatCount) => <option key={seatCount} value={seatCount}>{seatCount === 1 ? '1 person' : `${seatCount} people`}</option>)}</select></label>
                   <label><span>Full name</span><input required type="text" value={enquiryForm.name} onChange={(event) => setEnquiryForm((currentForm) => ({ ...currentForm, name: event.target.value }))} /></label>
                   <label><span>Email address</span><input required type="email" value={enquiryForm.email} onChange={(event) => setEnquiryForm((currentForm) => ({ ...currentForm, email: event.target.value }))} /></label>
                   <label><span>Phone number</span><input type="tel" placeholder="Optional" value={enquiryForm.phone} onChange={(event) => setEnquiryForm((currentForm) => ({ ...currentForm, phone: event.target.value }))} /></label>

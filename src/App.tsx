@@ -22,48 +22,28 @@ import { workHallLocations } from "./data/siteContent";
 import type { WorkspaceQuizAnswers } from "./types/site";
 import { TextEffectsLab } from "./components/TextEffectsLab";
 import { useLocation } from "react-router-dom";
+import { getLocationPage } from "./data/locationPages";
+import { LocationPage } from "./pages/LocationPage";
 const stats = [
-  { value: "06", label: "Location", color: "#458E71" },
-  { value: "07+", label: "Years", color: "#D26D45" },
-  { value: "800+", label: "Seats", color: "#3B59A3" },
-  { value: "40k+", label: "Sq.ft area", color: "#8C8464" },
+  { target: 6, suffix: "", label: "Location", color: "#458E71", pad: 2, duration: 2200, delay: 900 },
+  { target: 7, suffix: "+", label: "Years", color: "#D26D45", pad: 2, duration: 2300, delay: 980 },
+  { target: 800, suffix: "+", label: "Seats", color: "#3B59A3", pad: 0, duration: 1250, delay: 1060 },
+  { target: 40, suffix: "k+", label: "Sq.ft area", color: "#8C8464", pad: 2, duration: 2700, delay: 1140 },
 ];
+const heroStatLineHeight = 1.16;
 
-function useCountUp(
-  target: string,
-  duration: number,
-  delay: number,
-  enabled: boolean,
-) {
-  const [display, setDisplay] = useState(target.replace(/[0-9]/g, "0"));
+function HeroStatCounter({ target, suffix, pad, color, duration, delay, isActive }: typeof stats[number] & { isActive: boolean }) {
+  const format = (value: number) => `${String(value).padStart(pad, "0")}${suffix}`;
 
-  useEffect(() => {
-    if (!enabled) {
-      setDisplay(target.replace(/[0-9]/g, "0"));
-      return;
-    }
-
-    const timeout = window.setTimeout(() => {
-      const numeric = Number.parseInt(target.replace(/[^0-9]/g, ""), 10);
-      const suffix = target.replace(/[0-9]/g, "");
-      const start = Date.now();
-
-      const tick = () => {
-        const elapsed = Date.now() - start;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - (1 - progress) * (1 - progress);
-        const current = Math.floor(eased * numeric);
-        setDisplay(`${String(current).padStart(2, "0")}${suffix}`);
-        if (progress < 1) window.requestAnimationFrame(tick);
-      };
-
-      window.requestAnimationFrame(tick);
-    }, delay);
-
-    return () => window.clearTimeout(timeout);
-  }, [delay, duration, enabled, target]);
-
-  return display;
+  return (
+    <strong className="figma-stat__counter" style={{ color }} aria-label={format(target)}>
+      <span className="figma-stat__counter-window" aria-hidden="true">
+        <span className="figma-stat__counter-reel" style={{ transform: isActive ? `translateY(-${target * heroStatLineHeight}em)` : "translateY(0)", transition: `transform ${duration}ms cubic-bezier(.45, 0, .15, 1) ${delay}ms` }}>
+          {Array.from({ length: target + 1 }, (_, value) => <span key={value}>{format(value)}</span>)}
+        </span>
+      </span>
+    </strong>
+  );
 }
 
 function App() {
@@ -117,13 +97,6 @@ function App() {
       position: "center center",
     },
   ];
-  const statDisplays = [
-    useCountUp("06", 820, 120, isLoaded),
-    useCountUp("07+", 860, 180, isLoaded),
-    useCountUp("800+", 980, 240, isLoaded),
-    useCountUp("40k+", 980, 300, isLoaded),
-  ];
-
   useEffect(() => {
     if (!loaderDone) return;
     const timeout = window.setTimeout(() => setIsLoaded(true), 0);
@@ -147,6 +120,13 @@ function App() {
 
   if (location.pathname === "/text-effects-lab") {
     return <TextEffectsLab />;
+  }
+
+  if (location.pathname.startsWith("/locations/")) {
+    const locationSlug = location.pathname.split("/").filter(Boolean)[1] ?? "";
+    const locationPage = getLocationPage(locationSlug);
+
+    if (locationPage) return <LocationPage location={locationPage} />;
   }
 
   return (
@@ -227,11 +207,9 @@ function App() {
                   className="figma-stats-card stats-bar"
                   aria-label="WorkHall stats"
                 >
-                  {stats.map((stat, index) => (
+                  {stats.map((stat) => (
                     <div key={stat.label} className="figma-stat">
-                      <strong style={{ color: stat.color }}>
-                        {statDisplays[index]}
-                      </strong>
+                      <HeroStatCounter {...stat} isActive={isLoaded} />
                       <span style={{ color: stat.color }}>{stat.label}</span>
                     </div>
                   ))}
